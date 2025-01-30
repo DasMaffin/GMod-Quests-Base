@@ -22,7 +22,7 @@ if SERVER then
 
         table.insert(QuestManager.availableQuests, quest)
         -- file.Write("quests/quests.json", util.TableToJSON(quest))
-        file.Write("quests/quests.json", util.TableToJSON(QuestManager.availableQuests, true)) 
+        file.Write(questsDir, util.TableToJSON(QuestManager.availableQuests, true)) 
 
         -- quest:Start(player, ...)
         -- if quest.DidntFinishInit == true then
