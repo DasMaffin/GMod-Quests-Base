@@ -54,8 +54,12 @@ end
 -- Hook to Track Player Kills
 hook.Add("PlayerDeath", "KillQuest_PlayerDeath", function(victim, inflictor, attacker)
     if IsValid(attacker) and attacker:IsPlayer() then
+        PrintPink("Role:")
+        PrintPink(attacker:GetRole())
         for _, quest in ipairs(QuestManager.activeQuests[attacker:SteamID64()]) do
-            KillQuest:PlayerKilled(quest)
+            if(quest.killerRole == attacker:GetRole() and quest.killedRole == victim:GetRole()) then
+                KillQuest:PlayerKilled(quest)
+            end
         end
         net.Start("SynchronizeActiveQuests")
         net.WriteTable(QuestManager.activeQuests[attacker:SteamID64()])
