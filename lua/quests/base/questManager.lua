@@ -72,13 +72,14 @@ if CLIENT then
 
     net.Receive("SynchronizeActiveQuests", function(len)
         local quests = net.ReadTable()
-        local ply = LocalPlayer()
-        for _, quest in ipairs(quests) do
-            QuestManager.activeQuests[ply:SteamID64()] = {}
-            table.insert(QuestManager.activeQuests[ply:SteamID64()], quest)
-        end
+        -- local ply = LocalPlayer()
+        -- for _, quest in ipairs(quests) do
+        --     QuestManager.activeQuests[ply:SteamID64()] = {}
+        --     table.insert(QuestManager.activeQuests[ply:SteamID64()], quest)
+        -- end
         -- call hook to update UI
-        hook.Run("QuestsUpdated", QuestManager.activeQuests[ply:SteamID64()])
+        -- PrintTable(quests)
+        hook.Run("QuestsUpdated", quests)--QuestManager.activeQuests[ply:SteamID64()]
     end)
 
     hook.Add("InitPostEntity", "NotifyServerOfClientReady", function()
