@@ -21,7 +21,7 @@ Gets called on the client after it got a new update for the local player's activ
 
 ### Fields
 The fields a quest type has accessible (e.g. for displaying in a UI)
-## KillQuest
+#### KillQuest
 - requiredKills - The kills that are required to complete the quest.
 - killedRole -  The role the victim needs to have to advance the quest.
 - killerRole - The role you (the killer) needs to have to advance the quest.
