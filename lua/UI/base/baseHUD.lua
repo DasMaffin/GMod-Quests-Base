@@ -1,4 +1,5 @@
 local PANEL = {}
+local BaseHUDisActive = false
 
 vgui.Register("BaseHUD", PANEL, "EditablePanel")
 
@@ -52,7 +53,7 @@ hook.Add("QuestsUpdated", "UpdateQuestHUD", function(questsTable)
         baseHUD = vgui.Create("BaseHUD")
     end
     
-    baseHUD:SetVisible(true)
+    -- baseHUD:SetVisible(true)
     baseHUD:UpdateQuests(questsTable)
 end)
 
@@ -60,3 +61,8 @@ function CreateBaseHUD()
     baseHUD = vgui.Create("BaseHUD")
     return baseHUD
 end
+
+concommand.Add("ttt_quest_menu", function(ply, cmd, args)
+    BaseHUDisActive = not BaseHUDisActive
+    baseHUD:SetVisible(BaseHUDisActive)
+end)

@@ -1,6 +1,9 @@
 # GMod Quests
 
 ## ConCommands:
+### ttt_quest_menu
+Usage: ttt_quest_menu
+No parameters. Just toggles the quest menu on and off.
 ### AddQuest
 Usage: AddQuest <QuestType> [parameters]
 #### Killquest parameters:
