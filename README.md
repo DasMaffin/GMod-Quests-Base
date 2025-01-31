@@ -22,10 +22,10 @@ Gets called on the client after it got a new update for the local player's activ
 ### Fields
 The fields a quest type has accessible (e.g. for displaying in a UI)
 ## KillQuest
-requiredKills - The kills that are required to complete the quest.
-killedRole -  The role the victim needs to have to advance the quest.
-killerRole - The role you (the killer) needs to have to advance the quest.
-currentKills - The current amount of kills (progress) you have for this specific quest.
-rewards - A table with the rewards for completing the quest.
-- A new reward has to be manually added to the GiveRewards method.
-- An example could be adding Points for Pointshop 2 by adding the line `ply:PS2_AddStandardPoints(salary) `
+- requiredKills - The kills that are required to complete the quest.
+- killedRole -  The role the victim needs to have to advance the quest.
+- killerRole - The role you (the killer) needs to have to advance the quest.
+- currentKills - The current amount of kills (progress) you have for this specific quest.
+- rewards - A table with the rewards for completing the quest.
+    - A new reward has to be manually added to the GiveRewards method.
+    - An example could be adding Points for Pointshop 2 by adding the line `ply:PS2_AddStandardPoints(salary) `
