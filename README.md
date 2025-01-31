@@ -6,6 +6,14 @@ Usage: AddQuest <QuestType> [parameters]
 #### Killquest parameters:
 [requiredKills] [roleToBeKilled] [roleForKiller]
 
+| Role ID | Role Name  |  
+|---------|------------|  
+| 0       | Innocent   |  
+| 1       | Traitor    |  
+| 2       | Detective  |  
+
+e.g. AddQuest KillQuest 5 0 1
+
 ## Development
 ### Hooks
 #### QuestsUpdated
