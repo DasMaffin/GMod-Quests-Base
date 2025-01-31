@@ -19,6 +19,10 @@ function KillQuest:new(requiredKills, killedRole, killerRole)
     obj.killerRole = killerRole
     obj.currentKills = 0
 
+    -- Rewards
+    obj.rewards = {}
+    --Rewards end
+
     return obj
 end
 
@@ -42,7 +46,12 @@ function KillQuest:Update(quest)
 end
 
 function KillQuest:OnComplete(quest)
-    PrintPink("Congratulations! You completed the KillQuest by killing " .. quest.requiredKills .. " players.")
+    quest.completed = true
+    PrintPink("Congratulations! You completed the KillQuest!")
+end
+
+function KillQuest:GiveRewards(quest, ply)
+    -- TODO Give rewards
 end
 
 function KillQuest:PlayerKilled(quest)
