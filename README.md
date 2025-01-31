@@ -21,6 +21,10 @@ Gets called on the client after it got a new update for the local player's activ
 
 ### Fields
 The fields a quest type has accessible (e.g. for displaying in a UI)
+#### Base
+- type - the type of a quest as string value (e.g. "killQuest")
+- completed - wether or not the quest has been completed.
+- player - the player this quest is assigned to.
 #### KillQuest
 - requiredKills - The kills that are required to complete the quest.
 - killedRole -  The role the victim needs to have to advance the quest.
