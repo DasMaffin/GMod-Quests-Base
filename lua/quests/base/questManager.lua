@@ -8,6 +8,8 @@ QuestManager = {
 
 if SERVER then
     util.AddNetworkString("AddQuest")
+    util.AddNetworkString("NotifyServerOfClientReady")
+    util.AddNetworkString("SynchronizeActiveQuests")
 
     function QuestManager:AddQuest(player, questType, ...)
         local quest
@@ -21,14 +23,8 @@ if SERVER then
         end
 
         table.insert(QuestManager.availableQuests, quest)
-        -- file.Write("quests/quests.json", util.TableToJSON(quest))
         file.Write(questsDir, util.TableToJSON(QuestManager.availableQuests, true)) 
 
-        -- quest:Start(player, ...)
-        -- if quest.DidntFinishInit == true then
-        --     return
-        -- end
-        -- table.insert(self.activeQuests, quest)
         PrintPink("Quest added: " .. quest.type)
     end
 
@@ -39,6 +35,22 @@ if SERVER then
         local args = net.ReadTable()
 
         QuestManager:AddQuest(ply, questType, unpack(args))
+    end)
+
+    net.Receive("NotifyServerOfClientReady", function(len, ply)
+        local steamID = ply:SteamID64()
+        if QuestManager.activeQuests[steamID] and #QuestManager.activeQuests[steamID] > 0 then
+            -- send quests to player
+        else
+            if #QuestManager.availableQuests > 0 then
+                QuestManager.activeQuests[steamID] = {}
+                table.insert(QuestManager.activeQuests[steamID], QuestManager.availableQuests[math.random(1, #QuestManager.availableQuests)])
+                table.insert(QuestManager.activeQuests[steamID], QuestManager.availableQuests[math.random(1, #QuestManager.availableQuests)])
+            end
+        end
+        net.Start("SynchronizeActiveQuests")
+        net.WriteTable(QuestManager.activeQuests[steamID])
+        net.Send(ply)
     end)
 end
 
@@ -55,6 +67,22 @@ if CLIENT then
         net.Start("AddQuest")
         net.WriteString(questType)
         net.WriteTable(args)
+        net.SendToServer()
+    end)
+
+    net.Receive("SynchronizeActiveQuests", function(len)
+        local quests = net.ReadTable()
+        local ply = LocalPlayer()
+        for _, quest in ipairs(quests) do
+            QuestManager.activeQuests[ply:SteamID64()] = {}
+            table.insert(QuestManager.activeQuests[ply:SteamID64()], quest)
+        end
+        -- call hook to update UI
+        hook.Run("QuestsUpdated", QuestManager.activeQuests[ply:SteamID64()])
+    end)
+
+    hook.Add("InitPostEntity", "NotifyServerOfClientReady", function()
+        net.Start("NotifyServerOfClientReady")
         net.SendToServer()
     end)
 end

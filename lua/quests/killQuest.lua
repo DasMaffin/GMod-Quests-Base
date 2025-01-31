@@ -18,43 +18,47 @@ function KillQuest:new(requiredKills, killedRole, killerRole)
     obj.killedRole = killedRole
     obj.killerRole = killerRole
     obj.currentKills = 0
-    
+
     return obj
 end
 
-function KillQuest:OnStart(requiredKills, killedRole, killerRole)
-    self.requiredKills = tonumber(requiredKills) or 1
-    self.killedRole = killedRole
-    self.killerRole = killerRole
+function KillQuest:OnStart(quest)
+    self.requiredKills = tonumber(quest.requiredKills) or 1
+    self.killedRole = quest.killedRole
+    self.killerRole = quest.killerRole
     self.currentKills = 0
     PrintPink("KillQuest started:")
     PrintPink("Kill " .. self.requiredKills .. " " .. self.killedRole .. ".")
     PrintPink("As role: " .. self.killerRole)
+    PrintPink(self.player)
 end
 
-function KillQuest:Update()
-    self.currentKills = self.currentKills + 1
-    PrintPink("KillQuest progress: " .. self.currentKills .. "/" .. self.requiredKills)
-    if self.currentKills >= self.requiredKills then
-        self:Complete()
+function KillQuest:Update(quest)
+    quest.currentKills = quest.currentKills + 1    
+    PrintPink("KillQuest progress: " .. quest.currentKills .. "/" .. quest.requiredKills)
+    if quest.currentKills >= quest.requiredKills then
+        KillQuest:Complete(quest)
     end
 end
 
-function KillQuest:OnComplete()
-    PrintPink("Congratulations! You completed the KillQuest by killing " .. self.requiredKills .. " players.")
+function KillQuest:OnComplete(quest)
+    PrintPink("Congratulations! You completed the KillQuest by killing " .. quest.requiredKills .. " players.")
 end
 
-function KillQuest:PlayerKilled(player, victim)
-    for _, quest in ipairs(self.activeQuests) do
-        if not quest.completed and quest.type == "KillQuest" and quest.player == player then
-            quest:Update()
-        end
+function KillQuest:PlayerKilled(quest)
+    if not quest.completed and quest.type == "KillQuest" then
+        KillQuest:Update(quest)
     end
 end
 
 -- Hook to Track Player Kills
 hook.Add("PlayerDeath", "KillQuest_PlayerDeath", function(victim, inflictor, attacker)
     if IsValid(attacker) and attacker:IsPlayer() then
-        KillQuest:PlayerKilled(attacker, victim)
+        for _, quest in ipairs(QuestManager.activeQuests[attacker:SteamID64()]) do
+            KillQuest:PlayerKilled(quest)
+        end
+        net.Start("SynchronizeActiveQuests")
+        net.WriteTable(QuestManager.activeQuests[attacker:SteamID64()])
+        net.Send(attacker)
     end
 end)
