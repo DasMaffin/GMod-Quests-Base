@@ -61,7 +61,7 @@ function PANEL:Init()
 
     function self.content:OnSizeChanged(w, h)
         if IsValid(self:GetParent().claimButton) then
-            self:GetParent().claimButton:SetPos(w - 150, h - 22)
+            self:GetParent().claimButton:SetPos(w - 150, h - 24)
         end
     end
 end

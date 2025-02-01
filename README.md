@@ -17,6 +17,8 @@ Usage: AddQuest <QuestType> [parameters]
 
 e.g. AddQuest KillQuest 5 0 1
 
+WARNING: Some methds return it as number, but we use it as a string, so it may needs to be converted (I personally just tostring the number)
+
 ## Development
 ### Hooks
 #### QuestsUpdated
