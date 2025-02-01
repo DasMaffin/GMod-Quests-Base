@@ -1,7 +1,0 @@
-Rewards
-Dynamically load quest UIs
-Walker Quest
-
-Admin area general
-Admin area for killQuest
-Admin area for Walker Quest
