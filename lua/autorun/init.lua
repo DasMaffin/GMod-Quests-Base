@@ -23,8 +23,13 @@ else
     include("UI/base/baseHUD.lua")
     include("UI/killQuestHUD.lua") 
 
-    hook.Add("OnGamemodeLoaded", "OnQuestsGamemodeLoaded", function()
-        PrintPink("Gamemode loaded")        
+    hook.Add("InitPostEntity", "OnQuestsGamemodeLoaded", function()
+        surface.CreateFont("CustomFont", {
+            font = "Arial", -- Font face (e.g., Arial, Roboto, etc.)
+            size = 30,      -- Font size in pixels
+            weight = 700,   -- Font weight (e.g., 500 for normal, 700 for bold)
+            antialias = true, -- Enable smooth edges
+        })
         CreateBaseHUD()
     end)
 end
