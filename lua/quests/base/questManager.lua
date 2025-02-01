@@ -10,6 +10,7 @@ if SERVER then
     util.AddNetworkString("AddQuest")
     util.AddNetworkString("NotifyServerOfClientReady")
     util.AddNetworkString("SynchronizeActiveQuests")
+    util.AddNetworkString("ClaimRewards")
 
     function QuestManager:AddQuest(player, questType, ...)
         local quest
@@ -51,6 +52,11 @@ if SERVER then
         net.Start("SynchronizeActiveQuests")
         net.WriteTable(QuestManager.activeQuests[steamID])
         net.Send(ply)
+    end)
+
+    net.Receive("ClaimRewards", function(len, ply)
+        local quest = net.ReadTable()
+        KillQuest:GiveRewards(quest, ply)
     end)
 end
 

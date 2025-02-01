@@ -41,6 +41,7 @@ function KillQuest:Update(quest)
     quest.currentKills = quest.currentKills + 1    
     PrintPink("KillQuest progress: " .. quest.currentKills .. "/" .. quest.requiredKills)
     if quest.currentKills >= quest.requiredKills then
+        PrintTable(quest)
         KillQuest:Complete(quest)
     end
 end
@@ -51,6 +52,7 @@ function KillQuest:OnComplete(quest)
 end
 
 function KillQuest:GiveRewards(quest, ply)
+    PrintPink("Giving rewards for KillQuest to Player: " .. ply)
     -- TODO Give rewards
 end
 
@@ -63,10 +65,8 @@ end
 -- Hook to Track Player Kills
 hook.Add("PlayerDeath", "KillQuest_PlayerDeath", function(victim, inflictor, attacker)
     if IsValid(attacker) and attacker:IsPlayer() then
-        PrintPink("Role:")
-        PrintPink(attacker:GetRole())
         for _, quest in ipairs(QuestManager.activeQuests[attacker:SteamID64()]) do
-            if(quest.killerRole == attacker:GetRole() and quest.killedRole == victim:GetRole()) then
+            if quest.killerRole == tostring(attacker:GetRole()) and quest.killedRole == tostring(victim:GetRole()) then
                 KillQuest:PlayerKilled(quest)
             end
         end

@@ -22,11 +22,11 @@ function QuestBase:Update(...)
     -- To be overridden by subclasses
 end
 
-function QuestBase:Complete()
-    if not self.completed then
-        self.completed = true
-        PrintPink("Quest completed: " .. self.type)
-        self:OnComplete()
+function QuestBase:Complete(quest)
+    if not quest.completed then
+        quest.completed = true
+        PrintPink("Quest completed: " .. quest.type)
+        self:OnComplete(quest)
     end
 end
 

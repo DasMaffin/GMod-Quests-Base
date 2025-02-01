@@ -25,12 +25,6 @@ function PANEL:Init()
     self.claimButton:SetText("")
     self.claimButton:SetFont("DermaLarge")
     self.claimButton:SetMouseInputEnabled(true)
-    self.claimButton.Paint = function(s, w, h)
-        draw.RoundedBoxEx(8, 0, 0, w, h, Color(25, 25, 35, 255), true, true, true, true)
-        draw.SimpleText("Claim!", "DermaDefault", (w / 2), (h / 2), Color(255, 128, 128), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    end
-    self.claimButton.DoClick = function()
-    end
 
     -- Progress container
     self.progress = vgui.Create("DPanel", self.content)
@@ -38,7 +32,7 @@ function PANEL:Init()
     self.progress:DockMargin(0, 5, 0, 0)
     self.progress:SetTall(24)
     self.progress.Paint = nil
-    
+
     -- Kill requirement display
     self.requiredKillsLabel = vgui.Create("DLabel", self.progress)
     self.requiredKillsLabel:Dock(LEFT)
@@ -52,18 +46,22 @@ function PANEL:Init()
     self.killsLabel:SetTextColor(Color(200, 200, 255))
     self.killsLabel:SetContentAlignment(4)
     
-    self.test = vgui.Create("DLabel", self.content)
-    self.test:Dock(TOP)
-    self.test:DockMargin(0, 5, 0, 0)
-    self.test:SetTextColor(Color(200, 200, 255))
-    self.test:SetContentAlignment(4)
-    self.test:SetVisible(false)
-    self.test:SetSize(self.content:GetWide(), 250)
+    
+    self.progressBar = vgui.Create("DPanel", self.content)
+    self.progressBar:Dock(TOP)
+    self.progressBar:DockMargin(0, 5, self.claimButton:GetWide() + 20, 0)
+
+    self.descriptionLabel = vgui.Create("DLabel", self.content)
+    self.descriptionLabel:Dock(TOP)
+    self.descriptionLabel:DockMargin(0, 5, 0, 0)
+    self.descriptionLabel:SetTextColor(Color(200, 200, 255))
+    self.descriptionLabel:SetContentAlignment(4)
+    self.descriptionLabel:SetSize(self.content:GetWide(), 250)
     
 
     function self.content:OnSizeChanged(w, h)
         if IsValid(self:GetParent().claimButton) then
-            self:GetParent().claimButton:SetPos(w - 150, h - 32)
+            self:GetParent().claimButton:SetPos(w - 150, h - 22)
         end
     end
 end
@@ -90,9 +88,36 @@ function PANEL:SetQuest(data)
     getRoleString(data.killedRole),
     getRoleString(data.killerRole))
     local markup = markup.Parse(markupText, ScrW() * 0.6 - 16)
-    self.test:SetText("")
-    self.test.Paint = function(s, w, h)
+    self.descriptionLabel:SetText("")
+    self.descriptionLabel.Paint = function(s, w, h)
         markup:Draw(0, 0, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+    end
+
+    self.progressBar.Paint = function(s, w, h)
+        local progress = data.currentKills / data.requiredKills
+        progress = math.Clamp(progress, 0, 1)
+
+        draw.RoundedBox(4, 0, 0, w, h, Color(50, 50, 60, 255))
+        draw.RoundedBox(4, 0, 0, w * progress, h, Color(0, 150, 155, 255))
+
+        draw.SimpleText(("%d%%"):format(progress * 100), "DermaDefault", (w / 2), (h / 2), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)-- (marginRight / 2)
+    end
+
+    if(data.completed) then
+        self.claimButton.Paint = function(s, w, h)
+            draw.RoundedBoxEx(8, 0, 0, w, h, Color(25, 25, 35, 255), true, true, true, true)
+            draw.SimpleText("Claim!", "DermaDefault", (w / 2), (h / 2), Color(255, 128, 128), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
+        self.claimButton.DoClick = function()
+            net.Start("ClaimRewards")
+            net.WriteTable(data)
+            net.SendToServer()
+        end
+    else
+        self.claimButton.Paint = function(s, w, h)
+            draw.RoundedBoxEx(8, 0, 0, w, h, Color(125, 125, 135, 255), true, true, true, true)
+            draw.SimpleText("Claim!", "DermaDefault", (w / 2), (h / 2), Color(255, 128, 128), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
     end
 
     -- Size labels appropriately
