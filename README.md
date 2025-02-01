@@ -35,4 +35,4 @@ The fields a quest type has accessible (e.g. for displaying in a UI)
 - currentKills - The current amount of kills (progress) you have for this specific quest.
 - rewards - A table with the rewards for completing the quest.
     - A new reward has to be manually added to the GiveRewards method.
-    - An example could be adding Points for Pointshop 2 by adding the line `ply:PS2_AddStandardPoints(salary) `
+    - An example could be adding Points for Pointshop 2 by adding the line `ply:PS2_AddStandardPoints(500)`
