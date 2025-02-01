@@ -12,12 +12,12 @@ if SERVER then
     util.AddNetworkString("SynchronizeActiveQuests")
     util.AddNetworkString("ClaimRewards")
 
-    function QuestManager:AddQuest(player, questType, ...)
+    function QuestManager:AddQuest(player, questType, args)
         local quest
         local questClass = QuestManager.questTypes[questType]
 
         if questClass then
-            quest = questClass:new(...)
+            quest = questClass:new(args)
         else
             PrintPink("Unknown quest type: " .. questType)
             return
@@ -35,7 +35,7 @@ if SERVER then
         local questType = net.ReadString()
         local args = net.ReadTable()
 
-        QuestManager:AddQuest(ply, questType, unpack(args))
+        QuestManager:AddQuest(ply, questType, args)
     end)
 
     net.Receive("NotifyServerOfClientReady", function(len, ply)

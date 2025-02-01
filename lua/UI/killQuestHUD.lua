@@ -57,7 +57,6 @@ function PANEL:Init()
     self.descriptionLabel:SetTextColor(Color(200, 200, 255))
     self.descriptionLabel:SetContentAlignment(4)
     self.descriptionLabel:SetSize(self.content:GetWide(), 250)
-    
 
     function self.content:OnSizeChanged(w, h)
         if IsValid(self:GetParent().claimButton) then
@@ -83,21 +82,22 @@ function PANEL:SetQuest(data)
     self.requiredKillsLabel:SetText(("Required Kills: %d"):format(data.requiredKills or 0))
     self.killsLabel:SetText(("  |  Kills: %d"):format(data.currentKills or 0))
     
-    local markupText = ("<font=CustomFont><color=255,255,255>You must kill %d </color>%s<color=255,255,255> as </color>%s</font>"):format(
+    local descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must kill %d </color>%s<color=255,255,255> as </color>%s\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=0, 255, 0>%d premium points</color></font>"):format(
     data.requiredKills,
     getRoleString(data.killedRole),
-    getRoleString(data.killerRole))
-    local markup = markup.Parse(markupText, ScrW() * 0.6 - 16)
+    getRoleString(data.killerRole),
+    data.rewards[1], data.rewards[2])
+    local descriptionMarkup = markup.Parse(descriptionMarkupText, ScrW() * 0.6 - 16)
     self.descriptionLabel:SetText("")
     self.descriptionLabel.Paint = function(s, w, h)
-        markup:Draw(0, 0, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        descriptionMarkup:Draw(0, 0, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
     end
 
     self.progressBar.Paint = function(s, w, h)
         local progress = data.currentKills / data.requiredKills
         progress = math.Clamp(progress, 0, 1)
 
-        draw.RoundedBox(4, 0, 0, w, h, Color(50, 50, 60, 255))
+        draw.RoundedBox(4, 0, 0, w, h, Color(25, 25, 35, 255))
         draw.RoundedBox(4, 0, 0, w * progress, h, Color(0, 150, 155, 255))
 
         draw.SimpleText(("%d%%"):format(progress * 100), "DermaDefault", (w / 2), (h / 2), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)-- (marginRight / 2)

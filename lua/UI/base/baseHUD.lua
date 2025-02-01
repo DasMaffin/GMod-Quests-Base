@@ -99,7 +99,6 @@ end
 
 function PANEL:UpdateQuests(quests)
     self.questLayout:Clear()
-    PrintTable(quests)
     for _, questData in ipairs(quests) do
         local questPanel
         if questData.type == "KillQuest" then

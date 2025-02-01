@@ -7,7 +7,9 @@ No parameters. Just toggles the quest menu on and off.
 ### AddQuest
 Usage: AddQuest <QuestType> [parameters]
 #### Killquest parameters:
-[requiredKills] [roleToBeKilled] [roleForKiller]
+[requiredKills] [roleToBeKilled] [roleForKiller] [rewards]
+There are up to 3 rewards in the following order:
+Pointshop 2 points, Pointshop 2 premium points, Exp for a proprietary skilltree (You can leave it empty or set it 0. It will still work without it).
 
 | Role ID | Role Name  |  
 |---------|------------|  
@@ -15,7 +17,7 @@ Usage: AddQuest <QuestType> [parameters]
 | 1       | Traitor    |  
 | 2       | Detective  |  
 
-e.g. AddQuest KillQuest 5 0 1
+e.g. AddQuest KillQuest 5 0 1 50000 200 25000
 
 WARNING: Some methds return it as number, but we use it as a string, so it may needs to be converted (I personally just tostring the number)
 

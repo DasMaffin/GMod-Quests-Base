@@ -2,8 +2,8 @@
 KillQuest = setmetatable({}, {__index = QuestBase})
 KillQuest.__index = KillQuest
 
-function KillQuest:new(requiredKills, killedRole, killerRole)
-    if not requiredKills || requiredKills == 0 || not killedRole || not killerRole then
+function KillQuest:new(args)
+    if not args[1] || args[1] == 0 || not args[2] || not args[3] then
         PrintPink("Usage: AddQuest <QuestType> [requiredKills] [roleToBeKilled] [roleForKiller]")
         PrintPink("Innocent: " .. ROLE_INNOCENT)
         PrintPink("Traitor: " .. ROLE_TRAITOR)
@@ -14,13 +14,16 @@ function KillQuest:new(requiredKills, killedRole, killerRole)
 
     local obj = QuestBase:new("KillQuest")
     setmetatable(obj, self)
-    obj.requiredKills = tonumber(requiredKills) or 1
-    obj.killedRole = killedRole
-    obj.killerRole = killerRole
+    obj.requiredKills = tonumber(args[1]) or 1
+    obj.killedRole = args[2]
+    obj.killerRole = args[3]
     obj.currentKills = 0
+    for i = 1, 3 do
+        table.remove(args, 1) -- Always remove the first element
+    end
 
     -- Rewards
-    obj.rewards = {}
+    obj.rewards = args
     --Rewards end
 
     return obj
@@ -34,14 +37,12 @@ function KillQuest:OnStart(quest)
     PrintPink("KillQuest started:")
     PrintPink("Kill " .. self.requiredKills .. " " .. self.killedRole .. ".")
     PrintPink("As role: " .. self.killerRole)
-    PrintPink(self.player)
 end
 
 function KillQuest:Update(quest)
     quest.currentKills = quest.currentKills + 1    
     PrintPink("KillQuest progress: " .. quest.currentKills .. "/" .. quest.requiredKills)
     if quest.currentKills >= quest.requiredKills then
-        PrintTable(quest)
         KillQuest:Complete(quest)
     end
 end
@@ -52,8 +53,12 @@ function KillQuest:OnComplete(quest)
 end
 
 function KillQuest:GiveRewards(quest, ply)
-    PrintPink("Giving rewards for KillQuest to Player: " .. ply)
-    -- TODO Give rewards
+    if not quest.rewardsClaimed then
+        PrintPink("Giving rewards for KillQuest to Player: " .. ply:Nick())
+        ply:PS2_AddStandardPoints(tonumber(quest.rewards[1]))
+        ply:PS2_AddPremiumPoints(tonumber(quest.rewards[2]))
+        quest.rewardsClaimed = true
+    end
 end
 
 function KillQuest:PlayerKilled(quest)
