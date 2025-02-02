@@ -137,6 +137,10 @@ function PANEL:UpdateQuests(quests)
     end
 end
 
+function PANEL:Think()
+    gui.EnableScreenClicker(true)
+end
+
 -- Global access and hook handling
 local baseHUD
 
