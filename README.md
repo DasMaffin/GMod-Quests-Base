@@ -5,7 +5,11 @@
 Usage: ttt_quest_menu
 No parameters. Just toggles the quest menu on and off.
 ### AddQuest
-Usage: AddQuest <QuestType> [parameters]
+Usage: AddQuest [QuestType] [weight] [parameters]
+
+The weight determines how likely it is to appear. The higher, the more likely.
+Formula: (weight/Sum(allQuestsWeights)) * 100 = Chance in %
+So if the quest has a weight of 50, all quests (including this) have a total weight of 200, theres a ((50/200) * 100)% chance for the quest to appear (25% in this example).
 #### Killquest parameters:
 [requiredKills] [roleToBeKilled] [roleForKiller] [rewards]
 There are up to 3 rewards in the following order:
@@ -17,7 +21,7 @@ Pointshop 2 points, Pointshop 2 premium points, Exp for a proprietary skilltree 
 | 1       | Traitor    |  
 | 2       | Detective  |  
 
-e.g. AddQuest KillQuest 5 0 1 50000 200 25000
+e.g. AddQuest KillQuest 50 5 0 1 50000 200 25000
 
 WARNING: Some methds return it as number, but we use it as a string, so it may needs to be converted (I personally just tostring the number)
 
