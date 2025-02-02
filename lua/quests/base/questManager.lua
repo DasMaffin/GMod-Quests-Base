@@ -6,6 +6,27 @@ QuestManager = {
     }
 }
 
+function DeepCopy(orig)
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in next, orig, nil do
+            copy[DeepCopy(orig_key)] = DeepCopy(orig_value)
+        end
+        setmetatable(copy, DeepCopy(getmetatable(orig))) -- Preserve metatable if it exists
+
+        -- Check if the table has a uniqueId field and update it
+        if copy.uniqueId then
+            copy.uniqueId = util.SHA256(tostring(os.time()) .. tostring(math.random()) .. tostring(counter))
+        end
+    else
+        copy = orig
+    end
+    counter = counter + 1
+    return copy
+end
+
 if SERVER then
     util.AddNetworkString("AddQuest")
     util.AddNetworkString("NotifyServerOfClientReady")
@@ -45,8 +66,8 @@ if SERVER then
         else
             if #QuestManager.availableQuests > 0 then
                 QuestManager.activeQuests[steamID] = {}
-                table.insert(QuestManager.activeQuests[steamID], QuestManager.availableQuests[math.random(1, #QuestManager.availableQuests)])
-                table.insert(QuestManager.activeQuests[steamID], QuestManager.availableQuests[math.random(1, #QuestManager.availableQuests)])
+                table.insert(QuestManager.activeQuests[steamID], DeepCopy(QuestManager.availableQuests[math.random(1, #QuestManager.availableQuests)]))
+                table.insert(QuestManager.activeQuests[steamID], DeepCopy(QuestManager.availableQuests[math.random(1, #QuestManager.availableQuests)]))
             end
         end
         net.Start("SynchronizeActiveQuests")
@@ -56,6 +77,7 @@ if SERVER then
 
     net.Receive("ClaimRewards", function(len, ply)
         local quest = net.ReadTable()
+        QuestManager.activeQuests[ply:SteamID64()][tableIndexByUniqueId(QuestManager.activeQuests[ply:SteamID64()], quest.uniqueId)] = quest
         KillQuest:GiveRewards(quest, ply)
     end)
 end

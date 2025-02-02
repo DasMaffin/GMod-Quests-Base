@@ -2,6 +2,15 @@ function PrintPink(...)
     MsgC(Color(255, 105, 180), "[Quests] ", Color(255, 182, 193), ..., "\n") -- HotPink and LightPink
 end
 
+function tableIndexByUniqueId(tbl, id)
+    for i, v in ipairs(tbl) do        
+        if v.uniqueId == id then
+            return i
+        end
+    end
+    return nil -- Entry not found
+end
+
 PrintPink("----------==============================----------")
 PrintPink("Starting Quest System")
 

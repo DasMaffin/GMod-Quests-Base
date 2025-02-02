@@ -2,10 +2,15 @@
 QuestBase = {}
 QuestBase.__index = QuestBase
 
+counter = 0
+
 function QuestBase:new(type)
     local obj = setmetatable({}, self)
     obj.type = type
     obj.completed = false
+    obj.rewardsClaimed = false
+    counter = counter + 1
+    obj.uniqueId = util.SHA256(tostring(os.time()) .. obj.type .. tostring(math.random()) .. tostring(counter))
     return obj
 end
 
