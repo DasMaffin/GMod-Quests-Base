@@ -100,13 +100,13 @@ function PANEL:SetQuest(data)
         draw.RoundedBox(4, 0, 0, w, h, Color(25, 25, 35, 255))
         draw.RoundedBox(4, 0, 0, w * progress, h, Color(0, 150, 155, 255))
 
-        draw.SimpleText(("%d%%"):format(progress * 100), "DermaDefault", (w / 2), (h / 2), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)-- (marginRight / 2)
+        draw.SimpleText(("%d%%"):format(progress * 100), "DermaBold", (w / 2), (h / 2), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)-- (marginRight / 2)
     end
 
-    if(data.completed) then
+    if data.completed then
         self.claimButton.Paint = function(s, w, h)
-            draw.RoundedBoxEx(8, 0, 0, w, h, Color(25, 25, 35, 255), true, true, true, true)
-            draw.SimpleText("Claim!", "DermaDefault", (w / 2), (h / 2), Color(255, 128, 128), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.RoundedBoxEx(8, 0, 0, w, h, Color(25, 125, 35, 255), true, true, true, true)
+            draw.SimpleText("Claim!", "DermaBold", (w / 2), (h / 2), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
         self.claimButton.DoClick = function()
             net.Start("ClaimRewards")
@@ -115,8 +115,8 @@ function PANEL:SetQuest(data)
         end
     else
         self.claimButton.Paint = function(s, w, h)
-            draw.RoundedBoxEx(8, 0, 0, w, h, Color(125, 125, 135, 255), true, true, true, true)
-            draw.SimpleText("Claim!", "DermaDefault", (w / 2), (h / 2), Color(255, 128, 128), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.RoundedBoxEx(8, 0, 0, w, h, Color(25, 25, 35, 255), true, true, true, true)
+            draw.SimpleText("Claim!", "DermaDefault", (w / 2), (h / 2), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
     end
 

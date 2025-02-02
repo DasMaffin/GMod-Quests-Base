@@ -68,6 +68,7 @@ if SERVER then
                 QuestManager.activeQuests[steamID] = {}
                 table.insert(QuestManager.activeQuests[steamID], DeepCopy(QuestManager.availableQuests[math.random(1, #QuestManager.availableQuests)]))
                 table.insert(QuestManager.activeQuests[steamID], DeepCopy(QuestManager.availableQuests[math.random(1, #QuestManager.availableQuests)]))
+                table.insert(QuestManager.activeQuests[steamID], DeepCopy(QuestManager.availableQuests[math.random(1, #QuestManager.availableQuests)]))
             end
         end
         net.Start("SynchronizeActiveQuests")

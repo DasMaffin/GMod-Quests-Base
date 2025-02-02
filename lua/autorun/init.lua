@@ -39,6 +39,12 @@ else
             weight = 700,   -- Font weight (e.g., 500 for normal, 700 for bold)
             antialias = true, -- Enable smooth edges
         })
+        surface.CreateFont("DermaBold", {
+            font = "Tahoma", -- Font face (e.g., Arial, Roboto, etc.)
+            size = 13,      -- Font size in pixels
+            weight = 700,   -- Font weight (e.g., 500 for normal, 700 for bold)
+            antialias = true, -- Enable smooth edges
+        })
         CreateBaseHUD()
     end)
 end

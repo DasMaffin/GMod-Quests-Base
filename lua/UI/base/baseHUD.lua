@@ -14,16 +14,16 @@ function PANEL:Init()
     end
     
     -- Close button (top right)
-    local closeButton = vgui.Create("DButton", self)
-    closeButton:SetSize(32, 32)
-    closeButton:SetPos(self:GetWide() - 40, 8)
-    closeButton:SetText("")
-    closeButton:SetFont("DermaLarge")
-    closeButton.Paint = function(s, w, h)
+    self.closeButton = vgui.Create("DButton", self)
+    self.closeButton:SetSize(32, 32)
+    self.closeButton:SetPos(self:GetWide() - 40, 8)
+    self.closeButton:SetText("")
+    self.closeButton:SetFont("DermaLarge")
+    self.closeButton.Paint = function(s, w, h)
         draw.RoundedBoxEx(8, 0, 0, w, h, Color(25, 25, 35, 255), true, true, true, true)
         draw.SimpleText("×", "DermaDefault", (w / 2) - 2, (h / 2) - 2, Color(255, 128, 128), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
-    closeButton.DoClick = function()
+    self.closeButton.DoClick = function()
         self:SetVisible(false)
         BaseHUDisActive = false
         gui.EnableScreenClicker(false)
@@ -43,7 +43,8 @@ function PANEL:Init()
     self.registerCards:SetSpaceX(5) -- Spacing between cards
     
     -- Add register cards
-    self:AddRegisterCard("Quests")
+    self:AddRegisterCard("Active Quests")
+    self:AddRegisterCard("Finished Quests")
     if ULib.ucl.query(LocalPlayer(), "quests.manage") then
         self:AddRegisterCard("Admin")
     end
@@ -56,8 +57,11 @@ function PANEL:Init()
     -- Quest container layout
     self.questLayout = vgui.Create("DIconLayout", self.scrollPanel)
     self.questLayout:SetSpaceY(5)
-    self.questLayout:SetSize(self.scrollPanel:GetWide(), self.scrollPanel:GetTall())
-    
+    self.questLayout:SetSize(self.scrollPanel:GetWide(), 1000)--self.scrollPanel:GetTall() * 3)
+    self.questLayout.Paint = function(s, w, h)
+        draw.RoundedBoxEx(8, 0, 0, w, h, Color(125, 125, 135, 255), true, true, true, true)
+    end
+
     -- Admin UI placeholder (initially hidden)
     self.adminPanel = vgui.Create("DPanel", self.scrollPanel)
     self.adminPanel:Dock(FILL)
@@ -79,8 +83,10 @@ function PANEL:AddRegisterCard(name)
         draw.SimpleText(name, "DermaDefault", w / 2, h / 2, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
     card.DoClick = function()
-        if name == "Quests" then
+        if name == "Active Quests" then
             self:ShowQuests() -- Show quests
+        elseif name == "Finished Quests" then
+            self:ShowAdmin() -- Show admin UI
         elseif name == "Admin" then
             self:ShowAdmin() -- Show admin UI
         end
@@ -132,6 +138,26 @@ function PANEL:UpdateQuests(quests)
                     local parent = self:GetParent()
                     parent:InvalidateLayout() -- Force parent layout to update
                 end
+            end
+        end
+    end
+
+    self.claimAllButton = vgui.Create("DButton", self.questLayout)
+    self.claimAllButton:Dock(BOTTOM)
+    self.claimAllButton:SetSize(32, 32)
+    self.claimAllButton:SetPos(self:GetWide() - 40, 8)
+    self.claimAllButton:SetText("")
+    self.claimAllButton:SetFont("DermaLarge")
+    self.claimAllButton.Paint = function(s, w, h)
+        draw.RoundedBoxEx(8, 0, 0, w, h, Color(25, 25, 35, 255), true, true, true, true)
+        draw.SimpleText("Claim All!", "DermaDefault", (w / 2) - 2, (h / 2) - 2, Color(255, 128, 128), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    end
+    self.claimAllButton.DoClick = function()
+        for _, questData in ipairs(quests) do
+            if(questData.completed and not questData.rewardsClaimed) then
+                net.Start("ClaimRewards")
+                net.WriteTable(questData)
+                net.SendToServer()
             end
         end
     end
