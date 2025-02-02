@@ -27,6 +27,14 @@ function DeepCopy(orig)
     return copy
 end
 
+function totalQuestsWeight()
+    local totalWeight = 0
+    for _, quest in ipairs(QuestManager.availableQuests) do
+        totalWeight = totalWeight + quest.weight
+    end
+    return totalWeight
+end
+
 if SERVER then
     util.AddNetworkString("AddQuest")
     util.AddNetworkString("NotifyServerOfClientReady")
@@ -61,14 +69,23 @@ if SERVER then
 
     net.Receive("NotifyServerOfClientReady", function(len, ply)
         local steamID = ply:SteamID64()
-        if QuestManager.activeQuests[steamID] and #QuestManager.activeQuests[steamID] > 0 then
-            -- send quests to player
-        else
+        if not QuestManager.activeQuests[steamID] or not #QuestManager.activeQuests[steamID] > 0 then
             if #QuestManager.availableQuests > 0 then
                 QuestManager.activeQuests[steamID] = {}
-                table.insert(QuestManager.activeQuests[steamID], DeepCopy(QuestManager.availableQuests[math.random(1, #QuestManager.availableQuests)]))
-                table.insert(QuestManager.activeQuests[steamID], DeepCopy(QuestManager.availableQuests[math.random(1, #QuestManager.availableQuests)]))
-                table.insert(QuestManager.activeQuests[steamID], DeepCopy(QuestManager.availableQuests[math.random(1, #QuestManager.availableQuests)]))
+                local questsToChoseFrom = QuestManager.availableQuests[ply:SteamID64()]
+                for i = 1, 3 do -- The amount of quests given.
+                    local questChosen = {}
+                    local totalQuestsWeight = totalQuestsWeight()
+                    for _, quest in ipairs(questsToChoseFrom) do
+                        if math.random(1, totalQuestsWeight) <= quest.weight then
+                            table.insert(questChosen, quest)
+                        else
+                            totalQuestsWeight = totalQuestsWeight - quest.weight
+                        end
+                    end
+                    table.insert(QuestManager.activeQuests[steamID], DeepCopy(questChosen))
+                    table.RemoveByValue(questsToChoseFrom, questChosen)
+                end
             end
         end
         net.Start("SynchronizeActiveQuests")

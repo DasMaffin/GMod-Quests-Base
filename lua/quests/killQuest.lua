@@ -3,7 +3,7 @@ KillQuest = setmetatable({}, {__index = QuestBase})
 KillQuest.__index = KillQuest
 
 function KillQuest:new(args)
-    if not args[1] || args[1] == 0 || not args[2] || not args[3] then
+    if not args[2] || args[2] == 0 || not args[3] || not args[4] then
         PrintPink("Usage: AddQuest <QuestType> [requiredKills] [roleToBeKilled] [roleForKiller]")
         PrintPink("Innocent: " .. ROLE_INNOCENT)
         PrintPink("Traitor: " .. ROLE_TRAITOR)
@@ -12,11 +12,11 @@ function KillQuest:new(args)
         return
     end
 
-    local obj = QuestBase:new("KillQuest")
+    local obj = QuestBase:new("KillQuest", args[1])
     setmetatable(obj, self)
-    obj.requiredKills = tonumber(args[1]) or 1
-    obj.killedRole = args[2]
-    obj.killerRole = args[3]
+    obj.requiredKills = tonumber(args[2]) or 1
+    obj.killedRole = args[3]
+    obj.killerRole = args[4]
     obj.currentKills = 0
     for i = 1, 3 do
         table.remove(args, 1) -- Always remove the first element

@@ -33,10 +33,11 @@ Gets called on the client after it got a new update for the local player's activ
 ### Fields
 The fields a quest type has accessible (e.g. for displaying in a UI)
 #### Base
-- type - the type of a quest as string value (e.g. "killQuest")
+- type - the type of a quest as string value (e.g. "KillQuest").
 - completed - wether or not the quest has been completed.
 - rewardsClaimed - wether or not the rewards have been claimed.
 - uniqueId - the (hopefully) unique Id for each quest. 
+- weight - the weighted chance of the quest to be selected.
 - player - the player this quest is assigned to.
 #### KillQuest
 - requiredKills - The kills that are required to complete the quest.

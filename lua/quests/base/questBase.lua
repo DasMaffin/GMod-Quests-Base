@@ -4,9 +4,10 @@ QuestBase.__index = QuestBase
 
 counter = 0
 
-function QuestBase:new(type)
+function QuestBase:new(type, weight)
     local obj = setmetatable({}, self)
     obj.type = type
+    obj.weight = weight
     obj.completed = false
     obj.rewardsClaimed = false
     counter = counter + 1
