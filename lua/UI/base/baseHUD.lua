@@ -141,7 +141,7 @@ function PANEL:UpdateQuests(quests)
             end
         end
     end
-    
+
     self.claimAllButton = vgui.Create("DButton", self.questLayout)
     self.claimAllButton:Dock(BOTTOM)
     self.claimAllButton:SetSize(32, 32)
@@ -188,5 +188,9 @@ concommand.Add("ttt_quest_menu", function(ply, cmd, args)
     gui.EnableScreenClicker(BaseHUDisActive)
     if IsValid(baseHUD) then
         baseHUD:SetVisible(BaseHUDisActive)
+    end
+    
+    if BaseHUDisActive then
+        hook.Run("QuestMenuOpened", ply)
     end
 end)
