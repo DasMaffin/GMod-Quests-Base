@@ -56,3 +56,5 @@ The fields a quest type has accessible (e.g. for displaying in a UI)
 #### WalkerQuest
 - requiredSteps - The steps required to finish the quest.
 - currentSteps - The already walked steps.
+
+Just a test here
