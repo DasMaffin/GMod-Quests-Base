@@ -33,7 +33,6 @@ QuestManager.questTypes = {
     WalkerQuest = WalkerQuest
 }
 ```
-<br />
 e.g. QuestManager.questTypes.CollectQuest = CollectQuest
 
 ### Hooks
