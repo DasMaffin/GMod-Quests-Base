@@ -2,36 +2,35 @@
 
 ## ConCommands:
 ### ttt_quest_menu
-Usage: ttt_quest_menu
-
+Usage: ttt_quest_menu<br />
 No parameters. Just toggles the quest menu on and off.
 ### AddQuest
-Usage: AddQuest [QuestType] [weight] [parameters]
+Usage: AddQuest [QuestType] [weight] [parameters]<br /><br />
 
-The weight determines how likely it is to appear. The higher, the more likely.
-Formula: (weight/Sum(allQuestsWeights)) * 100 = Chance in %
+The weight determines how likely it is to appear. The higher, the more likely.<br />
+Formula: (weight/Sum(allQuestsWeights)) * 100 = Chance in %<br />
 So if the quest has a weight of 50, all quests (including this) have a total weight of 200, theres a ((50/200) * 100)% chance for the quest to appear (25% in this example).
 #### Killquest parameters:
-[requiredKills] [roleToBeKilled] [roleForKiller] [rewards]
-There are (by default) up to 3 rewards in the following order:
-Pointshop 2 points, Pointshop 2 premium points, Exp for a proprietary skilltree (You can leave it empty or set it 0. It will still work without it).
+[requiredKills] [roleToBeKilled] [roleForKiller] [rewards]<br />
+There are (by default) up to 3 rewards in the following order:<br />
+Pointshop 2 points, Pointshop 2 premium points, Exp for a proprietary skilltree (You can leave it empty or set it 0. It will still work without it).<br /><br />
 
 | Role ID | Role Name  |  
 |---------|------------|  
 | 0       | Innocent   |  
 | 1       | Traitor    |  
 | 2       | Detective  |  
-
-e.g. AddQuest KillQuest 50 5 0 1 50000 200 25000
+<br />
+e.g. AddQuest KillQuest 50 5 0 1 50000 200 25000<br />
 
 WARNING: Some methds return it as number, but we use it as a string, so it may needs to be converted (I personally just tostring the number)
 
 ## Development
-To add a new quest you must reqister it with:
-QuestManager.questTypes = {
-    KillQuest = KillQuest,
-    WalkerQuest = WalkerQuest
-}
+To add a new quest you must reqister it with:<br />
+QuestManager.questTypes = {<br />
+    KillQuest = KillQuest,<br />
+    WalkerQuest = WalkerQuest<br />
+}<br />
 e.g. QuestManager.questTypes.CollectQuest = CollectQuest
 
 ### Hooks
