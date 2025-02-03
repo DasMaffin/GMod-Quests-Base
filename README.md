@@ -31,6 +31,7 @@ QuestManager.questTypes = {
     KillQuest = KillQuest,
     WalkerQuest = WalkerQuest
 }
+e.g. QuestManager.questTypes.CollectQuest = CollectQuest
 
 ### Hooks
 #### QuestsUpdated
