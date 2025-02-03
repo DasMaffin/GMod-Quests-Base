@@ -27,10 +27,13 @@ WARNING: Some methds return it as number, but we use it as a string, so it may n
 
 ## Development
 To add a new quest you must reqister it with:<br />
-<pre>QuestManager.questTypes = {<br />
-    KillQuest = KillQuest,<br />
-    WalkerQuest = WalkerQuest<br />
-}</pre><br />
+```
+QuestManager.questTypes = {
+    KillQuest = KillQuest,
+    WalkerQuest = WalkerQuest
+}
+```
+<br />
 e.g. QuestManager.questTypes.CollectQuest = CollectQuest
 
 ### Hooks
