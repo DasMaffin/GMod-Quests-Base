@@ -27,7 +27,7 @@ WARNING: Some methds return it as number, but we use it as a string, so it may n
 
 ## Development
 To add a new quest you must reqister it with:<br />
-```
+```lua
 QuestManager.questTypes = {
     KillQuest = KillQuest,
     WalkerQuest = WalkerQuest
