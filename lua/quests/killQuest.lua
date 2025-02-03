@@ -4,7 +4,7 @@ KillQuest.__index = KillQuest
 
 function KillQuest:new(args)
     if not args[2] || args[2] == 0 || not args[3] || not args[4] then
-        PrintPink("Usage: AddQuest KillQuest [requiredKills] [roleToBeKilled] [roleForKiller] {rewards}")
+        PrintPink("Usage: AddQuest KillQuest [weight] [requiredKills] [roleToBeKilled] [roleForKiller] {rewards}")
         PrintPink("Innocent: " .. ROLE_INNOCENT)
         PrintPink("Traitor: " .. ROLE_TRAITOR)
         PrintPink("Detective: " .. ROLE_DETECTIVE)
