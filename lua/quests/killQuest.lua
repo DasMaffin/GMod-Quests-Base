@@ -18,8 +18,8 @@ function KillQuest:new(args)
     obj.killedRole = args[3]
     obj.killerRole = args[4]
     obj.currentKills = 0
-    for i = 1, 3 do
-        table.remove(args, 1) -- Always remove the first element
+    for i = 1, 4 do
+        table.remove(args, 1)
     end
 
     -- Rewards
