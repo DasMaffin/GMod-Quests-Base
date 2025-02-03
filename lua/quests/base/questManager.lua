@@ -72,13 +72,14 @@ if SERVER then
         if not QuestManager.activeQuests[steamID] or not #QuestManager.activeQuests[steamID] > 0 then
             if #QuestManager.availableQuests > 0 then
                 QuestManager.activeQuests[steamID] = {}
-                local questsToChoseFrom = QuestManager.availableQuests[ply:SteamID64()]
+                local questsToChoseFrom = QuestManager.availableQuests
                 for i = 1, 3 do -- The amount of quests given.
-                    local questChosen = {}
+                    local questChosen
                     local totalQuestsWeight = totalQuestsWeight()
                     for _, quest in ipairs(questsToChoseFrom) do
                         if math.random(1, totalQuestsWeight) <= quest.weight then
-                            table.insert(questChosen, quest)
+                            questChosen = quest
+                            break
                         else
                             totalQuestsWeight = totalQuestsWeight - quest.weight
                         end
