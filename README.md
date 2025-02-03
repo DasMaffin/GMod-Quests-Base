@@ -58,3 +58,4 @@ The fields a quest type has accessible (e.g. for displaying in a UI)
 - currentSteps - The already walked steps.
 
 Just a test here
+A third test here.
