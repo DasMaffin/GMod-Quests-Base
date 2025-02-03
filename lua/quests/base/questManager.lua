@@ -2,7 +2,8 @@ QuestManager = {
     availableQuests = {},
     activeQuests = {},
     questTypes = {
-        KillQuest = KillQuest
+        KillQuest = KillQuest,
+        WalkerQuest = WalkerQuest
     }
 }
 
@@ -68,11 +69,12 @@ if SERVER then
     end)
 
     net.Receive("NotifyServerOfClientReady", function(len, ply)
+        PrintTable(QuestManager.availableQuests)
         local steamID = ply:SteamID64()
         if not QuestManager.activeQuests[steamID] or not #QuestManager.activeQuests[steamID] > 0 then
             if #QuestManager.availableQuests > 0 then
                 QuestManager.activeQuests[steamID] = {}
-                local questsToChoseFrom = QuestManager.availableQuests
+                local questsToChoseFrom = DeepCopy(QuestManager.availableQuests)
                 for i = 1, 3 do -- The amount of quests given.
                     local questChosen
                     local totalQuestsWeight = totalQuestsWeight()
@@ -89,6 +91,7 @@ if SERVER then
                 end
             end
         end
+        PrintTable(QuestManager.availableQuests)
         net.Start("SynchronizeActiveQuests")
         net.WriteTable(QuestManager.activeQuests[steamID])
         net.Send(ply)

@@ -7,7 +7,7 @@ counter = 0
 function QuestBase:new(type, weight)
     local obj = setmetatable({}, self)
     obj.type = type
-    obj.weight = weight
+    obj.weight = tonumber(weight)
     obj.completed = false
     obj.rewardsClaimed = false
     counter = counter + 1

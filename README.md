@@ -26,6 +26,12 @@ e.g. AddQuest KillQuest 50 5 0 1 50000 200 25000
 WARNING: Some methds return it as number, but we use it as a string, so it may needs to be converted (I personally just tostring the number)
 
 ## Development
+To add a new quest you must reqister it with:
+QuestManager.questTypes = {
+    KillQuest = KillQuest,
+    WalkerQuest = WalkerQuest
+}
+
 ### Hooks
 #### QuestsUpdated
 Gets called on the client after it got a new update for the local player's active quests. This sends a table of Quests as argument.
