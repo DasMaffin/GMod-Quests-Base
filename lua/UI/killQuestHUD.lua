@@ -82,7 +82,7 @@ function PANEL:SetQuest(data)
     self.requiredKillsLabel:SetText(("Required Kills: %d"):format(data.requiredKills or 0))
     self.killsLabel:SetText(("  |  Kills: %d"):format(data.currentKills or 0))
     local descriptionMarkupText
-    if ply.AddXP then
+    if LEVELSYSTEM then
         descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must kill %d </color>%s<color=255,255,255> as </color>%s\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=0, 255, 0>%d premium points</color> and <color=0, 255, 0>%d experience points</color>.</font>"):format(
             data.requiredKills,
             getRoleString(data.killedRole),

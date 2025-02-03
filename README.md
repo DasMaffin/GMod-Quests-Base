@@ -12,7 +12,7 @@ Formula: (weight/Sum(allQuestsWeights)) * 100 = Chance in %
 So if the quest has a weight of 50, all quests (including this) have a total weight of 200, theres a ((50/200) * 100)% chance for the quest to appear (25% in this example).
 #### Killquest parameters:
 [requiredKills] [roleToBeKilled] [roleForKiller] [rewards]
-There are up to 3 rewards in the following order:
+There are (by default) up to 3 rewards in the following order:
 Pointshop 2 points, Pointshop 2 premium points, Exp for a proprietary skilltree (You can leave it empty or set it 0. It will still work without it).
 
 | Role ID | Role Name  |  
