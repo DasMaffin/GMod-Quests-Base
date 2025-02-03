@@ -141,7 +141,7 @@ function PANEL:UpdateQuests(quests)
             end
         end
     end
-
+    
     self.claimAllButton = vgui.Create("DButton", self.questLayout)
     self.claimAllButton:Dock(BOTTOM)
     self.claimAllButton:SetSize(32, 32)

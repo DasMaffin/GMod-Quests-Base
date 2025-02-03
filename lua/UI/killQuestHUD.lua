@@ -81,12 +81,20 @@ function PANEL:SetQuest(data)
     self.title:SetText(data.title or "Kill Quest")
     self.requiredKillsLabel:SetText(("Required Kills: %d"):format(data.requiredKills or 0))
     self.killsLabel:SetText(("  |  Kills: %d"):format(data.currentKills or 0))
-    
-    local descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must kill %d </color>%s<color=255,255,255> as </color>%s\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=0, 255, 0>%d premium points</color></font>"):format(
-    data.requiredKills,
-    getRoleString(data.killedRole),
-    getRoleString(data.killerRole),
-    data.rewards[1], data.rewards[2])
+    local descriptionMarkupText
+    if ply.AddXP then
+        descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must kill %d </color>%s<color=255,255,255> as </color>%s\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=0, 255, 0>%d premium points</color> and <color=0, 255, 0>%d experience points</color>.</font>"):format(
+            data.requiredKills,
+            getRoleString(data.killedRole),
+            getRoleString(data.killerRole),
+            data.rewards[1], data.rewards[2], data.rewards[3])
+    else
+        descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must kill %d </color>%s<color=255,255,255> as </color>%s\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=0, 255, 0>%d premium points</color>.</font>"):format(
+        data.requiredKills,
+        getRoleString(data.killedRole),
+        getRoleString(data.killerRole),
+        data.rewards[1], data.rewards[2])
+    end
     local descriptionMarkup = markup.Parse(descriptionMarkupText, ScrW() * 0.6 - 16)
     self.descriptionLabel:SetText("")
     self.descriptionLabel.Paint = function(s, w, h)
