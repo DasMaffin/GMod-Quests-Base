@@ -31,10 +31,12 @@ function WalkerQuest:OnStart(quest)
 end
 
 function WalkerQuest:Update(quest, steps)
-    quest.currentSteps = quest.currentSteps + steps
-    PrintPink("WalkQuest progress: " .. quest.currentSteps .. "/" .. quest.requiredSteps)
-    if quest.currentSteps >= quest.requiredSteps then
-        WalkerQuest:Complete(quest)
+    if not quest.completed then
+        quest.currentSteps = quest.currentSteps + steps
+        PrintPink("WalkQuest progress: " .. quest.currentSteps .. "/" .. quest.requiredSteps)
+        if quest.currentSteps >= quest.requiredSteps then
+            WalkerQuest:Complete(quest)
+        end
     end
 end
 
@@ -65,7 +67,7 @@ if SERVER then
     local unitsPerStep = 76
     -- Hook to calculate distance walked
     hook.Add("Move", "WalkerQuestMoveUpdate", function(ply, mv)
-        if ply:Alive() then
+        if not ply:IsSpec() and GetRoundState() == ROUND_ACTIVE then
             local currentPos = ply:GetPos()
             if playerPreviousPositions[ply] == nil then
                 playerPreviousPositions[ply] = {}
