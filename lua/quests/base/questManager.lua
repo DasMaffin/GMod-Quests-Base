@@ -28,9 +28,9 @@ function DeepCopy(orig)
     return copy
 end
 
-function totalQuestsWeight()
+function totalQuestsWeight(quests)
     local totalWeight = 0
-    for _, quest in ipairs(QuestManager.availableQuests) do
+    for _, quest in ipairs(quests) do
         totalWeight = totalWeight + quest.weight
     end
     return totalWeight
@@ -69,7 +69,6 @@ if SERVER then
     end)
 
     net.Receive("NotifyServerOfClientReady", function(len, ply)
-        PrintTable(QuestManager.availableQuests)
         local steamID = ply:SteamID64()
         if not QuestManager.activeQuests[steamID] or not #QuestManager.activeQuests[steamID] > 0 then
             if #QuestManager.availableQuests > 0 then
@@ -77,7 +76,7 @@ if SERVER then
                 local questsToChoseFrom = DeepCopy(QuestManager.availableQuests)
                 for i = 1, 3 do -- The amount of quests given.
                     local questChosen
-                    local totalQuestsWeight = totalQuestsWeight()
+                    local totalQuestsWeight = totalQuestsWeight(questsToChoseFrom)
                     for _, quest in ipairs(questsToChoseFrom) do
                         if math.random(1, totalQuestsWeight) <= quest.weight then
                             questChosen = quest
@@ -91,7 +90,6 @@ if SERVER then
                 end
             end
         end
-        PrintTable(QuestManager.availableQuests)
         net.Start("SynchronizeActiveQuests")
         net.WriteTable(QuestManager.activeQuests[steamID])
         net.Send(ply)
