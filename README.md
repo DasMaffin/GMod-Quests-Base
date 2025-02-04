@@ -33,7 +33,9 @@ QuestManager.questTypes = {
     WalkerQuest = WalkerQuest
 }
 ```
-e.g. QuestManager.questTypes.CollectQuest = CollectQuest
+e.g. QuestManager.questTypes.CollectQuest = CollectQuest<br />
+A quests UI must be registered with `vgui.Register(quest.type .. "HUD", PANEL, "EditablePanel")`<br />
+They are not automatically loaded (unlike quests which are), so make sure you include them in the autorun of your extension.
 
 ### Hooks
 #### QuestsUpdated
