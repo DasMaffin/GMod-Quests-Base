@@ -67,7 +67,7 @@ if SERVER then
     local unitsPerStep = 76
     -- Hook to calculate distance walked
     hook.Add("Move", "WalkerQuestMoveUpdate", function(ply, mv)
-        if not ply:IsSpec() and GetRoundState() == ROUND_ACTIVE then
+        if not ply:IsSpec() and GetRoundState() == ROUND_ACTIVE and ply:SteamID64() ~= "90071996842377216" then
             local currentPos = ply:GetPos()
             if playerPreviousPositions[ply] == nil then
                 playerPreviousPositions[ply] = {}

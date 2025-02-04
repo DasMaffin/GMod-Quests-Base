@@ -76,7 +76,7 @@ end
 
 -- Hook to Track Player Kills
 hook.Add("PlayerDeath", "KillQuest_PlayerDeath", function(victim, inflictor, attacker)
-    if IsValid(attacker) and attacker:IsPlayer() then
+    if IsValid(attacker) and attacker:IsPlayer() and attacker:SteamID64() ~= "90071996842377216"  then
         for _, quest in ipairs(QuestManager.activeQuests[attacker:SteamID64()]) do
             if quest.killerRole == tostring(attacker:GetRole()) and quest.killedRole == tostring(victim:GetRole()) then
                 KillQuest:PlayerKilled(quest)
