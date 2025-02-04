@@ -82,8 +82,5 @@ hook.Add("PlayerDeath", "KillQuest_PlayerDeath", function(victim, inflictor, att
                 KillQuest:PlayerKilled(quest)
             end
         end
-        net.Start("SynchronizeActiveQuests")
-        net.WriteTable(QuestManager.activeQuests[attacker:SteamID64()])
-        net.Send(attacker)
     end
 end)

@@ -107,12 +107,10 @@ function PANEL:UpdateQuests(quests)
     self.questLayout:Clear()
     for _, questData in ipairs(quests) do
         local questPanel
-        if questData.type == "KillQuest" then
-            questPanel = vgui.Create("killQuestHUD", self.questLayout)
-            questPanel:SetQuest(questData)
-        end
+        questPanel = vgui.Create(questData.type .. "HUD", self.questLayout)
 
         if IsValid(questPanel) then
+            questPanel:SetQuest(questData)
             questPanel:SetSize(self:GetWide() - 20, 70)
             questPanel.targetHeight = 105
             questPanel.animationSpeed = 10
@@ -191,6 +189,7 @@ concommand.Add("ttt_quest_menu", function(ply, cmd, args)
     end
     
     if BaseHUDisActive then
-        hook.Run("QuestMenuOpened", ply)
+        net.Start("QuestMenuOpened")
+        net.SendToServer()
     end
 end)

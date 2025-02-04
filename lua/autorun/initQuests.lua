@@ -19,8 +19,11 @@ questsDir = "quests/quests.json"
 
 AddCSLuaFile("quests/base/questBase.lua")
 AddCSLuaFile("quests/base/loadQuests.lua")
+
 AddCSLuaFile("UI/base/baseHUD.lua")
-AddCSLuaFile("UI/killQuestHUD.lua")
+AddCSLuaFile("UI/base/baseQuestCardHUD.lua")
+AddCSLuaFile("UI/KillQuestHUD.lua")
+AddCSLuaFile("UI/WalkerQuestHUD.lua") 
 
 include("quests/base/questBase.lua")
 include("quests/base/loadQuests.lua")
@@ -29,8 +32,11 @@ include("quests/base/loadQuests.lua")
 if(SERVER) then
     file.CreateDir("quests")
 else
+
     include("UI/base/baseHUD.lua")
-    include("UI/killQuestHUD.lua") 
+    include("UI/base/baseQuestCardHUD.lua")
+    include("UI/KillQuestHUD.lua") 
+    include("UI/WalkerQuestHUD.lua") 
 
     hook.Add("InitPostEntity", "OnQuestsGamemodeLoaded", function()
         surface.CreateFont("CustomFont", {
