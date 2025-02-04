@@ -99,7 +99,7 @@ if SERVER then
     net.Receive("ClaimRewards", function(len, ply)
         local quest = net.ReadTable()
         QuestManager.activeQuests[ply:SteamID64()][tableIndexByUniqueId(QuestManager.activeQuests[ply:SteamID64()], quest.uniqueId)] = quest
-        KillQuest:GiveRewards(quest, ply)
+        QuestManager.questTypes[quest.type]:GiveRewards(quest, ply)
     end)
 
     net.Receive("QuestMenuOpened", function(len, ply)
