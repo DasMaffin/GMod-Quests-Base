@@ -21,6 +21,9 @@ function PANEL:SetQuest(data)
         data.requiredSteps,
         data.rewards[1], data.rewards[2])
     end
+    if data.finishInOneRound ~= "0" then
+        descriptionMarkupText = descriptionMarkupText .. "\n\n<font=CustomFont>This quest must be finished in a single round!"
+    end
     local descriptionMarkup = markup.Parse(descriptionMarkupText, ScrW() * 0.6 - 16)
     self.descriptionLabel:SetText("")
     self.descriptionLabel.Paint = function(s, w, h)
