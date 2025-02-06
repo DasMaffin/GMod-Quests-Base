@@ -93,7 +93,7 @@ end)
 
 hook.Add("TTTEndRound", "KillQuest_TTTEndRound", function(result)
     for _, quest in ipairs(QuestManager.activeQuests[attacker:SteamID64()]) do
-        if quest.finishInOneRound and not quest.completed then
+        if quest.finishInOneRound ~= "0" and not quest.completed then
             quest.currentKills = 0
         end
     end

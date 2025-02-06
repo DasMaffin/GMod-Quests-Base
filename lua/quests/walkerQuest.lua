@@ -8,10 +8,10 @@ function WalkerQuest:new(args)
         return
     end
 
-    local obj = QuestBase:new("WalkerQuest", args[1])
+    local obj = QuestBase:new("WalkerQuest", args[1], args[2])
     setmetatable(obj, self)
 
-    for 1, 2 do
+    for i = 1, 2 do
         table.remove(args, 1)
     end
 
@@ -101,7 +101,7 @@ if SERVER then
 
     hook.Add("TTTEndRound", "WalkerQuest_TTTEndRound", function(result)
         for _, quest in ipairs(QuestManager.activeQuests[attacker:SteamID64()]) do
-            if quest.finishInOneRound and not quest.completed then
+            if quest.finishInOneRound ~= "0" and not quest.completed then
                 quest.currentSteps = 0
             end
         end

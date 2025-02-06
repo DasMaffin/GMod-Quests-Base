@@ -46,7 +46,6 @@ if SERVER then
     function QuestManager:AddQuest(player, questType, args)
         local quest
         local questClass = QuestManager.questTypes[questType]
-
         if questClass then
             quest = questClass:new(args)
         else

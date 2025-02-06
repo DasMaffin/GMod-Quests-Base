@@ -29,7 +29,7 @@ WARNING: Some methds return it as number, but we use it as a string, so it may n
 #### WalkerQuest parameters:
 [requiredSteps] <br />
 e.g.:<br />
-- AddQuest WalkerQuest 50 0 50000 200 25000
+- AddQuest WalkerQuest 50 0 50 50000 200 25000
 
 ## Development
 To add a new quest you must reqister it with:<br />
