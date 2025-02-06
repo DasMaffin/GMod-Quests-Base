@@ -14,22 +14,19 @@ Formula: (weight/Sum(allQuestsWeights)) * 100 = Chance in %<br />
 So if the quest has a weight of 50, all quests (including this) have a total weight of 200, theres a ((50/200) * 100)% chance for the quest to appear (25% in this example).<br />
 finishedInOneRound is a bool (0 and 1). If set then the quest resets if not finished after a round passes.
 #### Killquest parameters:
-[requiredKills] [roleToBeKilled] [roleForKiller]<br />
-
-
+[requiredKills] [roleToBeKilled] [roleForKiller]
 | Role ID | Role Name  |  
 |---------|------------|  
 | 0       | Innocent   |  
 | 1       | Traitor    |  
 | 2       | Detective  |  
-<br />
 e.g.:<br />
 - AddQuest KillQuest 50 0 5 0 1 50000 200 25000
 
 WARNING: Some methds return it as number, but we use it as a string, so it may needs to be converted (I personally just tostring the number)
 
 #### WalkerQuest parameters:
-[requiredSteps] 
+[requiredSteps] <br />
 e.g.:<br />
 - AddQuest WalkerQuest 50 0 50000 200 25000
 
