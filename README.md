@@ -5,15 +5,17 @@
 Usage: ttt_quest_menu<br />
 No parameters. Just toggles the quest menu on and off.
 ### AddQuest
-Usage: AddQuest [QuestType] [weight] [parameters]<br /><br />
+Usage: AddQuest [QuestType] [weight] [finishInOneRound] [parameters] [rewards]<br /><br />
+There are (by default) up to 3 rewards in the following order:<br />
+Pointshop 2 points, Pointshop 2 premium points, Exp for a proprietary skilltree (You can leave it empty or set it 0. It will still work without it).<br /><br />
 
 The weight determines how likely it is to appear. The higher, the more likely.<br />
 Formula: (weight/Sum(allQuestsWeights)) * 100 = Chance in %<br />
-So if the quest has a weight of 50, all quests (including this) have a total weight of 200, theres a ((50/200) * 100)% chance for the quest to appear (25% in this example).
+So if the quest has a weight of 50, all quests (including this) have a total weight of 200, theres a ((50/200) * 100)% chance for the quest to appear (25% in this example).<br />
+finishedInOneRound is a bool (0 and 1). If set then the quest resets if not finished after a round passes.
 #### Killquest parameters:
-[requiredKills] [roleToBeKilled] [roleForKiller] [rewards]<br />
-There are (by default) up to 3 rewards in the following order:<br />
-Pointshop 2 points, Pointshop 2 premium points, Exp for a proprietary skilltree (You can leave it empty or set it 0. It will still work without it).<br /><br />
+[requiredKills] [roleToBeKilled] [roleForKiller]<br />
+
 
 | Role ID | Role Name  |  
 |---------|------------|  
@@ -21,9 +23,15 @@ Pointshop 2 points, Pointshop 2 premium points, Exp for a proprietary skilltree 
 | 1       | Traitor    |  
 | 2       | Detective  |  
 <br />
-e.g. AddQuest KillQuest 50 5 0 1 50000 200 25000<br />
+e.g.:<br />
+- AddQuest KillQuest 50 0 5 0 1 50000 200 25000
 
 WARNING: Some methds return it as number, but we use it as a string, so it may needs to be converted (I personally just tostring the number)
+
+#### WalkerQuest parameters:
+[requiredSteps] 
+e.g.:<br />
+- AddQuest WalkerQuest 50 0 50000 200 25000
 
 ## Development
 To add a new quest you must reqister it with:<br />
@@ -61,6 +69,3 @@ The fields a quest type has accessible (e.g. for displaying in a UI)
 #### WalkerQuest
 - requiredSteps - The steps required to finish the quest.
 - currentSteps - The already walked steps.
-
-Just a test here
-A third test here.

@@ -3,16 +3,22 @@ WalkerQuest.__index = WalkerQuest
 
 function WalkerQuest:new(args)
     if not args[2] || args[2] == 0 then
-        PrintPink("Usage: AddQuest WalkerQuest [weight] [requiredSteps] {rewards}")
+        PrintPink("Usage: AddQuest WalkerQuest [weight] [finishInOneRound] [requiredSteps] {rewards}")
         self.DidntFinishInit = true
         return
     end
 
     local obj = QuestBase:new("WalkerQuest", args[1])
     setmetatable(obj, self)
+
+    for 1, 2 do
+        table.remove(args, 1)
+    end
+
     obj.requiredSteps = tonumber(args[2]) or 1
     obj.currentSteps = 0
-    for i = 1, 2 do
+
+    for i = 1, 1 do
         table.remove(args, 1)
     end
 
@@ -90,6 +96,14 @@ if SERVER then
             end
 
             playerPreviousPositions[ply].prevPos = currentPos
+        end
+    end)
+
+    hook.Add("TTTEndRound", "WalkerQuest_TTTEndRound", function(result)
+        for _, quest in ipairs(QuestManager.activeQuests[attacker:SteamID64()]) do
+            if quest.finishInOneRound and not quest.completed then
+                quest.currentSteps = 0
+            end
         end
     end)
 end

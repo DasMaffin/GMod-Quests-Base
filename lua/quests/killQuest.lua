@@ -3,8 +3,8 @@ KillQuest = setmetatable({}, {__index = QuestBase})
 KillQuest.__index = KillQuest
 
 function KillQuest:new(args)
-    if not args[2] || args[2] == 0 || not args[3] || not args[4] then
-        PrintPink("Usage: AddQuest KillQuest [weight] [requiredKills] [roleToBeKilled] [roleForKiller] {rewards}")
+    if not args[3] || args[3] == 0 || not args[4] || not args[5] then
+        PrintPink("Usage: AddQuest KillQuest [weight] [finishInOneRound] [requiredKills] [roleToBeKilled] [roleForKiller] {rewards}")
         PrintPink("Innocent: " .. ROLE_INNOCENT)
         PrintPink("Traitor: " .. ROLE_TRAITOR)
         PrintPink("Detective: " .. ROLE_DETECTIVE)
@@ -12,13 +12,19 @@ function KillQuest:new(args)
         return
     end
 
-    local obj = QuestBase:new("KillQuest", args[1])
+    local obj = QuestBase:new("KillQuest", args[1], args[2])
     setmetatable(obj, self)
-    obj.requiredKills = tonumber(args[2]) or 1
-    obj.killedRole = args[3]
-    obj.killerRole = args[4]
+
+    for i = 1, 2 do
+        table.remove(args, 1)
+    end
+    
+    obj.requiredKills = tonumber(args[1]) or 1
+    obj.killedRole = args[2]
+    obj.killerRole = args[3]
     obj.currentKills = 0
-    for i = 1, 4 do
+
+    for i = 1, 3 do
         table.remove(args, 1)
     end
 
@@ -81,6 +87,14 @@ hook.Add("PlayerDeath", "KillQuest_PlayerDeath", function(victim, inflictor, att
             if quest.killerRole == tostring(attacker:GetRole()) and quest.killedRole == tostring(victim:GetRole()) then
                 KillQuest:PlayerKilled(quest)
             end
+        end
+    end
+end)
+
+hook.Add("TTTEndRound", "KillQuest_TTTEndRound", function(result)
+    for _, quest in ipairs(QuestManager.activeQuests[attacker:SteamID64()]) do
+        if quest.finishInOneRound and not quest.completed then
+            quest.currentKills = 0
         end
     end
 end)

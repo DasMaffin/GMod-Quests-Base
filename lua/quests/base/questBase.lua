@@ -4,12 +4,13 @@ QuestBase.__index = QuestBase
 
 counter = 0
 
-function QuestBase:new(type, weight)
+function QuestBase:new(type, weight, finishInOneRound)
     local obj = setmetatable({}, self)
     obj.type = type
     obj.weight = tonumber(weight)
     obj.completed = false
     obj.rewardsClaimed = false
+    obj.finishInOneRound = finishInOneRound
     counter = counter + 1
     obj.uniqueId = util.SHA256(tostring(os.time()) .. obj.type .. tostring(math.random()) .. tostring(counter))
     return obj
