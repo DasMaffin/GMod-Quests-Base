@@ -20,6 +20,7 @@ finishedInOneRound is a bool (0 and 1). If set then the quest resets if not fini
 | 0       | Innocent   |  
 | 1       | Traitor    |  
 | 2       | Detective  |  
+
 e.g.:<br />
 - AddQuest KillQuest 50 0 5 0 1 50000 200 25000
 
