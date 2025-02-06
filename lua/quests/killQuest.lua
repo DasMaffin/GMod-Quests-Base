@@ -92,8 +92,8 @@ hook.Add("PlayerDeath", "KillQuest_PlayerDeath", function(victim, inflictor, att
 end)
 
 hook.Add("TTTEndRound", "KillQuest_TTTEndRound", function(result)
-    for _, activeQuests in ipairs(QuestManager.activeQuests) do
-        for _ quest in ipairs(activeQuests) do
+    for key, activeQuests in pairs(QuestManager.activeQuests) do
+        for _, quest in ipairs(activeQuests) do
             if quest.finishInOneRound ~= "0" and not quest.completed then
                 quest.currentKills = 0
             end

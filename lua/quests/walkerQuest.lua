@@ -100,10 +100,16 @@ if SERVER then
     end)
 
     hook.Add("TTTEndRound", "WalkerQuest_TTTEndRound", function(result)
-        for _, quest in ipairs(QuestManager.activeQuests[attacker:SteamID64()]) do
-            if quest.finishInOneRound ~= "0" and not quest.completed then
-                quest.currentSteps = 0
+        for key, activeQuests in pairs(QuestManager.activeQuests) do
+            for _, quest in ipairs(activeQuests) do
+                if quest.finishInOneRound ~= "0" and not quest.completed then
+                    quest.currentSteps = 0
+                end
             end
+        end
+        for playerkey, position in pairs(playerPreviousPositions) do
+            position.prevPos = nil
+            position.distance = 0
         end
     end)
 end
