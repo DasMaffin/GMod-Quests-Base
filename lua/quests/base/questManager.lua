@@ -42,6 +42,7 @@ if SERVER then
     util.AddNetworkString("SynchronizeActiveQuests")
     util.AddNetworkString("ClaimRewards")
     util.AddNetworkString("QuestMenuOpened")
+    util.AddNetworkString("SendQuestFinished")
 
     function QuestManager:AddQuest(player, questType, args)
         local quest
@@ -85,6 +86,8 @@ if SERVER then
                             totalQuestsWeight = totalQuestsWeight - quest.weight
                         end
                     end
+                    questChosen.player = ply
+                    PrintTable(questChosen)
                     table.insert(QuestManager.activeQuests[steamID], DeepCopy(questChosen))
                     table.RemoveByValue(questsToChoseFrom, questChosen)
                 end

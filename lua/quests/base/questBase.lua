@@ -16,11 +16,6 @@ function QuestBase:new(type, weight, finishInOneRound)
     return obj
 end
 
-function QuestBase:Start(player, ...)
-    self.player = player
-    self:OnStart(...)
-end
-
 function QuestBase:OnStart(...)
     -- To be overridden by subclasses
 end
@@ -39,4 +34,11 @@ end
 
 function QuestBase:OnComplete()
     -- To be overridden by subclasses
+end
+
+function QuestBase:GiveRewards(quest)
+    table.remove(QuestManager.activeQuests[quest.player:SteamID64()], tableIndexByUniqueId(QuestManager.activeQuests[quest.player:SteamID64()], quest.uniqueId))
+    net.Start("SendQuestFinished")
+    net.WriteTable(quest)
+    net.Send(quest.player)
 end

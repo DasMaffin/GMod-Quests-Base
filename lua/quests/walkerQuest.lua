@@ -29,13 +29,6 @@ function WalkerQuest:new(args)
     return obj
 end
 
-function WalkerQuest:OnStart(quest)
-    self.requiredSteps = tonumber(quest.requiredSteps) or 1
-    self.currentSteps = 0
-    PrintPink("WalkerQuest started:")
-    PrintPink("Walk " .. self.requiredSteps ..".")
-end
-
 function WalkerQuest:Update(quest, steps)
     if not quest.completed then
         quest.currentSteps = quest.currentSteps + steps
@@ -61,9 +54,10 @@ function WalkerQuest:GiveRewards(quest, ply)
             ply:AddXP(tonumber(quest.rewards[3]))
         end
         quest.rewardsClaimed = true
+        QuestBase:GiveRewards(quest)
         net.Start("SynchronizeActiveQuests")
         net.WriteTable(QuestManager.activeQuests[ply:SteamID64()])
-        net.Send(ply)
+        net.Send(ply)        
     end
 end
 

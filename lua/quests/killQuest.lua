@@ -35,16 +35,6 @@ function KillQuest:new(args)
     return obj
 end
 
-function KillQuest:OnStart(quest)
-    self.requiredKills = tonumber(quest.requiredKills) or 1
-    self.killedRole = quest.killedRole
-    self.killerRole = quest.killerRole
-    self.currentKills = 0
-    PrintPink("KillQuest started:")
-    PrintPink("Kill " .. self.requiredKills .. " " .. self.killedRole .. ".")
-    PrintPink("As role: " .. self.killerRole)
-end
-
 function KillQuest:Update(quest)
     quest.currentKills = quest.currentKills + 1    
     PrintPink("KillQuest progress: " .. quest.currentKills .. "/" .. quest.requiredKills)
@@ -68,6 +58,7 @@ function KillQuest:GiveRewards(quest, ply)
             ply:AddXP(tonumber(quest.rewards[3]))
         end
         quest.rewardsClaimed = true
+        QuestBase:GiveRewards(quest)
         net.Start("SynchronizeActiveQuests")
         net.WriteTable(QuestManager.activeQuests[ply:SteamID64()])
         net.Send(ply)
