@@ -53,6 +53,7 @@ if SERVER then
             PrintPink("Unknown quest type: " .. questType)
             return
         end
+        if not quest or quest.DidntFinishInit and quest.DidntFinishInit == true then return end
 
         table.insert(QuestManager.availableQuests, quest)
         file.Write(questsDir, util.TableToJSON(QuestManager.availableQuests, true)) 

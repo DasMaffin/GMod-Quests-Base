@@ -23,9 +23,6 @@ for _, filePath in ipairs(filePaths) do
     PrintPink("Loaded quests for \"" .. filePath .. "\"")
 end
 
-AddCSLuaFile("quests/base/questManager.lua")
-include("quests/base/questManager.lua")
-
 if file.Exists(questsDir, "DATA") then
     QuestManager.availableQuests = util.JSONToTable(file.Read(questsDir, "DATA"), true, true)
 else

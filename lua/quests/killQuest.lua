@@ -50,7 +50,6 @@ end
 
 function KillQuest:GiveRewards(quest, ply)
     if quest.rewardsClaimed == false then
-        PrintPink(quest.rewardsClaimed)
         PrintPink("Giving rewards for KillQuest to Player: " .. ply:Nick())
         ply:PS2_AddStandardPoints(tonumber(quest.rewards[1]))
         ply:PS2_AddPremiumPoints(tonumber(quest.rewards[2]))

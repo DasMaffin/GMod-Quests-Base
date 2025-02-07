@@ -11,6 +11,17 @@ function tableIndexByUniqueId(tbl, id)
     return nil -- Entry not found
 end
 
+function FindPlayerBySteamID64(steamid64)
+    -- Loop through all players on the server
+    for _, ply in ipairs(player.GetAll()) do
+        -- Check if the player's SteamID64 matches the one we're looking for
+        if ply:SteamID64() == steamid64 then
+            return ply -- Return the player if found
+        end
+    end
+    return nil -- Return nil if no player is found
+end
+
 PrintPink("----------==============================----------")
 PrintPink("Starting Quest System")
 
@@ -18,14 +29,17 @@ PrintPink("Starting Quest System")
 questsDir = "quests/quests.json"
 
 AddCSLuaFile("quests/base/questBase.lua")
+AddCSLuaFile("quests/base/questManager.lua")
 AddCSLuaFile("quests/base/loadQuests.lua")
 
 AddCSLuaFile("UI/base/baseHUD.lua")
 AddCSLuaFile("UI/base/baseQuestCardHUD.lua")
 AddCSLuaFile("UI/KillQuestHUD.lua")
 AddCSLuaFile("UI/WalkerQuestHUD.lua") 
+AddCSLuaFile("UI/SurviveQuestHUD.lua") 
 
 include("quests/base/questBase.lua")
+include("quests/base/questManager.lua")
 include("quests/base/loadQuests.lua")
 
 
@@ -37,6 +51,7 @@ else
     include("UI/base/baseQuestCardHUD.lua")
     include("UI/KillQuestHUD.lua") 
     include("UI/WalkerQuestHUD.lua") 
+    include("UI/SurviveQuestHUD.lua") 
 
     hook.Add("InitPostEntity", "OnQuestsGamemodeLoaded", function()
         surface.CreateFont("CustomFont", {
