@@ -4,7 +4,7 @@ SurviveQuest.__index = KillQuest
 QuestManager.questTypes.SurviveQuest = SurviveQuest
 
 function SurviveQuest:new(args)
-    if not args[3] || args[3] == 0 || not args[4] || not args[5] then
+    if not args[3] then
         PrintPink("Usage: AddQuest SurviveQuest [weight] [finishConsecutively] [rounds] {rewards}")
         self.DidntFinishInit = true
         return
