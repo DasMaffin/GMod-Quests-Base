@@ -31,6 +31,17 @@ WARNING: Some methds return it as number, but we use it as a string, so it may n
 e.g.:<br />
 - AddQuest WalkerQuest 50 0 50 50000 200 25000
 
+#### SurviveQuest parameters:
+[rounds] <br />
+e.g.:<br />
+- AddQuest SurviveQuest 50 0 5 50000 200 25000
+
+#### KarmaQuest parameters:
+[minKarma] [rounds] <br />
+e.g.:<br />
+- AddQuest WalkerQuest 50 0 1200 5 50000 200 25000
+
+
 ## Development
 To add a new quest you must reqister it with:<br />
 ```lua
