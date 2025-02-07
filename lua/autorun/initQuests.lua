@@ -37,6 +37,7 @@ AddCSLuaFile("UI/base/baseQuestCardHUD.lua")
 AddCSLuaFile("UI/KillQuestHUD.lua")
 AddCSLuaFile("UI/WalkerQuestHUD.lua") 
 AddCSLuaFile("UI/SurviveQuestHUD.lua") 
+AddCSLuaFile("UI/KarmaQuestHUD.lua") 
 
 include("quests/base/questBase.lua")
 include("quests/base/questManager.lua")
@@ -52,6 +53,7 @@ else
     include("UI/KillQuestHUD.lua") 
     include("UI/WalkerQuestHUD.lua") 
     include("UI/SurviveQuestHUD.lua") 
+    include("UI/KarmaQuestHUD.lua") 
 
     hook.Add("InitPostEntity", "OnQuestsGamemodeLoaded", function()
         surface.CreateFont("CustomFont", {
