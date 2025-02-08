@@ -31,7 +31,9 @@ questsDir = "quests/quests.json"
 AddCSLuaFile("quests/base/questBase.lua")
 AddCSLuaFile("quests/base/questManager.lua")
 AddCSLuaFile("quests/base/loadQuests.lua")
+AddCSLuaFile("quests/base/finishedQuests.lua")
 
+AddCSLuaFile("UI/base/claimButton.lua") 
 AddCSLuaFile("UI/base/baseHUD.lua")
 AddCSLuaFile("UI/base/baseQuestCardHUD.lua")
 AddCSLuaFile("UI/KillQuestHUD.lua")
@@ -42,12 +44,13 @@ AddCSLuaFile("UI/KarmaQuestHUD.lua")
 include("quests/base/questBase.lua")
 include("quests/base/questManager.lua")
 include("quests/base/loadQuests.lua")
+include("quests/base/finishedQuests.lua")
 
 
-if(SERVER) then
+if SERVER then
     file.CreateDir("quests")
 else
-
+    include("UI/base/claimButton.lua") 
     include("UI/base/baseHUD.lua")
     include("UI/base/baseQuestCardHUD.lua")
     include("UI/KillQuestHUD.lua") 

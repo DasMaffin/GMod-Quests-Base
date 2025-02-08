@@ -19,13 +19,8 @@ function BaseQuestCard:Init()
     self.title:SetFont("Trebuchet24")
     self.title:SetTextColor(color_white)
     self.title:SetContentAlignment(4)
-
-    -- Claim button
-    self.claimButton = vgui.Create("DButton", self)
-    self.claimButton:SetSize(150, 32)
-    self.claimButton:SetText("")
-    self.claimButton:SetFont("DermaLarge")
-    self.claimButton:SetMouseInputEnabled(true)
+    
+    ClaimButton.Init(self)
 
     -- Handle content resizing
     function self.content:OnSizeChanged(w, h)

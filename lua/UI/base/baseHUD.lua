@@ -139,23 +139,25 @@ function PANEL:UpdateQuests(quests)
             end
         end
     end
-
-    self.claimAllButton = vgui.Create("DButton", self.questLayout)
-    self.claimAllButton:Dock(BOTTOM)
-    self.claimAllButton:SetSize(32, 32)
-    self.claimAllButton:SetPos(self:GetWide() - 40, 8)
-    self.claimAllButton:SetText("")
-    self.claimAllButton:SetFont("DermaLarge")
-    self.claimAllButton.Paint = function(s, w, h)
-        draw.RoundedBoxEx(8, 0, 0, w, h, Color(25, 25, 35, 255), true, true, true, true)
-        draw.SimpleText("Claim All!", "DermaDefault", (w / 2) - 2, (h / 2) - 2, Color(255, 128, 128), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    end
-    self.claimAllButton.DoClick = function()
-        for _, questData in ipairs(quests) do
-            if(questData.completed and not questData.rewardsClaimed) then
-                net.Start("ClaimRewards")
-                net.WriteTable(questData)
-                net.SendToServer()
+    
+    if self.claimAllButton then
+        self.claimAllButton = vgui.Create("DButton", self.questLayout)
+        self.claimAllButton:Dock(BOTTOM)
+        self.claimAllButton:SetSize(32, 32)
+        self.claimAllButton:SetPos(self:GetWide() - 40, 8)
+        self.claimAllButton:SetText("")
+        self.claimAllButton:SetFont("DermaLarge")
+        self.claimAllButton.Paint = function(s, w, h)
+            draw.RoundedBoxEx(8, 0, 0, w, h, Color(25, 25, 35, 255), true, true, true, true)
+            draw.SimpleText("Claim All!", "DermaDefault", (w / 2) - 2, (h / 2) - 2, Color(255, 128, 128), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
+        self.claimAllButton.DoClick = function()
+            for _, questData in ipairs(quests) do
+                if(questData.completed and not questData.rewardsClaimed) then
+                    net.Start("ClaimRewards")
+                    net.WriteTable(questData)
+                    net.SendToServer()
+                end
             end
         end
     end
