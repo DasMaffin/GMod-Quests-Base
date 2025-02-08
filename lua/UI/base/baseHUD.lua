@@ -176,7 +176,25 @@ function PANEL:UpdateQuests(quests, panel, hasButton)
                 end
             end
         end
+    else
+        self.deleteAllButton = vgui.Create("DButton", panel)
+        self.deleteAllButton:Dock(BOTTOM)
+        self.deleteAllButton:SetSize(32, 32)
+        self.deleteAllButton:SetPos(self:GetWide() - 40, 8)
+        self.deleteAllButton:SetText("")
+        self.deleteAllButton:SetFont("DermaLarge")
+        self.deleteAllButton.Paint = function(s, w, h)
+            draw.RoundedBoxEx(8, 0, 0, w, h, Color(25, 25, 35, 255), true, true, true, true)
+            draw.SimpleText("Delete All!", "DermaDefault", (w / 2) - 2, (h / 2) - 2, Color(255, 128, 128), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
+        self.deleteAllButton.DoClick = function()
+            QuestManager.finishedQuests = {}
+            file.Write(questsDir, util.TableToJSON(QuestManager.finishedQuests, true)) 
+            hook.Run("UpdateFinishedQuests", QuestManager.finishedQuests)
+        end        
     end
+    
+    self:ShowQuests()
 end
 
 function PANEL:Think()

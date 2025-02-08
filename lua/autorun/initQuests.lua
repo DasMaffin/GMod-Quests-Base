@@ -27,6 +27,7 @@ PrintPink("Starting Quest System")
 
 
 questsDir = "quests/quests.json"
+file.CreateDir("quests")
 
 AddCSLuaFile("quests/base/questBase.lua")
 AddCSLuaFile("quests/base/questManager.lua")
@@ -45,11 +46,9 @@ AddCSLuaFile("UI/KarmaQuestHUD.lua")
 include("quests/base/questBase.lua")
 include("quests/base/questManager.lua")
 include("quests/base/loadQuests.lua")
-include("quests/base/finishedQuests.lua")
 
 
 if SERVER then
-    file.CreateDir("quests")
 else
     include("UI/base/claimButton.lua") 
     include("UI/base/baseHUD.lua")
@@ -59,6 +58,7 @@ else
     include("UI/WalkerQuestHUD.lua") 
     include("UI/SurviveQuestHUD.lua") 
     include("UI/KarmaQuestHUD.lua") 
+    include("quests/base/finishedQuests.lua")
 
     hook.Add("InitPostEntity", "OnQuestsGamemodeLoaded", function()
         surface.CreateFont("CustomFont", {
