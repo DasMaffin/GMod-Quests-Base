@@ -2,6 +2,8 @@
 KillQuest = setmetatable({}, {__index = QuestBase})
 KillQuest.__index = KillQuest
 
+QuestManager.questTypes.KillQuest = KillQuest
+
 function KillQuest:new(args)
     if not args[3] || args[3] == 0 || not args[4] || not args[5] then
         PrintPink("Usage: AddQuest KillQuest [weight] [finishInOneRound] [requiredKills] [roleToBeKilled] [roleForKiller] {rewards}")

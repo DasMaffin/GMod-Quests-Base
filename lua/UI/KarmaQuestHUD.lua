@@ -1,11 +1,19 @@
 local PANEL = {}
 
 function PANEL:Init()    
-    BaseQuestCard.Init(self)
+    
+end
+
+function PANEL:InitWithArgs(hasButton)
+    if hasButton == true then
+        BaseQuestCard.Init(self)
+    else
+        BaseQuestCardNoButton.Init(self)
+    end
 end
 
 function PANEL:SetQuest(data)
-    self.title:SetText(data.title or "Survive Quest")
+    self.title:SetText(data.title or "Karma Quest")
     self.requirementLabel:SetText(("Required Rounds: %d"):format(data.requiredRounds or 0))
     self.progressLabel:SetText(("  |  Rounds: %d"):format(data.currentRounds or 0))
 

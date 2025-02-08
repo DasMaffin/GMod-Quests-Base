@@ -72,6 +72,13 @@ function PANEL:Init()
         draw.SimpleText("Admin UI Placeholder", "DermaLarge", w / 2, h / 2, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
     self.adminPanel:SetVisible(false) -- Hide by default
+
+    self.finishedQuestLayout = vgui.Create("DIconLayout", self.scrollPanel)
+    self.finishedQuestLayout:SetSpaceY(5)
+    self.finishedQuestLayout:SetSize(self.scrollPanel:GetWide(), 1000)--self.scrollPanel:GetTall() * 3)
+    self.finishedQuestLayout.Paint = function(s, w, h)
+        draw.RoundedBoxEx(8, 0, 0, w, h, Color(125, 125, 135, 255), true, true, true, true)
+    end
 end
 
 function PANEL:AddRegisterCard(name)
@@ -84,30 +91,39 @@ function PANEL:AddRegisterCard(name)
     end
     card.DoClick = function()
         if name == "Active Quests" then
-            self:ShowQuests() -- Show quests
+            self:ShowQuests()
         elseif name == "Finished Quests" then
-            self:ShowAdmin() -- Show admin UI
+            self:ShowFinishedQuests()
         elseif name == "Admin" then
-            self:ShowAdmin() -- Show admin UI
+            self:ShowAdmin()
         end
     end
 end
 
 function PANEL:ShowQuests()
-    self.questLayout:SetVisible(true) -- Show quests scroll panel
-    self.adminPanel:SetVisible(false) -- Hide admin panel
+    self.questLayout:SetVisible(true)
+    self.adminPanel:SetVisible(false)
+    self.finishedQuestLayout:SetVisible(false)
 end
 
 function PANEL:ShowAdmin()
-    self.questLayout:SetVisible(false) -- Hide quests scroll panel
-    self.adminPanel:SetVisible(true) -- Show admin panel
+    self.questLayout:SetVisible(false)
+    self.adminPanel:SetVisible(true)
+    self.finishedQuestLayout:SetVisible(false)
 end
 
-function PANEL:UpdateQuests(quests)
-    self.questLayout:Clear()
+function PANEL:ShowFinishedQuests()
+    self.questLayout:SetVisible(false)
+    self.adminPanel:SetVisible(false)
+    self.finishedQuestLayout:SetVisible(true)
+end
+
+function PANEL:UpdateQuests(quests, panel, hasButton)
+    panel:Clear()
     for _, questData in ipairs(quests) do
         local questPanel
-        questPanel = vgui.Create(questData.type .. "HUD", self.questLayout)
+        questPanel = vgui.Create(questData.type .. "HUD", panel)
+        questPanel:InitWithArgs(hasButton)
 
         if IsValid(questPanel) then
             questPanel:SetQuest(questData)
@@ -139,9 +155,9 @@ function PANEL:UpdateQuests(quests)
             end
         end
     end
-    
-    if self.claimAllButton then
-        self.claimAllButton = vgui.Create("DButton", self.questLayout)
+
+    if hasButton then
+        self.claimAllButton = vgui.Create("DButton", panel)
         self.claimAllButton:Dock(BOTTOM)
         self.claimAllButton:SetSize(32, 32)
         self.claimAllButton:SetPos(self:GetWide() - 40, 8)
@@ -175,7 +191,15 @@ hook.Add("QuestsUpdated", "UpdateQuestHUD", function(questsTable)
         baseHUD = vgui.Create("BaseHUD")
     end
     
-    baseHUD:UpdateQuests(questsTable)
+    baseHUD:UpdateQuests(questsTable, baseHUD.questLayout, true)
+end)
+
+hook.Add("UpdateFinishedQuests", "UpdateFinishedQuestHUD", function(questsTable)
+    if not IsValid(baseHUD) then
+        baseHUD = vgui.Create("BaseHUD")
+    end
+    
+    baseHUD:UpdateQuests(questsTable, baseHUD.finishedQuestLayout, false)
 end)
 
 function CreateBaseHUD()

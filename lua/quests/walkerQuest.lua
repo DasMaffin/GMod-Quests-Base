@@ -1,6 +1,8 @@
 WalkerQuest = setmetatable({}, {__index = QuestBase})
 WalkerQuest.__index = WalkerQuest
 
+QuestManager.questTypes.WalkerQuest = WalkerQuest
+
 function WalkerQuest:new(args)
     if not args[2] || args[2] == 0 then
         PrintPink("Usage: AddQuest WalkerQuest [weight] [finishInOneRound] [requiredSteps] {rewards}")

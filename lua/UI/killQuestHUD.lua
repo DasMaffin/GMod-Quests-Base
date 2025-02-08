@@ -1,7 +1,15 @@
 local PANEL = {}
 
 function PANEL:Init()
-    BaseQuestCard.Init(self)
+    
+end
+
+function PANEL:InitWithArgs(hasButton)
+    if hasButton == true then
+        BaseQuestCard.Init(self)
+    else
+        BaseQuestCardNoButton.Init(self)
+    end
 end
 
 local function getRoleString(roleValue)

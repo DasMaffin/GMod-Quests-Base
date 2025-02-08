@@ -2,8 +2,6 @@ QuestManager = {
     availableQuests = {},
     activeQuests = {},
     questTypes = {
-        KillQuest = KillQuest,
-        WalkerQuest = WalkerQuest
     }
 }
 
@@ -76,7 +74,7 @@ if SERVER then
             if #QuestManager.availableQuests > 0 then
                 QuestManager.activeQuests[steamID] = {}
                 local questsToChoseFrom = DeepCopy(QuestManager.availableQuests)
-                for i = 1, 1 do -- The amount of quests given.
+                for i = 1, 6 do -- The amount of quests given.
                     local questChosen
                     local totalQuestsWeight = totalQuestsWeight(questsToChoseFrom)
                     for _, quest in ipairs(questsToChoseFrom) do
@@ -88,7 +86,6 @@ if SERVER then
                         end
                     end
                     questChosen.player = ply
-                    PrintTable(questChosen)
                     table.insert(QuestManager.activeQuests[steamID], DeepCopy(questChosen))
                     table.RemoveByValue(questsToChoseFrom, questChosen)
                 end
@@ -101,8 +98,12 @@ if SERVER then
 
     net.Receive("ClaimRewards", function(len, ply)
         local quest = net.ReadTable()
-        QuestManager.activeQuests[ply:SteamID64()][tableIndexByUniqueId(QuestManager.activeQuests[ply:SteamID64()], quest.uniqueId)] = quest
-        QuestManager.questTypes[quest.type]:GiveRewards(quest, ply)
+        local pQuests = QuestManager.activeQuests[ply:SteamID64()]
+        local questIndex = tableIndexByUniqueId(pQuests, quest.uniqueId)
+        if pQuests[questIndex] then
+            pQuests[questIndex] = quest
+            QuestManager.questTypes[quest.type]:GiveRewards(quest, ply)
+        end
     end)
 
     net.Receive("QuestMenuOpened", function(len, ply)

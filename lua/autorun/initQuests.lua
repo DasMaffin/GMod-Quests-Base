@@ -35,6 +35,7 @@ AddCSLuaFile("quests/base/finishedQuests.lua")
 
 AddCSLuaFile("UI/base/claimButton.lua") 
 AddCSLuaFile("UI/base/baseHUD.lua")
+AddCSLuaFile("UI/base/baseQuestCardHUDNoButton.lua")
 AddCSLuaFile("UI/base/baseQuestCardHUD.lua")
 AddCSLuaFile("UI/KillQuestHUD.lua")
 AddCSLuaFile("UI/WalkerQuestHUD.lua") 
@@ -52,6 +53,7 @@ if SERVER then
 else
     include("UI/base/claimButton.lua") 
     include("UI/base/baseHUD.lua")
+    include("UI/base/baseQuestCardHUDNoButton.lua")
     include("UI/base/baseQuestCardHUD.lua")
     include("UI/KillQuestHUD.lua") 
     include("UI/WalkerQuestHUD.lua") 
