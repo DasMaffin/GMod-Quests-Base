@@ -58,9 +58,6 @@ function PANEL:Init()
     self.questLayout = vgui.Create("DIconLayout", self.scrollPanel)
     self.questLayout:SetSpaceY(5)
     self.questLayout:SetSize(self.scrollPanel:GetWide(), 1000)--self.scrollPanel:GetTall() * 3)
-    self.questLayout.Paint = function(s, w, h)
-        draw.RoundedBoxEx(8, 0, 0, w, h, Color(125, 125, 135, 255), true, true, true, true)
-    end
 
     -- Admin UI placeholder (initially hidden)
     self.adminPanel = vgui.Create("DPanel", self.scrollPanel)
@@ -76,17 +73,16 @@ function PANEL:Init()
     self.finishedQuestLayout = vgui.Create("DIconLayout", self.scrollPanel)
     self.finishedQuestLayout:SetSpaceY(5)
     self.finishedQuestLayout:SetSize(self.scrollPanel:GetWide(), 1000)--self.scrollPanel:GetTall() * 3)
-    self.finishedQuestLayout.Paint = function(s, w, h)
-        draw.RoundedBoxEx(8, 0, 0, w, h, Color(125, 125, 135, 255), true, true, true, true)
-    end
 end
+
+local cards = {}
+local names = {}
 
 function PANEL:AddRegisterCard(name)
     local card = vgui.Create("DButton", self.registerCards)
     card:SetSize(100, self.lineY - 10)
     card:SetText("")
     card.Paint = function(s, w, h)
-        draw.RoundedBoxEx(8, 0, 0, w, h, Color(50, 50, 70, 255), true, true, false, false)
         draw.SimpleText(name, "DermaDefault", w / 2, h / 2, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
     card.DoClick = function()
@@ -98,24 +94,44 @@ function PANEL:AddRegisterCard(name)
             self:ShowAdmin()
         end
     end
+    table.insert(names, name)
+    table.insert(cards, card)
+end
+
+function PANEL:DrawCards(activeID)
+    PrintTable(names)
+    for _, card in ipairs(cards) do        
+        card.Paint = function(s, w, h)
+            if(_ == activeID) then
+                draw.RoundedBoxEx(8, 0, 5, w, h - 5, Color(50, 50, 70, 255), true, true, false, false)
+            else
+                draw.RoundedBoxEx(8, 0, 0, w, h, Color(50, 50, 70, 255), true, true, false, false)
+            end
+            draw.SimpleText(names[_], "DermaDefault", w / 2, h / 2, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end        
+    end
+
 end
 
 function PANEL:ShowQuests()
+    self:DrawCards(1)
     self.questLayout:SetVisible(true)
     self.adminPanel:SetVisible(false)
     self.finishedQuestLayout:SetVisible(false)
 end
 
-function PANEL:ShowAdmin()
-    self.questLayout:SetVisible(false)
-    self.adminPanel:SetVisible(true)
-    self.finishedQuestLayout:SetVisible(false)
-end
-
 function PANEL:ShowFinishedQuests()
+    self:DrawCards(2)
     self.questLayout:SetVisible(false)
     self.adminPanel:SetVisible(false)
     self.finishedQuestLayout:SetVisible(true)
+end
+
+function PANEL:ShowAdmin()
+    self:DrawCards(3)
+    self.questLayout:SetVisible(false)
+    self.adminPanel:SetVisible(true)
+    self.finishedQuestLayout:SetVisible(false)
 end
 
 function PANEL:UpdateQuests(quests, panel, hasButton)

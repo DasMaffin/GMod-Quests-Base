@@ -30,13 +30,13 @@ function PANEL:SetQuest(data)
     self.progressLabel:SetText(("  |  Kills: %d"):format(data.currentKills or 0))
     local descriptionMarkupText
     if LEVELSYSTEM then
-        descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must kill %d </color>%s<color=255,255,255> as </color>%s\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=0, 255, 0>%d premium points</color> and <color=0, 255, 0>%d experience points</color>.</font>"):format(
+        descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must kill %d </color>%s<color=255,255,255> as </color>%s\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=230, 184, 0>%d premium points</color> and <color=0, 30, 201>%d experience points</color>.</font>"):format(
             data.requiredKills,
             getRoleString(data.killedRole),
             getRoleString(data.killerRole),
             data.rewards[1], data.rewards[2], data.rewards[3])
     else
-        descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must kill %d </color>%s<color=255,255,255> as </color>%s\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=0, 255, 0>%d premium points</color>.</font>"):format(
+        descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must kill %d </color>%s<color=255,255,255> as </color>%s\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=230, 184, 0>%d premium points</color>.</font>"):format(
         data.requiredKills,
         getRoleString(data.killedRole),
         getRoleString(data.killerRole),

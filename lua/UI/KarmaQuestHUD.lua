@@ -21,12 +21,12 @@ function PANEL:SetQuest(data)
 
     local descriptionMarkupText
     if LEVELSYSTEM then
-        descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must end </color><color=0,255,0>%d rounds</color><color=255,255,255> with </color><color=0,255,0>%d karma</color><color=255,255,255> or more.</color>\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=0, 255, 0>%d premium points</color> and <color=0, 255, 0>%d experience points</color>.</font>"):format(
+        descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must end </color><color=0,255,0>%d rounds</color><color=255,255,255> with </color><color=0,255,0>%d karma</color><color=255,255,255> or more.</color>\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=230, 184, 0>%d premium points</color> and <color=0, 30, 201>%d experience points</color>.</font>"):format(
             data.requiredRounds,
             data.minKarma,
             data.rewards[1], data.rewards[2], data.rewards[3])
     else
-        descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must end </color><color=0,255,0>%d rounds</color><color=255,255,255> with </color><color=0,255,0>%d karma</color><color=255,255,255> or more.</color>\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=0, 255, 0>%d premium points</color>.</font>"):format(
+        descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must end </color><color=0,255,0>%d rounds</color><color=255,255,255> with </color><color=0,255,0>%d karma</color><color=255,255,255> or more.</color>\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=230, 184, 0>%d premium points</color>.</font>"):format(
         data.requiredRounds,
         data.minKarma,
         data.rewards[1], data.rewards[2])
