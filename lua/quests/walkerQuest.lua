@@ -76,7 +76,7 @@ if SERVER then
             end
             local previousPos = playerPreviousPositions[ply].prevPos
 
-            if previousPos and previousPos ~= currentPos then
+            if previousPos and previousPos ~= currentPos and QuestManager.activeQuests[ply:SteamID64()] then
                 local distance = currentPos:Distance(previousPos)
                 playerPreviousPositions[ply].distance = playerPreviousPositions[ply].distance + distance
                 while playerPreviousPositions[ply].distance >= unitsPerStep do
