@@ -17,7 +17,7 @@ function WalkerQuest:new(args)
         table.remove(args, 1)
     end
 
-    obj.requiredSteps = tonumber(args[2]) or 1
+    obj.requiredSteps = tonumber(args[1]) or 1
     obj.currentSteps = 0
 
     for i = 1, 1 do
