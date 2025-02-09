@@ -1,5 +1,11 @@
-function PrintPink(...)
-    MsgC(Color(255, 105, 180), "[Quests] ", Color(255, 182, 193), ..., "\n") -- HotPink and LightPink
+function PrintPinkLL(msg, logLevel)
+    if logLevel > 0 then
+        MsgC(Color(255, 105, 180), "[Quests] ", Color(255, 182, 193), msg, "\n") -- HotPink and LightPink
+    end
+end
+
+function PrintPink(msg)
+    PrintPinkLL(msg, 0)
 end
 
 function tableIndexByUniqueId(tbl, id)
@@ -22,8 +28,8 @@ function FindPlayerBySteamID64(steamid64)
     return nil -- Return nil if no player is found
 end
 
-PrintPink("----------==============================----------")
-PrintPink("Starting Quest System")
+PrintPinkLL("----------==============================----------", 1)
+PrintPinkLL("Starting Quest System", 1)
 
 
 questsDir = "quests/quests.json"
@@ -77,5 +83,5 @@ else
     end)
 end
 
-PrintPink("Quest System Loaded")
-PrintPink("----------==============================----------")
+PrintPinkLL("Quest System Loaded", 1)
+PrintPinkLL("----------==============================----------", 1)

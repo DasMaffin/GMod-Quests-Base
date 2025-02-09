@@ -1,7 +1,7 @@
 local path = "quests/"
 
 if not file.Exists(path, "LUA") then
-    PrintPink("Path not found: " .. path)
+    PrintPinkLL("Path not found: " .. path, 1)
     return nil
 end
 
@@ -20,7 +20,7 @@ for _, filePath in ipairs(filePaths) do
     AddCSLuaFile(filePath)
 
     include(filePath)
-    PrintPink("Loaded quests for \"" .. filePath .. "\"")
+    PrintPinkLL("Loaded quests for \"" .. filePath .. "\"", 1)
 end
 
 if file.Exists(questsDir, "DATA") then
