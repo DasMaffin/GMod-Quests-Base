@@ -37,6 +37,39 @@ function PANEL:SetQuest(data)
         surface.SetMaterial(Material("killQuest.png"))
         surface.DrawTexturedRect(0, 0, w, h)
     end
+    local margin = 250 + 24 + 2
+    if data.finishInOneRound and data.finishInOneRound ~= "0" then
+        self.finishInOneImage = vgui.Create("DPanel", self)
+        self.finishInOneImage:SetSize(24, 24)
+        self.finishInOneImage:Center()    
+        self.finishInOneImage:SetContentAlignment(4) 
+        self.finishInOneImage:SetPos(margin, self.title:GetTall() + 13)
+        self.finishInOneImage:SetTooltip("This quest must be completed in one round!")
+        margin = margin + 24 + 2
+        function self.finishInOneImage:Paint(w, h)
+            surface.SetDrawColor(255, 255, 255, 255)
+            
+            -- Draw the image
+            surface.SetMaterial(Material("oneRoundQuestModifier.png"))
+            surface.DrawTexturedRect(0, 0, w, h)
+        end
+    end
+    if data.headshotsOnly and data.headshotsOnly == true then
+        self.headshotImage = vgui.Create("DPanel", self)
+        self.headshotImage:SetSize(24, 24)
+        self.headshotImage:Center()    
+        self.headshotImage:SetContentAlignment(4) 
+        self.headshotImage:SetPos(margin, self.title:GetTall() + 13)
+        self.headshotImage:SetTooltip("This quest only counts progress with headshots!")
+        margin = margin + 24 + 2
+        function self.headshotImage:Paint(w, h)
+            surface.SetDrawColor(255, 255, 255, 255)
+            
+            -- Draw the image
+            surface.SetMaterial(Material("headshotQuestModifier.png"))
+            surface.DrawTexturedRect(0, 0, w, h)
+        end
+    end
 
     local descriptionMarkupText
     if LEVELSYSTEM then

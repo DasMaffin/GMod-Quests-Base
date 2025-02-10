@@ -25,6 +25,23 @@ function PANEL:SetQuest(data)
         surface.SetMaterial(Material("walkerQuest.png"))
         surface.DrawTexturedRect(0, 0, w, h)
     end
+    local margin = 250 + 24 + 2
+    if data.finishInOneRound and data.finishInOneRound ~= "0" then
+        self.finishInOneImage = vgui.Create("DPanel", self)
+        self.finishInOneImage:SetSize(24, 24)
+        self.finishInOneImage:Center()    
+        self.finishInOneImage:SetContentAlignment(4) 
+        self.finishInOneImage:SetPos(margin, self.title:GetTall() + 13)
+        self.finishInOneImage:SetTooltip("This quest must be completed in one round!")
+        margin = margin + 24 + 2
+        function self.finishInOneImage:Paint(w, h)
+            surface.SetDrawColor(255, 255, 255, 255)
+            
+            -- Draw the image
+            surface.SetMaterial(Material("oneRoundQuestModifier.png"))
+            surface.DrawTexturedRect(0, 0, w, h)
+        end
+    end
 
     -- REGION DESCRIPTION --
 
