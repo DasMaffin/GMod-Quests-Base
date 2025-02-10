@@ -47,7 +47,7 @@ function PANEL:SetQuest(data)
 
     local descriptionMarkupText
     if LEVELSYSTEM then
-        descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must walk %d steps.</color>\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=230, 184, 0>%d premium points</color> and <color=0, 30, 201>%d experience points</color>.</font>"):format(
+        descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must walk %d steps.</color>\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=230, 184, 0>%d premium points</color> and <color=52, 189, 235>%d experience points</color>.</font>"):format(
             data.requiredSteps,
             data.rewards[1], data.rewards[2], data.rewards[3])
     else
