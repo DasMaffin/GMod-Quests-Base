@@ -17,6 +17,15 @@ function PANEL:SetQuest(data)
     self.requirementLabel:SetText(("Required Steps: %d"):format(data.requiredSteps or 0))
     self.progressLabel:SetText(("  |  Steps: %d"):format(data.currentSteps or 0))
 
+    self.questTypeImage:SetTooltip("This quest is a walker-quest!")
+    function self.questTypeImage:Paint(w, h)
+        surface.SetDrawColor(255, 255, 255, 255)
+        
+        -- Draw the image
+        surface.SetMaterial(Material("walkerQuest.png"))
+        surface.DrawTexturedRect(0, 0, w, h)
+    end
+
     -- REGION DESCRIPTION --
 
     local descriptionMarkupText

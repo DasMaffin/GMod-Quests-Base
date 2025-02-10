@@ -27,7 +27,17 @@ end
 function PANEL:SetQuest(data)
     self.title:SetText(data.title or "Kill Quest")
     self.requirementLabel:SetText(("Required Kills: %d"):format(data.requiredKills or 0))
-    self.progressLabel:SetText(("  |  Kills: %d"):format(data.currentKills or 0))
+    self.progressLabel:SetText(("  |  Kills: %d"):format(data.currentKills or 0))    
+   
+    self.questTypeImage:SetTooltip("This quest is a kill-quest!")
+    function self.questTypeImage:Paint(w, h)
+        surface.SetDrawColor(255, 255, 255, 255)
+        
+        -- Draw the image
+        surface.SetMaterial(Material("killQuest.png"))
+        surface.DrawTexturedRect(0, 0, w, h)
+    end
+
     local descriptionMarkupText
     if LEVELSYSTEM then
         descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must kill %d </color>%s<color=255,255,255> as </color>%s\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=230, 184, 0>%d premium points</color> and <color=0, 30, 201>%d experience points</color>.</font>"):format(

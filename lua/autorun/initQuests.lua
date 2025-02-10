@@ -31,6 +31,9 @@ end
 PrintPinkLL("----------==============================----------", 1)
 PrintPinkLL("Starting Quest System", 1)
 
+if SERVER then 
+    resource.AddWorkshop("3424588083")
+end
 
 questsDir = "quests/quests.json"
 file.CreateDir("quests")

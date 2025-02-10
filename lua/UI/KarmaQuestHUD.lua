@@ -17,6 +17,15 @@ function PANEL:SetQuest(data)
     self.requirementLabel:SetText(("Required Rounds: %d"):format(data.requiredRounds or 0))
     self.progressLabel:SetText(("  |  Rounds: %d"):format(data.currentRounds or 0))
 
+    self.questTypeImage:SetTooltip("This quest is a karma-quest!")
+    function self.questTypeImage:Paint(w, h)
+        surface.SetDrawColor(255, 255, 255, 255)
+        
+        -- Draw the image
+        surface.SetMaterial(Material("karmaQuest.png"))
+        surface.DrawTexturedRect(0, 0, w, h)
+    end
+
     -- REGION DESCRIPTION --
 
     local descriptionMarkupText

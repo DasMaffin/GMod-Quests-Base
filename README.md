@@ -1,5 +1,7 @@
 # GMod Quests
-
+## Requirements
+### Icons:
+https://steamcommunity.com/sharedfiles/filedetails/?id=3424588083
 ## ConCommands:
 ### ttt_quest_menu
 Usage: ttt_quest_menu<br />
@@ -39,7 +41,7 @@ e.g.:<br />
 #### KarmaQuest parameters:
 [minKarma] [rounds] <br />
 e.g.:<br />
-- AddQuest WalkerQuest 50 0 1200 5 50000 200 25000
+- AddQuest KarmaQuest 50 0 1200 5 50000 200 25000
 
 
 ## Development
