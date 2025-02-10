@@ -144,16 +144,16 @@ function PANEL:UpdateQuests(quests, panel, hasButton)
         if IsValid(questPanel) then
             questPanel:SetQuest(questData)
             questPanel:SetSize(self:GetWide() - 20, 70)
-            questPanel.targetHeight = 105
+            questPanel.targetHeight = 125
             questPanel.animationSpeed = 10
 
             function questPanel:OnMousePressed(mouseCode)
                 if mouseCode == MOUSE_LEFT then
                     local parent = self:GetParent()
-                    if self.targetHeight == 105 then
+                    if self.targetHeight == 125 then
                         self.targetHeight = 350
                     else
-                        self.targetHeight = 105
+                        self.targetHeight = 125
                         parent:SetSize(parent:GetWide(), parent:GetTall() - 245)
                     end
                     parent:InvalidateLayout() -- Force parent layout to update

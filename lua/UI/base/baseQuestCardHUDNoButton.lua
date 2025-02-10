@@ -56,6 +56,14 @@ function BaseQuestCardNoButton:Init()
     self.progressBar:Dock(TOP)
     self.progressBar:DockMargin(0, 5, 5, 0)
 
+    self.rewardsPreview = vgui.Create("DPanel", self.content)
+    self.rewardsPreview:Dock(TOP)
+    self.rewardsPreview:DockMargin(0, 0, 0, 0)
+    self.rewardsPreview:SetSize(24, 24)
+    self.rewardsPreview:Center()    
+    self.rewardsPreview:SetContentAlignment(4)
+    self.rewardsPreview.Paint = nil
+
     self.descriptionLabel = vgui.Create("DLabel", self.content)
     self.descriptionLabel:Dock(TOP)
     self.descriptionLabel:DockMargin(0, 5, 0, 0)
