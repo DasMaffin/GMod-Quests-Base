@@ -115,8 +115,12 @@ if SERVER then
     end)
 
     net.Receive("NotifyServerOfClientReady", function(len, ply)
-        if not QuestManager.activeQuests[steamID] or not #QuestManager.activeQuests[steamID] > 0 then
-            RerollQuests(ply)        
+        if not QuestManager.activeQuests[ply:SteamID64()] or not (#QuestManager.activeQuests[ply:SteamID64()] > 0) then
+            RerollQuests(ply)      
+        else
+            for _, q in ipairs(QuestManager.activeQuests[ply:SteamID64()]) do
+                q.player = ply
+            end
         end
     end)
 
