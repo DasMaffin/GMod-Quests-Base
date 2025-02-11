@@ -170,6 +170,7 @@ if CLIENT then
 
     net.Receive("SynchronizeActiveQuests", function(len)
         local quests = net.ReadTable()
+        hook.Run("UpdateFinishedQuests", QuestManager.finishedQuests)
         hook.Run("QuestsUpdated", quests)
     end)
 

@@ -232,7 +232,7 @@ hook.Add("UpdateFinishedQuests", "UpdateFinishedQuestHUD", function(questsTable)
     if not IsValid(baseHUD) then
         baseHUD = vgui.Create("BaseHUD")
     end
-    
+    PrintTable(questsTable)
     baseHUD:UpdateQuests(questsTable, baseHUD.finishedQuestLayout, false)
 end)
 

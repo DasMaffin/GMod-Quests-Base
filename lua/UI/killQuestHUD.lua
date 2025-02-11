@@ -44,7 +44,7 @@ function PANEL:SetQuest(data)
         self.finishInOneImage:Center()    
         self.finishInOneImage:SetContentAlignment(4) 
         self.finishInOneImage:SetPos(margin, self.title:GetTall() + 13)
-        self.finishInOneImage:SetTooltip("This quest must be completed in consecutive rounds!")
+        self.finishInOneImage:SetTooltip("This quest must be completed in one round!")
         margin = margin + 24 + 2
         function self.finishInOneImage:Paint(w, h)
             surface.SetDrawColor(255, 255, 255, 255)
