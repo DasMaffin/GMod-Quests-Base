@@ -5,7 +5,7 @@ function PrintPinkLL(msg, logLevel)
 end
 
 function PrintPink(msg)
-    PrintPinkLL(msg, 1)
+    PrintPinkLL(msg, 0)
 end
 
 function tableIndexByUniqueId(tbl, id)
