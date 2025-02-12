@@ -164,8 +164,10 @@ if CLIENT then
     end)
 
     concommand.Add("RerollQuests", function(ply, cmd, args)
-        net.Start("RerollQuests")
-        net.SendToServer()
+        if ULib.ucl.query(LocalPlayer(), "quests.reroll") then
+            net.Start("RerollQuests")
+            net.SendToServer()
+        end
     end)
 
     net.Receive("SynchronizeActiveQuests", function(len)
