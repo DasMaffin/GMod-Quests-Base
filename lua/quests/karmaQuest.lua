@@ -1,5 +1,5 @@
 KarmaQuest = setmetatable({}, {__index = QuestBase})
-KarmaQuest.__index = KillQuest
+KarmaQuest.__index = KarmaQuest
 
 QuestManager.questTypes.KarmaQuest = KarmaQuest
 
