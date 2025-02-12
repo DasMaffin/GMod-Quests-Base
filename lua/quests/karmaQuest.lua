@@ -62,7 +62,7 @@ function KarmaQuest:GiveRewards(quest, ply)
 end
 
 function KarmaQuest:RoundComplete(quest)
-    if not quest.completed and quest.type == "KarmaQuest" and quest.player:GetBaseKarma() >= quest.minKarma then
+    if not quest.completed and quest.type == "KarmaQuest" and IsValid(quest.player) and quest.player:GetBaseKarma() >= quest.minKarma then
         KarmaQuest:Update(quest)
     elseif not quest.completed and quest.type == "KarmaQuest" and quest.finishInOneRound and quest.finishInOneRound ~= "0" then
         KarmaQuest:Reset(quest)
