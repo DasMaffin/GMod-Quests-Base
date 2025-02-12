@@ -28,3 +28,9 @@ if file.Exists(questsDir, "DATA") then
 else
     QuestManager.availableQuests = {}
 end
+
+if file.Exists(activeQuestsDir, "DATA") then
+    QuestManager.activeQuests = util.JSONToTable(file.Read(activeQuestsDir, "DATA"), true, true)
+else
+    QuestManager.activeQuests = {}
+end

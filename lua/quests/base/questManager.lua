@@ -81,7 +81,9 @@ if SERVER then
                 questChosen.player = ply
                 table.insert(QuestManager.activeQuests[steamID], DeepCopy(questChosen))
                 table.RemoveByValue(questsToChoseFrom, questChosen)
-            end
+            end            
+            file.Write(activeQuestsDir, util.TableToJSON(QuestManager.activeQuests, true)) 
+
             net.Start("SynchronizeActiveQuests")
             net.WriteTable(QuestManager.activeQuests[steamID])
             net.Send(ply)
@@ -144,6 +146,50 @@ if SERVER then
 
     net.Receive("RerollQuests", function(len, ply)
         RerollQuests(ply)
+    end)
+
+    local function CalculateDelayUntilExecution()
+        local currentTime = os.date("*t")
+    
+        local executeTime = GetConVar("daily_reroll_time"):GetString()
+        local hour, minute = executeTime:match("(%d+):(%d+)")
+        hour = tonumber(hour)
+        minute = tonumber(minute)
+    
+        local currentSeconds = currentTime.hour * 3600 + currentTime.min * 60 + currentTime.sec
+        local executeSeconds = hour * 3600 + minute * 60
+    
+        local delay
+        if executeSeconds > currentSeconds then
+            delay = executeSeconds - currentSeconds
+        else
+            delay = (24 * 3600) - (currentSeconds - executeSeconds)
+        end
+    
+        return delay
+    end
+
+    local function RerollAll()
+        print("Executing reroll quests at " .. os.date("%H:%M"))
+        QuestManager.activeQuests = {}
+        for _, p in ipairs(player.GetAll()) do
+            RerollQuests(p)
+        end
+    end
+
+    local function ScheduleNextExecution()
+        timer.Remove("DailyExecutionTimer")
+        local delay = CalculateDelayUntilExecution()
+        timer.Create("DailyRerollTimer", delay, 1, function()
+            RerollAll()
+            timer.Create("DailyRerollTimer", 24 * 3600, 0, RerollAll)
+        end)
+    end
+
+    ScheduleNextExecution()
+   
+    cvars.AddChangeCallback("daily_reroll_time", function(convar_name, old_value, new_value)
+        ScheduleNextExecution()
     end)
 end
 

@@ -3,7 +3,8 @@
 ### Icons:
 https://steamcommunity.com/sharedfiles/filedetails/?id=3424588083
 ## ConVars
-- quests_startingQuests [num] - The amount of quests available to a player by default.
+- quests_startingQuests [num] - The amount of quests available to a player by default. 1 by default
+- daily_reroll_time [HH:mm] - The time the quests get reset. 00:00 by default.
 ## ConCommands:
 ### ttt_quest_menu
 Usage: ttt_quest_menu<br />
