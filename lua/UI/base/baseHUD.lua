@@ -99,7 +99,6 @@ function PANEL:AddRegisterCard(name)
 end
 
 function PANEL:DrawCards(activeID)
-    PrintTable(names)
     for _, card in ipairs(cards) do        
         card.Paint = function(s, w, h)
             if(_ == activeID) then
@@ -232,7 +231,6 @@ hook.Add("UpdateFinishedQuests", "UpdateFinishedQuestHUD", function(questsTable)
     if not IsValid(baseHUD) then
         baseHUD = vgui.Create("BaseHUD")
     end
-    PrintTable(questsTable)
     baseHUD:UpdateQuests(questsTable, baseHUD.finishedQuestLayout, false)
 end)
 
