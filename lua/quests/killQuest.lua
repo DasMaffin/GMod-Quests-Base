@@ -43,6 +43,7 @@ function KillQuest:Update(quest)
     if quest.currentKills >= quest.requiredKills then
         KillQuest:Complete(quest)
     end
+    QuestBase:Update(quest)
 end
 
 function KillQuest:OnComplete(quest)

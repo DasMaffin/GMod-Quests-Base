@@ -39,7 +39,7 @@ questsDir = "quests/quests.json"
 activeQuestsDir = "quests/activeQuests.json"
 file.CreateDir("quests")
 
-CreateConVar("quests_startingQuests", 1, FCVAR_NOTIFY)
+CreateConVar("quests_startingQuests", "1", FCVAR_NOTIFY)
 CreateConVar("daily_reroll_time", "00:00", FCVAR_NOTIFY, "Time of day to execute the function (HH:MM)")
 
 AddCSLuaFile("quests/base/questBase.lua")

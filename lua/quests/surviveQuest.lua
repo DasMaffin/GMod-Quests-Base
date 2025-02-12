@@ -37,6 +37,7 @@ function SurviveQuest:Update(quest)
     if quest.currentRounds >= quest.requiredRounds then
         SurviveQuest:Complete(quest)
     end
+    QuestBase:Update(quest)
 end
 
 function SurviveQuest:OnComplete(quest)

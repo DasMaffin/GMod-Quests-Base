@@ -21,6 +21,7 @@ function QuestBase:OnStart(...)
 end
 
 function QuestBase:Update(...)
+    file.Write(activeQuestsDir, util.TableToJSON(QuestManager.activeQuests, true)) -- TODO: This now overwrites everything. See if it can be made more efficient finding and overriding only whats needed
     -- To be overridden by subclasses
 end
 

@@ -67,7 +67,7 @@ if SERVER then
         if #QuestManager.availableQuests > 0 then
             QuestManager.activeQuests[steamID] = {}
             local questsToChoseFrom = DeepCopy(QuestManager.availableQuests)
-            for i = 1, math.min(GetConVar("quests_startingQuests"), #QuestManager.availableQuests) do -- The amount of quests given.
+            for i = 1, math.min(GetConVar("quests_startingQuests"):GetInt(), #QuestManager.availableQuests) do -- The amount of quests given.
                 local questChosen
                 local totalQuestsWeight = totalQuestsWeight(questsToChoseFrom)
                 for _, quest in ipairs(questsToChoseFrom) do
@@ -120,6 +120,7 @@ if SERVER then
         if not QuestManager.activeQuests[ply:SteamID64()] or not (#QuestManager.activeQuests[ply:SteamID64()] > 0) then
             RerollQuests(ply)      
         else
+            PrintTable(QuestManager.activeQuests)
             for _, q in ipairs(QuestManager.activeQuests[ply:SteamID64()]) do
                 q.player = ply
             end

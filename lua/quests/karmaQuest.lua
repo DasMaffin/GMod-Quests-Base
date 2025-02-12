@@ -38,6 +38,7 @@ function KarmaQuest:Update(quest)
     if quest.currentRounds >= quest.requiredRounds then
         KarmaQuest:Complete(quest)
     end
+    QuestBase:Update(quest)
 end
 
 function KarmaQuest:OnComplete(quest)

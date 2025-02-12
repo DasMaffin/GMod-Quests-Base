@@ -39,6 +39,7 @@ function WalkerQuest:Update(quest, steps)
             WalkerQuest:Complete(quest)
         end
     end
+    QuestBase:Update(quest)
 end
 
 function WalkerQuest:OnComplete(quest)
