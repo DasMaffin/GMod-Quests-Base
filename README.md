@@ -2,6 +2,9 @@
 ## Requirements
 ### Icons:
 https://steamcommunity.com/sharedfiles/filedetails/?id=3424588083
+## ULX Access
+- quests.manage - Grants access to the admin interface and ability to create new quests.
+- quests.reroll - Grants access to the RerollQuests console command
 ## ConVars
 - quests_startingQuests [num] - The amount of quests available to a player by default. 1 by default
 - daily_reroll_time [HH:mm] - The time the quests get reset. 00:00 by default.

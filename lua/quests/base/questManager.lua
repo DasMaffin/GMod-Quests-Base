@@ -196,6 +196,10 @@ end
 if CLIENT then
     -- Console Command to Add Quest
     concommand.Add("AddQuest", function(ply, cmd, args)
+        if not ULib.ucl.query(LocalPlayer(), "quests.manage") then
+            PrintPink("You do not have access to this command!")
+            return
+        end
         if not args[1] then
             PrintPink("Usage: AddQuest <QuestType> [parameters]")
             return
