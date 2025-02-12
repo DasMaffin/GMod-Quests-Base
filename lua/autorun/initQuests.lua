@@ -38,6 +38,8 @@ end
 questsDir = "quests/quests.json"
 file.CreateDir("quests")
 
+CreateConVar("quests_startingQuests", "1", FCVAR_NOTIFY)
+
 AddCSLuaFile("quests/base/questBase.lua")
 AddCSLuaFile("quests/base/questManager.lua")
 AddCSLuaFile("quests/base/loadQuests.lua")

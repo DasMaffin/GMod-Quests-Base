@@ -2,6 +2,8 @@
 ## Requirements
 ### Icons:
 https://steamcommunity.com/sharedfiles/filedetails/?id=3424588083
+## ConVars
+- quests_startingQuests [num] - The amount of quests available to a player by default.
 ## ConCommands:
 ### ttt_quest_menu
 Usage: ttt_quest_menu<br />

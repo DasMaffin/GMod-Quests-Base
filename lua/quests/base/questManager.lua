@@ -67,7 +67,7 @@ if SERVER then
         if #QuestManager.availableQuests > 0 then
             QuestManager.activeQuests[steamID] = {}
             local questsToChoseFrom = DeepCopy(QuestManager.availableQuests)
-            for i = 1, math.min(6, #QuestManager.availableQuests) do -- The amount of quests given.
+            for i = 1, math.min(GetConVar("quests_startingQuests"), #QuestManager.availableQuests) do -- The amount of quests given.
                 local questChosen
                 local totalQuestsWeight = totalQuestsWeight(questsToChoseFrom)
                 for _, quest in ipairs(questsToChoseFrom) do
