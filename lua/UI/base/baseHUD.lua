@@ -220,6 +220,7 @@ end
 local baseHUD
 
 hook.Add("QuestsUpdated", "UpdateQuestHUD", function(questsTable)
+    PrintPink("ab")
     if not IsValid(baseHUD) then
         baseHUD = vgui.Create("BaseHUD")
     end
@@ -227,7 +228,8 @@ hook.Add("QuestsUpdated", "UpdateQuestHUD", function(questsTable)
     baseHUD:UpdateQuests(questsTable, baseHUD.questLayout, true)
 end)
 
-hook.Add("UpdateFinishedQuests", "UpdateFinishedQuestHUD", function(questsTable)
+hook.Add("UpdateFinishedQuests", "UpdateFinishedQuestHUD", function(questsTable)    
+    PrintPink("aa")
     if not IsValid(baseHUD) then
         baseHUD = vgui.Create("BaseHUD")
     end

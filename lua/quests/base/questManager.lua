@@ -82,6 +82,7 @@ if SERVER then
                 table.insert(QuestManager.activeQuests[steamID], DeepCopy(questChosen))
                 table.RemoveByValue(questsToChoseFrom, questChosen)
             end            
+            QuestManager.activeQuests[ply:SteamID64()].finishedAll = false
             file.Write(activeQuestsDir, util.TableToJSON(QuestManager.activeQuests, true)) 
 
             net.Start("SynchronizeActiveQuests")
@@ -117,8 +118,8 @@ if SERVER then
     end)
 
     net.Receive("NotifyServerOfClientReady", function(len, ply)
-        if not QuestManager.activeQuests[ply:SteamID64()] or not (#QuestManager.activeQuests[ply:SteamID64()] > 0) then
-            RerollQuests(ply)      
+        if not QuestManager.activeQuests[ply:SteamID64()] or (#QuestManager.activeQuests[ply:SteamID64()] == 0 and QuestManager.activeQuests[ply:SteamID64()].finishedAll == false)  then
+            RerollQuests(ply)
         else
             for _, q in ipairs(QuestManager.activeQuests[ply:SteamID64()]) do
                 q.player = ply
@@ -137,7 +138,7 @@ if SERVER then
     end)
 
     net.Receive("QuestMenuOpened", function(len, ply)
-        if QuestManager.activeQuests[ply:SteamID64()] and #QuestManager.activeQuests[ply:SteamID64()] > 0 then
+        if QuestManager.activeQuests[ply:SteamID64()] then
             net.Start("SynchronizeActiveQuests")
             net.WriteTable(QuestManager.activeQuests[ply:SteamID64()])
             net.Send(ply)
@@ -222,8 +223,11 @@ if CLIENT then
 
     net.Receive("SynchronizeActiveQuests", function(len)
         local quests = net.ReadTable()
+        PrintPink("a")
         hook.Run("UpdateFinishedQuests", QuestManager.finishedQuests)
+        PrintPink("b")
         hook.Run("QuestsUpdated", quests)
+        PrintPink("c")
     end)
 
     hook.Add("InitPostEntity", "NotifyServerOfClientReady", function()

@@ -39,6 +39,8 @@ end
 
 function QuestBase:GiveRewards(quest)
     table.remove(QuestManager.activeQuests[quest.player:SteamID64()], tableIndexByUniqueId(QuestManager.activeQuests[quest.player:SteamID64()], quest.uniqueId))
+    if #QuestManager.activeQuests[quest.player:SteamID64()] == 0 then QuestManager.activeQuests[quest.player:SteamID64()].finishedAll = true end
+    file.Write(activeQuestsDir, util.TableToJSON(QuestManager.activeQuests, true))
     net.Start("SendQuestFinished")
     net.WriteTable(quest)
     net.Send(quest.player)
