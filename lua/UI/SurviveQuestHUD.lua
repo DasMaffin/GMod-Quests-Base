@@ -42,76 +42,80 @@ function PANEL:SetQuest(data)
             surface.DrawTexturedRect(0, 0, w, h)
         end
     end
-    
-    --- REGION REWARD PREVIEWS ---
-
-    self.pointRewardsImage = vgui.Create("DPanel", self.rewardsPreview)
-    self.pointRewardsImage:Dock(LEFT)
-    self.pointRewardsImage:SetSize(24, 24)
-    self.pointRewardsImage:Center()
-    self.pointRewardsImage:SetContentAlignment(4)
-    function self.pointRewardsImage:Paint(w, h)
-        surface.SetDrawColor(255, 255, 255, 255)
-        
-        -- Draw the image
-        surface.SetMaterial(Material("pointshop2/dollar103.png"))
-        surface.DrawTexturedRect(0, 0, w, h)
-    end
-    self.pointRewardsLabel = vgui.Create("DLabel", self.rewardsPreview)
-    self.pointRewardsLabel:Dock(LEFT)
-    self.pointRewardsLabel:DockMargin(5, 0, 0, 0)
-    self.pointRewardsLabel:SetTextColor(Color(0, 255, 0))
-    self.pointRewardsLabel:SetText(data.rewards[1])
-
-    self.premPointRewardsImage = vgui.Create("DPanel", self.rewardsPreview)
-    self.premPointRewardsImage:Dock(LEFT)
-    self.premPointRewardsImage:SetSize(24, 24)
-    self.premPointRewardsImage:Center()
-    self.premPointRewardsImage:SetContentAlignment(4)
-    function self.premPointRewardsImage:Paint(w, h)
-        surface.SetDrawColor(255, 255, 255, 255)
-        
-        -- Draw the image
-        surface.SetMaterial(Material("pointshop2/donation.png"))
-        surface.DrawTexturedRect(0, 0, w, h)
-    end
-    self.premPointRewardsLabel = vgui.Create("DLabel", self.rewardsPreview)
-    self.premPointRewardsLabel:Dock(LEFT)
-    self.premPointRewardsLabel:DockMargin(5, 0, 0, 0)
-    self.premPointRewardsLabel:SetTextColor(Color(230, 184, 0))
-    self.premPointRewardsLabel:SetText(data.rewards[2])
-
-    self.XPRewardsImage = vgui.Create("DPanel", self.rewardsPreview)
-    self.XPRewardsImage:Dock(LEFT)
-    self.XPRewardsImage:SetSize(24, 24)
-    self.XPRewardsImage:Center()
-    self.XPRewardsImage:SetContentAlignment(4)
-    function self.XPRewardsImage:Paint(w, h)
-        surface.SetDrawColor(255, 255, 255, 255)
-        
-        -- Draw the image
-        surface.SetMaterial(Material("rewardXP.png"))
-        surface.DrawTexturedRect(0, 0, w, h)
-    end
-    self.XPRewardsLabel = vgui.Create("DLabel", self.rewardsPreview)
-    self.XPRewardsLabel:Dock(LEFT)
-    self.XPRewardsLabel:DockMargin(5, 0, 0, 0)
-    self.XPRewardsLabel:SetTextColor(Color(52, 189, 235))
-    self.XPRewardsLabel:SetText(data.rewards[3])
-
-    --- ENDREGION REWARD PREVIEWS ---
 
     -- REGION DESCRIPTION --
 
     local descriptionMarkupText
-    if LEVELSYSTEM then
-        descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must survive %d rounds.</color>\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=230, 184, 0>%d premium points</color> and <color=52, 189, 235>%d experience points</color>.</font>"):format(
-            data.requiredRounds,
-            data.rewards[1], data.rewards[2], data.rewards[3])
-    else
-        descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must survive %d rounds.</color>\n\n<color=255,255,255>Rewards: <color=0, 255, 0>%d standard points</color>, <color=230, 184, 0>%d premium points</color>.</font>"):format(
-        data.requiredRounds,
-        data.rewards[1], data.rewards[2])
+    descriptionMarkupText = ("<font=CustomFont><color=255,255,255>You must survive %d rounds.</color>\n\n<color=255,255,255>Rewards: </font>"):format(
+        data.requiredRounds
+    )
+    for _, reward in ipairs(data.rewards) do
+        if reward and reward != "0" then
+            if _ == 1 then
+                self.pointRewardsImage = vgui.Create("DPanel", self.rewardsPreview)
+                self.pointRewardsImage:Dock(LEFT)
+                self.pointRewardsImage:SetSize(24, 24)
+                self.pointRewardsImage:Center()
+                self.pointRewardsImage:SetContentAlignment(4)
+                function self.pointRewardsImage:Paint(w, h)
+                    surface.SetDrawColor(255, 255, 255, 255)
+                    
+                    -- Draw the image
+                    surface.SetMaterial(Material("pointshop2/dollar103.png"))
+                    surface.DrawTexturedRect(0, 0, w, h)
+                end
+                self.pointRewardsLabel = vgui.Create("DLabel", self.rewardsPreview)
+                self.pointRewardsLabel:Dock(LEFT)
+                self.pointRewardsLabel:DockMargin(5, 0, 0, 0)
+                self.pointRewardsLabel:SetTextColor(Color(0, 255, 0))
+                self.pointRewardsLabel:SetText(data.rewards[1])            
+                descriptionMarkupText = descriptionMarkupText .. ("<font=CustomFont><color=0, 255, 0>%d standard points</color>. </font>"):format(
+                    reward
+                )
+            elseif _ == 2 then 
+                self.premPointRewardsImage = vgui.Create("DPanel", self.rewardsPreview)
+                self.premPointRewardsImage:Dock(LEFT)
+                self.premPointRewardsImage:SetSize(24, 24)
+                self.premPointRewardsImage:Center()
+                self.premPointRewardsImage:SetContentAlignment(4)
+                function self.premPointRewardsImage:Paint(w, h)
+                    surface.SetDrawColor(255, 255, 255, 255)
+                    
+                    -- Draw the image
+                    surface.SetMaterial(Material("pointshop2/donation.png"))
+                    surface.DrawTexturedRect(0, 0, w, h)
+                end
+                self.premPointRewardsLabel = vgui.Create("DLabel", self.rewardsPreview)
+                self.premPointRewardsLabel:Dock(LEFT)
+                self.premPointRewardsLabel:DockMargin(5, 0, 0, 0)
+                self.premPointRewardsLabel:SetTextColor(Color(230, 184, 0))
+                self.premPointRewardsLabel:SetText(data.rewards[2])
+                descriptionMarkupText = descriptionMarkupText .. ("<font=CustomFont><color=230, 184, 0>%d premium points</color>. </font>"):format(
+                reward
+            )
+            elseif _ == 3 then 
+                self.XPRewardsImage = vgui.Create("DPanel", self.rewardsPreview)
+                self.XPRewardsImage:Dock(LEFT)
+                self.XPRewardsImage:SetSize(24, 24)
+                self.XPRewardsImage:Center()
+                self.XPRewardsImage:SetContentAlignment(4)
+                function self.XPRewardsImage:Paint(w, h)
+                    surface.SetDrawColor(255, 255, 255, 255)
+                    
+                    -- Draw the image
+                    surface.SetMaterial(Material("rewardXP.png"))
+                    surface.DrawTexturedRect(0, 0, w, h)
+                end
+                self.XPRewardsLabel = vgui.Create("DLabel", self.rewardsPreview)
+                self.XPRewardsLabel:Dock(LEFT)
+                self.XPRewardsLabel:DockMargin(5, 0, 0, 0)
+                self.XPRewardsLabel:SetTextColor(Color(52, 189, 235))
+                self.XPRewardsLabel:SetText(data.rewards[3])
+                descriptionMarkupText = descriptionMarkupText .. ("<font=CustomFont><color=52, 189, 235>%d experience points</color>.</font>"):format(
+                reward
+            )
+            end
+        end
     end
     if data.finishInOneRound ~= "0" then
         descriptionMarkupText = descriptionMarkupText .. "\n\n<font=CustomFont>These rounds must be consecutive!"
