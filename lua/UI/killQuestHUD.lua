@@ -18,7 +18,7 @@ local function getRoleString(roleValue)
     elseif roleValue == 1 or roleValue == "1" then
         return "<color=255,0,0>Traitor</color>" -- Red
     elseif roleValue == 2 or roleValue == "2" then
-        return "<color=0,0,255>Detective</color>" -- Blue
+        return "<color=52, 189, 235>Detective</color>" -- Blue
     else
         return "<color=255,255,255>Unknown</color>" -- Fallback (white)
     end
@@ -166,7 +166,7 @@ function PANEL:SetQuest(data)
         if data.completed then
             self.claimButton.Paint = function(s, w, h)
                 draw.RoundedBoxEx(8, 0, 0, w, h, Color(25, 125, 35, 255), true, true, true, true)
-                draw.SimpleText("Claim!", "DermaBold", (w / 2), (h / 2), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                draw.SimpleText("Claim rewards!", "DermaBold", (w / 2), (h / 2), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             end
             self.claimButton.DoClick = function()
                 net.Start("ClaimRewards")
@@ -176,7 +176,7 @@ function PANEL:SetQuest(data)
         else
             self.claimButton.Paint = function(s, w, h)
                 draw.RoundedBoxEx(8, 0, 0, w, h, Color(25, 25, 35, 255), true, true, true, true)
-                draw.SimpleText("Claim!", "DermaDefault", (w / 2), (h / 2), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                draw.SimpleText("Claim rewards!", "DermaDefault", (w / 2), (h / 2), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             end
         end
     end

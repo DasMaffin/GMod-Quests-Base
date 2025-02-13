@@ -80,6 +80,9 @@ if SERVER then
             if previousPos and previousPos ~= currentPos and QuestManager.activeQuests[ply:SteamID64()] then
                 local distance = currentPos:Distance(previousPos)
                 playerPreviousPositions[ply].distance = playerPreviousPositions[ply].distance + distance
+                if playerPreviousPositions[ply].distance >= unitsPerStep * 16 then
+                    playerPreviousPositions[ply].distance = unitsPerStep * 16
+                end
                 while playerPreviousPositions[ply].distance >= unitsPerStep do
                     for _, quest in ipairs(QuestManager.activeQuests[ply:SteamID64()]) do
                         if quest.type == "WalkerQuest" then

@@ -70,6 +70,26 @@ function BaseQuestCardNoButton:Init()
     self.descriptionLabel:SetTextColor(Color(200, 200, 255))
     self.descriptionLabel:SetContentAlignment(4)
     self.descriptionLabel:SetSize(self.content:GetWide(), 250)        
+
+    self.arrowPanel = vgui.Create("DPanel", self.content)
+    self.arrowPanel:Dock(BOTTOM)
+    self.arrowPanel:Center()
+    self.arrowPanel:SetContentAlignment(4)
+    self.arrowPanel.startTime = SysTime()
+    function self.arrowPanel:Paint(w, h)
+        local elapsedTime = SysTime() - self.startTime
+        local t = (elapsedTime % 5) / 5
+        local opacity = 0.2 + 0.8 * (1 - math.abs(2 * t - 1))
+        
+        surface.SetDrawColor(255, 255, 255, opacity * 255)
+        surface.SetMaterial(Material("arrowDown.png"))
+        surface.DrawTexturedRect(0, 0, w, h)
+    end
+
+    function self:PerformLayout(w, h)
+        local margin = (self.content:GetWide() / 2) - 12
+        self.arrowPanel:DockMargin(margin, 0, margin, 0)
+    end
 end
 
 -- Register the base class
