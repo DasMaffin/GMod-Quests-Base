@@ -79,7 +79,7 @@ end
 
 hook.Add("EntityTakeDamage", "EntityDamageExample", function( target, dmginfo )
     if not IsValid(target) or not target:IsPlayer() or not IsValid(dmginfo) then return end
-    for _, quest in ipairs(QuestManager.activeQuests[target:SteamID64()]) do
+    for _, quest in ipairs(QuestManager.activeQuests[target:SteamID64()].quests) do
         if quest.type == "KarmaQuest" then
             quest.wasDamaged = true
         end
@@ -88,7 +88,7 @@ end )
 
 hook.Add("TTTEndRound", "KarmaQuest_TTTEndRound", function(result)
     for key, activeQuests in pairs(QuestManager.activeQuests) do
-        for _, quest in ipairs(activeQuests) do
+        for _, quest in ipairs(activeQuests.quests) do
             KarmaQuest:RoundComplete(quest)
         end
     end

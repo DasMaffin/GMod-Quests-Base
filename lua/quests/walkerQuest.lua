@@ -84,7 +84,7 @@ if SERVER then
                     playerPreviousPositions[ply].distance = unitsPerStep * 16
                 end
                 while playerPreviousPositions[ply].distance >= unitsPerStep do
-                    for _, quest in ipairs(QuestManager.activeQuests[ply:SteamID64()]) do
+                    for _, quest in ipairs(QuestManager.activeQuests[ply:SteamID64()].quests) do
                         if quest.type == "WalkerQuest" then
                             WalkerQuest:Update(quest, 1)
                         end
@@ -100,7 +100,7 @@ if SERVER then
 
     hook.Add("TTTEndRound", "WalkerQuest_TTTEndRound", function(result)
         for key, activeQuests in pairs(QuestManager.activeQuests) do
-            for _, quest in ipairs(activeQuests) do
+            for _, quest in ipairs(activeQuests.quests) do
                 if quest.finishInOneRound ~= "0" and not quest.completed then
                     quest.currentSteps = 0
                 end

@@ -135,7 +135,9 @@ end
 
 function PANEL:UpdateQuests(quests, panel, hasButton)
     panel:Clear()
+    PrintPink("c")
     for _, questData in ipairs(quests) do
+        PrintPink("d")
         local questPanel
         questPanel = vgui.Create(questData.type .. "HUD", panel)
         questPanel:InitWithArgs(hasButton)
@@ -220,16 +222,15 @@ end
 local baseHUD
 
 hook.Add("QuestsUpdated", "UpdateQuestHUD", function(questsTable)
-    PrintPink("ab")
     if not IsValid(baseHUD) then
         baseHUD = vgui.Create("BaseHUD")
     end
+    PrintTable(questsTable)
     
-    baseHUD:UpdateQuests(questsTable, baseHUD.questLayout, true)
+    baseHUD:UpdateQuests(questsTable.quests, baseHUD.questLayout, true)
 end)
 
-hook.Add("UpdateFinishedQuests", "UpdateFinishedQuestHUD", function(questsTable)    
-    PrintPink("aa")
+hook.Add("UpdateFinishedQuests", "UpdateFinishedQuestHUD", function(questsTable)   
     if not IsValid(baseHUD) then
         baseHUD = vgui.Create("BaseHUD")
     end

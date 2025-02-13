@@ -75,7 +75,7 @@ end
 
 hook.Add("TTTEndRound", "SurviveQuest_TTTEndRound", function(result)
     for key, activeQuests in pairs(QuestManager.activeQuests) do
-        for _, quest in ipairs(activeQuests) do
+        for _, quest in ipairs(activeQuests.quests) do
             local ply = FindPlayerBySteamID64(key)
             if ply and not ply:IsSpec() and not quest.completed then
                 SurviveQuest:RoundSurvived(quest)
