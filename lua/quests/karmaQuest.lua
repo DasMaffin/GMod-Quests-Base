@@ -63,7 +63,8 @@ function KarmaQuest:GiveRewards(quest, ply)
 end
 
 function KarmaQuest:RoundComplete(quest)
-    if not quest.completed and quest.type == "KarmaQuest" and IsValid(quest.player) and quest.player:GetBaseKarma() >= quest.minKarma then
+    if not quest.completed and quest.type == "KarmaQuest" and IsValid(quest.player) and quest.player:GetBaseKarma() >= quest.minKarma and (quest.player:Team() ~= TEAM_SPECTATOR or quest.wasDamaged and quest.wasDamaged == true) then
+        quest.wasDamaged = false
         KarmaQuest:Update(quest)
     elseif not quest.completed and quest.type == "KarmaQuest" and quest.finishInOneRound and quest.finishInOneRound ~= "0" then
         KarmaQuest:Reset(quest)
@@ -75,6 +76,15 @@ function KarmaQuest:Reset(quest)
         quest.currentRounds = 0
     end
 end
+
+hook.Add("EntityTakeDamage", "EntityDamageExample", function( target, dmginfo )
+    if not IsValid(target) or not target:IsPlayer() or not IsValid(dmginfo) then return end
+    for _, quest in ipairs(QuestManager.activeQuests[target:SteamID64()]) do
+        if quest.type == "KarmaQuest" then
+            quest.wasDamaged = true
+        end
+    end
+end )
 
 hook.Add("TTTEndRound", "KarmaQuest_TTTEndRound", function(result)
     for key, activeQuests in pairs(QuestManager.activeQuests) do
