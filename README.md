@@ -66,6 +66,9 @@ They are not automatically loaded (unlike quests which are), so make sure you in
 #### QuestsUpdated
 Gets called on the client after it got a new update for the local player's active quests. This sends a table of Quests as argument.
 
+
+#### UpdateFinishedQuests
+#### sendClaimedRewards
 ### Fields
 The fields a quest type has accessible (e.g. for displaying in a UI)
 #### Base

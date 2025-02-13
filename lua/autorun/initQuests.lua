@@ -51,6 +51,7 @@ AddCSLuaFile("UI/base/claimButton.lua")
 AddCSLuaFile("UI/base/baseHUD.lua")
 AddCSLuaFile("UI/base/baseQuestCardHUDNoButton.lua")
 AddCSLuaFile("UI/base/baseQuestCardHUD.lua")
+AddCSLuaFile("ui/base/displayClaimedRewardsHUD.lua")
 AddCSLuaFile("UI/KillQuestHUD.lua")
 AddCSLuaFile("UI/WalkerQuestHUD.lua") 
 AddCSLuaFile("UI/SurviveQuestHUD.lua") 
@@ -67,6 +68,7 @@ else
     include("UI/base/baseHUD.lua")
     include("UI/base/baseQuestCardHUDNoButton.lua")
     include("UI/base/baseQuestCardHUD.lua")
+    include("ui/base/displayClaimedRewardsHUD.lua")
     include("UI/KillQuestHUD.lua") 
     include("UI/WalkerQuestHUD.lua") 
     include("UI/SurviveQuestHUD.lua") 
@@ -83,6 +85,12 @@ else
         surface.CreateFont("DermaBold", {
             font = "Tahoma", -- Font face (e.g., Arial, Roboto, etc.)
             size = 13,      -- Font size in pixels
+            weight = 700,   -- Font weight (e.g., 500 for normal, 700 for bold)
+            antialias = true, -- Enable smooth edges
+        })
+        surface.CreateFont("DermaLargeCustom", {
+            font = "Tahoma", -- Font face (e.g., Arial, Roboto, etc.)
+            size = 36,      -- Font size in pixels
             weight = 700,   -- Font weight (e.g., 500 for normal, 700 for bold)
             antialias = true, -- Enable smooth edges
         })

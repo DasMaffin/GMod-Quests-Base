@@ -135,21 +135,20 @@ end
 
 function PANEL:UpdateQuests(quests, panel, hasButton)
     panel:Clear()
-    PrintPink("c")
     for _, questData in ipairs(quests) do
-        PrintPink("d")
-        local questPanel
-        questPanel = vgui.Create(questData.type .. "HUD", panel)
+        local questPanel = vgui.Create(questData.type .. "HUD", panel)
         questPanel:InitWithArgs(hasButton)
 
         if IsValid(questPanel) then
             questPanel:SetQuest(questData)
-            questPanel:SetSize(self:GetWide() - 20, 70)
+            questPanel:SetSize(self:GetWide() - 20, 125)
             questPanel.targetHeight = 125
             questPanel.animationSpeed = 10
+            questPanel.isAnimating = false
 
             function questPanel:OnMousePressed(mouseCode)
                 if mouseCode == MOUSE_LEFT then
+                    self.isAnimating = true
                     local parent = self:GetParent()
                     if self.targetHeight == 125 then
                         self.targetHeight = 350
@@ -157,17 +156,30 @@ function PANEL:UpdateQuests(quests, panel, hasButton)
                         self.targetHeight = 125
                         parent:SetSize(parent:GetWide(), parent:GetTall() - 245)
                     end
-                    parent:InvalidateLayout() -- Force parent layout to update
+                    parent:InvalidateLayout()
                 end
             end
 
             function questPanel:Think()
-                local currentHeight = self:GetTall()
-                if currentHeight ~= self.targetHeight then
-                    local newHeight = Lerp(FrameTime() * self.animationSpeed, currentHeight, self.targetHeight)
-                    self:SetSize(self:GetWide(), newHeight)
-                    local parent = self:GetParent()
-                    parent:InvalidateLayout() -- Force parent layout to update
+                if self.isAnimating then
+                    local curHeight = self:GetTall()
+                    if self.targetHeight == 125 and curHeight < 125 then
+                        self:SetSize(self:GetWide(), 125)
+                        self.isAnimating = false
+                    else
+                        local newHeight = Lerp(FrameTime() * self.animationSpeed, curHeight, self.targetHeight)
+                        if math.abs(newHeight - self.targetHeight) < 1 then
+                            self:SetSize(self:GetWide(), self.targetHeight)
+                            self.isAnimating = false
+                        else
+                            self:SetSize(self:GetWide(), newHeight)
+                        end
+                    end
+                    self:GetParent():InvalidateLayout()
+                else
+                    if self:GetTall() ~= self.targetHeight then
+                        self:SetSize(self:GetWide(), self.targetHeight)
+                    end
                 end
             end
         end
