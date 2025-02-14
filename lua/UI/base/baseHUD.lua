@@ -1,5 +1,6 @@
 local PANEL = {}
 local BaseHUDisActive = false
+soundState = true
 
 vgui.Register("BaseHUD", PANEL, "EditablePanel")
 
@@ -18,17 +19,61 @@ function PANEL:Init()
     self.closeButton:SetSize(32, 32)
     self.closeButton:SetPos(self:GetWide() - 40, 8)
     self.closeButton:SetText("")
-    self.closeButton:SetFont("DermaLarge")
     self.closeButton.Paint = function(s, w, h)
         draw.RoundedBoxEx(8, 0, 0, w, h, Color(25, 25, 35, 255), true, true, true, true)
-        draw.SimpleText("×", "DermaDefault", (w / 2) - 2, (h / 2) - 2, Color(255, 128, 128), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("×", "DermaBold", (w / 2) - 2, (h / 2) - 2, Color(255, 128, 128), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
     self.closeButton.DoClick = function()
         self:SetVisible(false)
         BaseHUDisActive = false
         gui.EnableScreenClicker(false)
     end
-    
+
+    -- Mute button
+    self.muteButton = vgui.Create("DButton", self)
+    self.muteButton:SetSize(32, 32)
+    self.muteButton:SetPos(self:GetWide() - 40 - 32 - 8, 8)
+    self.muteButton:SetText("")
+    self.muteButton.Paint = function(s, w, h)
+        draw.RoundedBoxEx(8, 0, 0, w, h, Color(25, 25, 35, 255), true, true, true, true)
+    end
+
+    self.loudspeakerIcon = vgui.Create("DPanel", self.muteButton)
+    self.loudspeakerIcon:SetSize(24, 24)
+    self.loudspeakerIcon:SetPos(4, 4)
+    self.loudspeakerIcon:SetMouseInputEnabled(false)
+    function self.loudspeakerIcon:Paint(w, h)
+        surface.SetDrawColor(255, 255, 255, 255)
+        
+        if soundState == true then
+            surface.SetMaterial(Material("soundOn.png"))
+        else
+            surface.SetMaterial(Material("soundOff.png"))
+        end
+        surface.DrawTexturedRect(0, 0, w, h)
+    end
+
+    self.muteButton.DoClick = function()
+        soundState = not soundState
+    end
+
+    -- Info button
+    self.infoButton = vgui.Create("DButton", self)
+    self.infoButton:SetSize(32, 32)
+    self.infoButton:SetPos(self:GetWide() - 40 - 64 - 16, 8)
+    self.infoButton:SetText("")
+    self.infoButton.Paint = function(s, w, h)
+        draw.RoundedBoxEx(8, 0, 0, w, h, Color(25, 25, 35, 255), true, true, true, true)
+        draw.SimpleText("i", "DermaBold", (w / 2), (h / 2) - 2, Color(255, 128, 128), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    end
+    local questMessage = [[
+Quest Basics:
+
+1. You receive 1 quest by default.
+2. After finishing the quest, you can claim your rewards by clicking the 'Claim Rewards!' button.
+3. To view more details about a quest, simply click anywhere on the quest to open it up and reveal additional information.]]
+    self.infoButton:SetTooltip(questMessage)
+
     -- Horizontal line below the close button
     self.lineY = 50 -- Y position of the line
     self.PaintOver = function(s, w, h)
@@ -39,7 +84,7 @@ function PANEL:Init()
     -- Register cards container
     self.registerCards = vgui.Create("DIconLayout", self)
     self.registerCards:SetPos(10, 10) -- Position below the close button
-    self.registerCards:SetSize(self:GetWide() - 80, self.lineY - 10) -- Height up to the line
+    self.registerCards:SetSize(315, self.lineY - 10) -- Height up to the line
     self.registerCards:SetSpaceX(5) -- Spacing between cards
     
     -- Add register cards
@@ -69,6 +114,8 @@ function PANEL:Init()
         draw.SimpleText("Admin UI Placeholder", "DermaLarge", w / 2, h / 2, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
     self.adminPanel:SetVisible(false) -- Hide by default
+
+    vgui.Create("AdminBaseHUD", self.adminPanel)
 
     self.finishedQuestLayout = vgui.Create("DIconLayout", self.scrollPanel)
     self.finishedQuestLayout:SetSpaceY(5)

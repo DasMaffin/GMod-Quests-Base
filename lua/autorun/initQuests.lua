@@ -31,6 +31,10 @@ end
 PrintPinkLL("----------==============================----------", 1)
 PrintPinkLL("Starting Quest System", 1)
 
+function bool_to_number(value)
+    return value and 1 or 0
+end  
+
 if SERVER then 
     resource.AddWorkshop("3424588083")
 end
@@ -48,6 +52,7 @@ AddCSLuaFile("quests/base/loadQuests.lua")
 AddCSLuaFile("quests/base/finishedQuests.lua")
 
 AddCSLuaFile("UI/base/claimButton.lua") 
+AddCSLuaFile("ui/base/adminBaseHUD.lua")
 AddCSLuaFile("UI/base/baseHUD.lua")
 AddCSLuaFile("UI/base/baseQuestCardHUDNoButton.lua")
 AddCSLuaFile("UI/base/baseQuestCardHUD.lua")
@@ -65,6 +70,7 @@ include("quests/base/loadQuests.lua")
 if SERVER then
 else
     include("UI/base/claimButton.lua") 
+    include("ui/base/adminBaseHUD.lua")
     include("UI/base/baseHUD.lua")
     include("UI/base/baseQuestCardHUDNoButton.lua")
     include("UI/base/baseQuestCardHUD.lua")

@@ -151,6 +151,7 @@ function PANEL:SetQuest(data)
                 draw.SimpleText("Claim rewards!", "DermaBold", (w / 2), (h / 2), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             end
             self.claimButton.DoClick = function()
+                LocalPlayer():EmitSound("claimQuest.wav", 75, 100, 1 * bool_to_number(soundState) )
                 net.Start("ClaimRewards")
                 net.WriteTable(data)
                 net.SendToServer()
