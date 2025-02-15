@@ -45,6 +45,7 @@ file.CreateDir("quests")
 
 CreateConVar("quests_startingQuests", "1", FCVAR_NOTIFY)
 CreateConVar("daily_reroll_time", "00:00", FCVAR_NOTIFY, "Time of day to execute the function (HH:MM)")
+CreateConVar("max_steps_per_frame", "9", FCVAR_NOTIFY, "The maximum allowed steps per frame. Else it will not count at all.")
 
 AddCSLuaFile("quests/base/questBase.lua")
 AddCSLuaFile("quests/base/questManager.lua")

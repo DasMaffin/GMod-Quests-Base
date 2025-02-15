@@ -80,8 +80,8 @@ if SERVER then
             if previousPos and previousPos ~= currentPos and QuestManager.activeQuests[ply:SteamID64()] then
                 local distance = currentPos:Distance(previousPos)
                 playerPreviousPositions[ply].distance = playerPreviousPositions[ply].distance + distance
-                if playerPreviousPositions[ply].distance >= unitsPerStep * 16 then
-                    playerPreviousPositions[ply].distance = unitsPerStep * 16
+                if playerPreviousPositions[ply].distance >= unitsPerStep * GetConVar("max_steps_per_frame"):GetInt() then
+                    playerPreviousPositions[ply].distance = 0
                 end
                 while playerPreviousPositions[ply].distance >= unitsPerStep do
                     for _, quest in ipairs(QuestManager.activeQuests[ply:SteamID64()].quests) do
