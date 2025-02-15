@@ -1,3 +1,12 @@
+_G.CreateBaseHUD = function()
+    if not baseHUD or not IsValid(baseHUD) then
+        baseHUD = vgui.Create("BaseHUD")
+        baseHUD:SetVisible(false)
+        baseHUD:MakePopup()
+    end
+    return baseHUD
+end
+
 local PANEL = {}
 local BaseHUDisActive = false
 soundState = true
@@ -5,16 +14,14 @@ soundState = true
 vgui.Register("BaseHUD", PANEL, "EditablePanel")
 
 function PANEL:Init()
-    self:SetSize(ScrW() * 0.6, ScrH() * 0.6)
-    self:SetPos(ScrW() * 0.2, ScrH() * 0.2)
+    self:SetSize(ScrW() * 0.8, ScrH() * 0.8)
+    self:SetPos(ScrW() * 0.1, ScrH() * 0.1)
     self:SetVisible(false)
     
-    -- Modern background with slight transparency
     self.Paint = function(s, w, h)
         draw.RoundedBox(8, 0, 0, w, h, Color(30, 30, 40, 240))
     end
     
-    -- Close button (top right)
     self.closeButton = vgui.Create("DButton", self)
     self.closeButton:SetSize(32, 32)
     self.closeButton:SetPos(self:GetWide() - 40, 8)
@@ -29,7 +36,6 @@ function PANEL:Init()
         gui.EnableScreenClicker(false)
     end
 
-    -- Mute button
     self.muteButton = vgui.Create("DButton", self)
     self.muteButton:SetSize(32, 32)
     self.muteButton:SetPos(self:GetWide() - 40 - 32 - 8, 8)
@@ -57,7 +63,6 @@ function PANEL:Init()
         soundState = not soundState
     end
 
-    -- Info button
     self.infoButton = vgui.Create("DButton", self)
     self.infoButton:SetSize(32, 32)
     self.infoButton:SetPos(self:GetWide() - 40 - 64 - 16, 8)
@@ -96,30 +101,57 @@ Quest Basics:
     
     -- Styled scroll panel
     self.scrollPanel = vgui.Create("DScrollPanel", self)
-    self.scrollPanel:SetPos(10, self.lineY + 10) -- Position below the line
+    self.scrollPanel:SetPos(10, self.lineY + 10)
     self.scrollPanel:SetSize(self:GetWide() - 20, self:GetTall() - self.lineY - 20)
+    self.scrollPanel:Dock(FILL)
+    self.scrollPanel:DockMargin(10, self.lineY + 10, 10, 10)
+
+    -- Style the scrollbar
+    local sbar = self.scrollPanel:GetVBar()
+    sbar:SetHideButtons(true)
+    sbar.Paint = function(_, w, h)
+        draw.RoundedBox(4, 0, 0, w, h, Color(200, 200, 200))
+    end
+    sbar.btnGrip.Paint = function(_, w, h)
+        draw.RoundedBox(4, 0, 0, w, h, Color(150, 150, 150))
+    end
 
     -- Quest container layout
     self.questLayout = vgui.Create("DIconLayout", self.scrollPanel)
     self.questLayout:SetSpaceY(5)
-    self.questLayout:SetSize(self.scrollPanel:GetWide(), 1000)--self.scrollPanel:GetTall() * 3)
+    self.questLayout:Dock(FILL)
+    self.questLayout:DockMargin(5, 5, 5, 5)
 
-    -- Admin UI placeholder (initially hidden)
-    self.adminPanel = vgui.Create("DPanel", self.scrollPanel)
-    self.adminPanel:Dock(FILL)
-    self.adminPanel:SetSize(self:GetWide() - 40, self:GetTall() - self.lineY - 20)
-    self.adminPanel:SetPos(10, self.lineY + 10)
-    self.adminPanel.Paint = function(s, w, h)
-        draw.RoundedBox(8, 0, 0, w, h, Color(40, 40, 50, 255)) -- Admin panel background
-        draw.SimpleText("Admin UI Placeholder", "DermaLarge", w / 2, h / 2, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    -- Make admin panel if user has permissions
+    if ULib.ucl.query(LocalPlayer(), "quests.manage") then
+        self.adminContainer = vgui.Create("DPanel", self.scrollPanel)
+        self.adminContainer:Dock(FILL)
+        self.adminContainer:DockMargin(0, 0, 0, 0) -- Remove margins
+        self.adminContainer:SetVisible(false)
+        self.adminContainer:SetSize(self:GetWide(), self:GetTall()) -- Use full size
+        self.adminContainer.Paint = nil
+
+        self.adminContainer:SetSize(math.max(800, self:GetWide()), math.max(600, self:GetTall() - self.lineY - 20))
+
+        self.adminBaseHUD = vgui.Create("AdminBaseHUD", self.adminContainer)
+        self.adminBaseHUD:Dock(FILL)
+        self.adminBaseHUD:DockMargin(0, 0, 0, 0)
+        self.adminBaseHUD:InvalidateLayout(true)
+
+        timer.Simple(0.1, function()
+            if IsValid(self.adminBaseHUD) then
+                self.adminBaseHUD:InvalidateLayout(true)
+            end
+        end)
     end
-    self.adminPanel:SetVisible(false) -- Hide by default
 
     vgui.Create("AdminBaseHUD", self.adminPanel)
 
     self.finishedQuestLayout = vgui.Create("DIconLayout", self.scrollPanel)
     self.finishedQuestLayout:SetSpaceY(5)
-    self.finishedQuestLayout:SetSize(self.scrollPanel:GetWide(), 1000)--self.scrollPanel:GetTall() * 3)
+    self.finishedQuestLayout:Dock(FILL)
+    self.finishedQuestLayout:DockMargin(5, 5, 5, 5)
+    self.finishedQuestLayout:SetVisible(false)
 end
 
 local cards = {}
@@ -162,22 +194,47 @@ end
 function PANEL:ShowQuests()
     self:DrawCards(1)
     self.questLayout:SetVisible(true)
-    self.adminPanel:SetVisible(false)
+    self.adminContainer:SetVisible(false)
     self.finishedQuestLayout:SetVisible(false)
 end
 
 function PANEL:ShowFinishedQuests()
     self:DrawCards(2)
     self.questLayout:SetVisible(false)
-    self.adminPanel:SetVisible(false)
+    self.adminContainer:SetVisible(false)
     self.finishedQuestLayout:SetVisible(true)
 end
 
 function PANEL:ShowAdmin()
+    if not IsValid(self.adminContainer) or not IsValid(self.adminBaseHUD) then return end
+    
     self:DrawCards(3)
     self.questLayout:SetVisible(false)
-    self.adminPanel:SetVisible(true)
     self.finishedQuestLayout:SetVisible(false)
+    
+    -- Set size before making visible to avoid flicker
+    self.adminContainer:SetSize(self:GetWide(), self:GetTall() - self.lineY - 20)
+    self.adminContainer:SetVisible(true)
+    self.adminContainer:Dock(FILL)
+    self.adminContainer:DockMargin(0, 0, 0, 0)
+    
+    if IsValid(self.adminBaseHUD) then
+        self.adminBaseHUD:SetSize(self.adminContainer:GetWide(), self.adminContainer:GetTall())
+        self.adminBaseHUD:Dock(FILL)
+        self.adminBaseHUD:DockMargin(0, 0, 0, 0)
+        self.adminBaseHUD:InvalidateLayout(true)
+    end
+    
+    self.scrollPanel:InvalidateLayout(true)
+    
+    timer.Simple(0.1, function()
+        if IsValid(self.adminBaseHUD) then
+            self.adminBaseHUD:InvalidateLayout(true)
+        end
+        if IsValid(self.adminContainer) then
+            self.adminContainer:InvalidateLayout(true)
+        end
+    end)
 end
 
 function PANEL:UpdateQuests(quests, panel, hasButton)
@@ -270,7 +327,11 @@ function PANEL:UpdateQuests(quests, panel, hasButton)
         end        
     end
     
-    self:ShowQuests()
+    if panel == self.questLayout then
+        self:ShowQuests()
+    elseif panel == self.finishedQuestLayout then
+        self:ShowFinishedQuests()
+    end
 end
 
 function PANEL:Think()
@@ -278,7 +339,6 @@ function PANEL:Think()
 end
 
 -- Global access and hook handling
-local baseHUD
 
 hook.Add("QuestsUpdated", "UpdateQuestHUD", function(questsTable)
     if not IsValid(baseHUD) then
@@ -316,4 +376,17 @@ end
 
 concommand.Add("ttt_quest_menu", function(ply, cmd, args)
     OpenQuestMenu()
+end)
+
+hook.Add("InitPostEntity", "OnQuestsGamemodeLoaded", function()
+    if LocalPlayer():IsAdmin() then
+        if CreateAdminBaseHUD then
+            local adminHUD = CreateAdminBaseHUD()
+            if IsValid(adminHUD) then
+                adminHUD:InvalidateLayout(true)
+            end
+        else
+            ErrorNoHalt("[Quests] Failed to find CreateAdminBaseHUD function\n")
+        end
+    end
 end)

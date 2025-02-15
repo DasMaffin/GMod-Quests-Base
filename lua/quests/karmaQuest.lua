@@ -25,9 +25,7 @@ function KarmaQuest:new(args)
         table.remove(args, 1)
     end
 
-    -- Rewards
     obj.rewards = args
-    --Rewards end
 
     return obj
 end

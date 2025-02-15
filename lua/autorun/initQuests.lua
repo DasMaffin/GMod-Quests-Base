@@ -1,6 +1,6 @@
 function PrintPinkLL(msg, logLevel)
     if logLevel > 0 then
-        MsgC(Color(255, 105, 180), "[Quests] ", Color(255, 182, 193), msg, "\n") -- HotPink and LightPink
+        MsgC(Color(255, 105, 180), "[Quests] ", Color(255, 182, 193), msg, "\n")
     end
 end
 
@@ -47,6 +47,19 @@ CreateConVar("quests_startingQuests", "1", FCVAR_NOTIFY)
 CreateConVar("daily_reroll_time", "00:00", FCVAR_NOTIFY, "Time of day to execute the function (HH:MM)")
 CreateConVar("max_steps_per_frame", "9", FCVAR_NOTIFY, "The maximum allowed steps per frame. Else it will not count at all.")
 
+AddCSLuaFile("ui/admin/questList.lua")
+AddCSLuaFile("ui/admin/questEditor.lua")
+AddCSLuaFile("ui/base/adminBaseHUD.lua")
+AddCSLuaFile("ui/base/baseHUD.lua")
+AddCSLuaFile("ui/base/claimButton.lua")
+AddCSLuaFile("ui/base/baseQuestCardHUDNoButton.lua")
+AddCSLuaFile("ui/base/baseQuestCardHUD.lua")
+AddCSLuaFile("ui/base/displayClaimedRewardsHUD.lua")
+AddCSLuaFile("ui/KillQuestHUD.lua")
+AddCSLuaFile("ui/WalkerQuestHUD.lua")
+AddCSLuaFile("ui/SurviveQuestHUD.lua")
+AddCSLuaFile("ui/KarmaQuestHUD.lua")
+
 AddCSLuaFile("quests/base/questBase.lua")
 AddCSLuaFile("quests/base/questManager.lua")
 AddCSLuaFile("quests/base/loadQuests.lua")
@@ -73,37 +86,40 @@ include("cl/chatCommands.lua")
 
 if SERVER then
 else
-    include("UI/base/claimButton.lua") 
+    include("ui/admin/questList.lua")
+    include("ui/admin/questEditor.lua")
     include("ui/base/adminBaseHUD.lua")
-    include("UI/base/baseHUD.lua")
-    include("UI/base/baseQuestCardHUDNoButton.lua")
-    include("UI/base/baseQuestCardHUD.lua")
+    include("ui/base/baseHUD.lua")
+    include("ui/base/claimButton.lua")
+    include("ui/base/baseQuestCardHUDNoButton.lua")
+    include("ui/base/baseQuestCardHUD.lua")
     include("ui/base/displayClaimedRewardsHUD.lua")
-    include("UI/KillQuestHUD.lua") 
-    include("UI/WalkerQuestHUD.lua") 
-    include("UI/SurviveQuestHUD.lua") 
-    include("UI/KarmaQuestHUD.lua") 
+    include("ui/KillQuestHUD.lua")
+    include("ui/WalkerQuestHUD.lua")
+    include("ui/SurviveQuestHUD.lua")
+    include("ui/KarmaQuestHUD.lua")
     include("quests/base/finishedQuests.lua")
 
     hook.Add("InitPostEntity", "OnQuestsGamemodeLoaded", function()
         surface.CreateFont("CustomFont", {
-            font = "Arial", -- Font face (e.g., Arial, Roboto, etc.)
-            size = 30,      -- Font size in pixels
-            weight = 700,   -- Font weight (e.g., 500 for normal, 700 for bold)
-            antialias = true, -- Enable smooth edges
+            font = "Arial",
+            size = 30,
+            weight = 700,
+            antialias = true,
         })
         surface.CreateFont("DermaBold", {
-            font = "Tahoma", -- Font face (e.g., Arial, Roboto, etc.)
-            size = 13,      -- Font size in pixels
-            weight = 700,   -- Font weight (e.g., 500 for normal, 700 for bold)
-            antialias = true, -- Enable smooth edges
+            font = "Tahoma",
+            size = 13,
+            weight = 700,
+            antialias = true,
         })
         surface.CreateFont("DermaLargeCustom", {
-            font = "Tahoma", -- Font face (e.g., Arial, Roboto, etc.)
-            size = 36,      -- Font size in pixels
-            weight = 700,   -- Font weight (e.g., 500 for normal, 700 for bold)
-            antialias = true, -- Enable smooth edges
+            font = "Tahoma",
+            size = 36,
+            weight = 700,
+            antialias = true,
         })
+
         CreateBaseHUD()
     end)
 end
