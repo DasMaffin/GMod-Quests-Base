@@ -1,4 +1,4 @@
-QuestManager = {
+QuestManager = QuestManager or {
     availableQuests = {},
     activeQuests = {
         quests = {},
@@ -63,6 +63,40 @@ if SERVER then
     util.AddNetworkString("QuestMenuOpened")
     util.AddNetworkString("SendQuestFinished")
     util.AddNetworkString("RerollQuests")
+    util.AddNetworkString("InitializeQuestManager")
+
+    hook.Add("InitPostEntity", "InitializeQuestManager", function()
+        local questsFile = file.Read(questsDir, "DATA")
+        if questsFile then
+            QuestManager.availableQuests = util.JSONToTable(questsFile) or {}
+            for _, quest in ipairs(QuestManager.availableQuests) do
+                if type(quest.finishInOneRound) == "boolean" then
+                    quest.finishInOneRound = quest.finishInOneRound and "1" or "0"
+                end
+                if quest.rewards then
+                    for i, reward in ipairs(quest.rewards) do
+                        quest.rewards[i] = tostring(reward)
+                    end
+                end
+                if quest.weight then quest.weight = tonumber(quest.weight) end
+                if quest.requiredKills then quest.requiredKills = tonumber(quest.requiredKills) end
+                if quest.requiredSteps then quest.requiredSteps = tonumber(quest.requiredSteps) end
+                if quest.requiredRounds then quest.requiredRounds = tonumber(quest.requiredRounds) end
+                if quest.minKarma then quest.minKarma = tonumber(quest.minKarma) end
+            end
+        end
+        
+        if file.Exists(activeQuestsDir, "DATA") then
+            QuestManager.activeQuests = util.JSONToTable(file.Read(activeQuestsDir, "DATA")) or {}
+        end
+
+        timer.Simple(1, function()
+            net.Start("InitializeQuestManager")
+            net.WriteTable(QuestManager.availableQuests)
+            net.WriteTable(QuestManager.activeQuests)
+            net.Broadcast()
+        end)
+    end)
 
     local function RerollQuests(ply)
         local steamID = ply:SteamID64()
@@ -72,7 +106,7 @@ if SERVER then
                 finishedAll = false
             }
             local questsToChoseFrom = DeepCopy(QuestManager.availableQuests)
-            for i = 1, math.min(GetConVar("quests_startingQuests"):GetInt(), #QuestManager.availableQuests) do -- The amount of quests given.
+            for i = 1, math.min(GetConVar("quests_startingQuests"):GetInt(), #QuestManager.availableQuests) do
                 local questChosen
                 local totalQuestsWeight = totalQuestsWeight(questsToChoseFrom)
                 for _, quest in ipairs(questsToChoseFrom) do
@@ -200,7 +234,6 @@ if SERVER then
 end
 
 if CLIENT then
-    -- Console Command to Add Quest
     concommand.Add("AddQuest", function(ply, cmd, args)
         if not ULib.ucl.query(LocalPlayer(), "quests.manage") then
             PrintPink("You do not have access to this command!")
@@ -230,6 +263,15 @@ if CLIENT then
         local quests = net.ReadTable()
         hook.Run("UpdateFinishedQuests", QuestManager.finishedQuests)
         hook.Run("QuestsUpdated", quests)
+    end)
+
+    net.Receive("InitializeQuestManager", function()
+        QuestManager.availableQuests = net.ReadTable() or {}
+        QuestManager.activeQuests = net.ReadTable() or {}
+        
+        if IsValid(baseHUD) and baseHUD.adminBaseHUD then
+            baseHUD.adminBaseHUD:UpdateQuestLists()
+        end
     end)
 
     hook.Add("InitPostEntity", "NotifyServerOfClientReady", function()

@@ -58,7 +58,7 @@ function BaseQuestCardNoButton:Init()
 
     self.rewardsPreview = vgui.Create("DPanel", self.content)
     self.rewardsPreview:Dock(TOP)
-    self.rewardsPreview:DockMargin(0, 0, 0, 0)
+    self.rewardsPreview:DockMargin(0, 5, 0, 0)
     self.rewardsPreview:SetSize(24, 24)
     self.rewardsPreview:Center()    
     self.rewardsPreview:SetContentAlignment(4)

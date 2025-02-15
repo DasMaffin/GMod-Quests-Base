@@ -1,6 +1,6 @@
 function PrintPinkLL(msg, logLevel)
     if logLevel > 0 then
-        MsgC(Color(255, 105, 180), "[Quests] ", Color(255, 182, 193), msg, "\n") -- HotPink and LightPink
+        MsgC(Color(255, 105, 180), "[Quests] ", Color(255, 182, 193), msg, "\n")
     end
 end
 
@@ -31,6 +31,19 @@ end
 PrintPinkLL("----------==============================----------", 1)
 PrintPinkLL("Starting Quest System", 1)
 
+QuestManager = QuestManager or {
+    availableQuests = {},
+    activeQuests = {
+        quests = {},
+        finishedAll = false
+    },
+    questTypes = {}
+}
+
+function bool_to_number(value)
+    return value and 1 or 0
+end  
+
 if SERVER then 
     resource.AddWorkshop("3424588083")
 end
@@ -42,19 +55,23 @@ file.CreateDir("quests")
 CreateConVar("quests_startingQuests", "1", FCVAR_NOTIFY)
 CreateConVar("daily_reroll_time", "00:00", FCVAR_NOTIFY, "Time of day to execute the function (HH:MM)")
 
+AddCSLuaFile("ui/admin/questList.lua")
+AddCSLuaFile("ui/admin/questEditor.lua")
+AddCSLuaFile("ui/base/adminBaseHUD.lua")
+AddCSLuaFile("ui/base/baseHUD.lua")
+AddCSLuaFile("ui/base/claimButton.lua")
+AddCSLuaFile("ui/base/baseQuestCardHUDNoButton.lua")
+AddCSLuaFile("ui/base/baseQuestCardHUD.lua")
+AddCSLuaFile("ui/base/displayClaimedRewardsHUD.lua")
+AddCSLuaFile("ui/KillQuestHUD.lua")
+AddCSLuaFile("ui/WalkerQuestHUD.lua")
+AddCSLuaFile("ui/SurviveQuestHUD.lua")
+AddCSLuaFile("ui/KarmaQuestHUD.lua")
+
 AddCSLuaFile("quests/base/questBase.lua")
 AddCSLuaFile("quests/base/questManager.lua")
 AddCSLuaFile("quests/base/loadQuests.lua")
 AddCSLuaFile("quests/base/finishedQuests.lua")
-
-AddCSLuaFile("UI/base/claimButton.lua") 
-AddCSLuaFile("UI/base/baseHUD.lua")
-AddCSLuaFile("UI/base/baseQuestCardHUDNoButton.lua")
-AddCSLuaFile("UI/base/baseQuestCardHUD.lua")
-AddCSLuaFile("UI/KillQuestHUD.lua")
-AddCSLuaFile("UI/WalkerQuestHUD.lua") 
-AddCSLuaFile("UI/SurviveQuestHUD.lua") 
-AddCSLuaFile("UI/KarmaQuestHUD.lua") 
 
 include("quests/base/questBase.lua")
 include("quests/base/questManager.lua")
@@ -63,29 +80,40 @@ include("quests/base/loadQuests.lua")
 
 if SERVER then
 else
-    include("UI/base/claimButton.lua") 
-    include("UI/base/baseHUD.lua")
-    include("UI/base/baseQuestCardHUDNoButton.lua")
-    include("UI/base/baseQuestCardHUD.lua")
-    include("UI/KillQuestHUD.lua") 
-    include("UI/WalkerQuestHUD.lua") 
-    include("UI/SurviveQuestHUD.lua") 
-    include("UI/KarmaQuestHUD.lua") 
+    include("ui/admin/questList.lua")
+    include("ui/admin/questEditor.lua")
+    include("ui/base/adminBaseHUD.lua")
+    include("ui/base/baseHUD.lua")
+    include("ui/base/claimButton.lua")
+    include("ui/base/baseQuestCardHUDNoButton.lua")
+    include("ui/base/baseQuestCardHUD.lua")
+    include("ui/base/displayClaimedRewardsHUD.lua")
+    include("ui/KillQuestHUD.lua")
+    include("ui/WalkerQuestHUD.lua")
+    include("ui/SurviveQuestHUD.lua")
+    include("ui/KarmaQuestHUD.lua")
     include("quests/base/finishedQuests.lua")
 
     hook.Add("InitPostEntity", "OnQuestsGamemodeLoaded", function()
         surface.CreateFont("CustomFont", {
-            font = "Arial", -- Font face (e.g., Arial, Roboto, etc.)
-            size = 30,      -- Font size in pixels
-            weight = 700,   -- Font weight (e.g., 500 for normal, 700 for bold)
-            antialias = true, -- Enable smooth edges
+            font = "Arial",
+            size = 30,
+            weight = 700,
+            antialias = true,
         })
         surface.CreateFont("DermaBold", {
-            font = "Tahoma", -- Font face (e.g., Arial, Roboto, etc.)
-            size = 13,      -- Font size in pixels
-            weight = 700,   -- Font weight (e.g., 500 for normal, 700 for bold)
-            antialias = true, -- Enable smooth edges
+            font = "Tahoma",
+            size = 13,
+            weight = 700,
+            antialias = true,
         })
+        surface.CreateFont("DermaLargeCustom", {
+            font = "Tahoma",
+            size = 36,
+            weight = 700,
+            antialias = true,
+        })
+
         CreateBaseHUD()
     end)
 end
