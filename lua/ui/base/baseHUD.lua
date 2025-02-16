@@ -301,7 +301,7 @@ function CreateBaseHUD()
     return baseHUD
 end
 
-concommand.Add("ttt_quest_menu", function(ply, cmd, args)
+function OpenQuestMenu()
     BaseHUDisActive = not BaseHUDisActive
     gui.EnableScreenClicker(BaseHUDisActive)
     if IsValid(baseHUD) then
@@ -312,4 +312,8 @@ concommand.Add("ttt_quest_menu", function(ply, cmd, args)
         net.Start("QuestMenuOpened")
         net.SendToServer()
     end
+end
+
+concommand.Add("ttt_quest_menu", function(ply, cmd, args)
+    OpenQuestMenu()
 end)

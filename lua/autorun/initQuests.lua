@@ -52,6 +52,8 @@ AddCSLuaFile("quests/base/questManager.lua")
 AddCSLuaFile("quests/base/loadQuests.lua")
 AddCSLuaFile("quests/base/finishedQuests.lua")
 
+AddCSLuaFile("cl/chatCommands.lua")
+
 AddCSLuaFile("UI/base/claimButton.lua") 
 AddCSLuaFile("ui/base/adminBaseHUD.lua")
 AddCSLuaFile("UI/base/baseHUD.lua")
@@ -66,6 +68,7 @@ AddCSLuaFile("UI/KarmaQuestHUD.lua")
 include("quests/base/questBase.lua")
 include("quests/base/questManager.lua")
 include("quests/base/loadQuests.lua")
+include("cl/chatCommands.lua")
 
 
 if SERVER then
