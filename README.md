@@ -72,6 +72,21 @@ hook.Add("QuestsUpdated", "UpdateQuestHUD", function(questsTable)
     -- Update your quests HUD
 end)
 ```
+
+##### UpdateFinishedQuests
+This gets called when a quest finishes and needs to be shown. Also gets called on initial finished quests load.
+```lua
+hook.Add("UpdateFinishedQuests", "UpdateFinishedQuestHUD", function(questsTable)   
+    -- Update Finished Quests HUD
+end)
+```
+##### sendClaimedRewards
+This hook calls with the rewards of the last claimed quest to for example show them in a popup.
+```lua
+hook.Add("sendClaimedRewards", "PointDisplaySystem", function(rewards)
+    -- show a popup or sthg
+end)
+```
 ##### QuestNotEnoughArgs
 Gets called when the user tries to input a new quest but doesnt deliver all necessary args
 ```lua
@@ -138,8 +153,6 @@ walkerQuest.args = {
     requiredSteps = 10,
 }
 ```
-#### UpdateFinishedQuests
-#### sendClaimedRewards
 ### Fields
 The fields a quest type has accessible (e.g. for displaying in a UI)
 #### Base
