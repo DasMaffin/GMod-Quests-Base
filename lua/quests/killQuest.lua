@@ -37,6 +37,22 @@ function KillQuest:new(args)
     return obj
 end
 
+function KillQuest:newQuest(quest)
+    if not quest.args or not quest.args.requiredKills or not quest.args.killedRole or not quest.args.killerRole then
+        hook.Run("QuestNotEnoughArgs", "Please Provide the quests required kills, the killer's role, and the victims role!")
+        self.DidntFinishInit = true
+        return
+    end
+
+    local obj = QuestBase:newQuest(quest)
+    setmetatable(obj, self)
+
+    obj.requiredKills = quest.args.requiredKills
+    obj.killedRole = quest.args.killedRole
+    obj.killerRole = quest.args.killerRole
+    obj.currentKills = 0
+end
+
 function KillQuest:Update(quest)
     quest.currentKills = quest.currentKills + 1    
     PrintPink("KillQuest progress: " .. quest.currentKills .. "/" .. quest.requiredKills)

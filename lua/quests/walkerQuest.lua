@@ -31,6 +31,20 @@ function WalkerQuest:new(args)
     return obj
 end
 
+function WalkerQuest:newQuest(quest)
+    if not quest.args or not quest.args.requiredSteps then
+        hook.Run("QuestNotEnoughArgs", "Please Provide the quests steps!")
+        self.DidntFinishInit = true
+        return
+    end
+
+    local obj = QuestBase:newQuest(quest)
+    setmetatable(obj, self)
+
+    obj.requiredSteps = quest.args.requiredSteps
+    obj.currentSteps = 0
+end
+
 function WalkerQuest:Update(quest, steps)
     if not quest.completed then
         quest.currentSteps = quest.currentSteps + steps

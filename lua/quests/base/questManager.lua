@@ -63,40 +63,6 @@ if SERVER then
     util.AddNetworkString("QuestMenuOpened")
     util.AddNetworkString("SendQuestFinished")
     util.AddNetworkString("RerollQuests")
-    util.AddNetworkString("InitializeQuestManager")
-
-    hook.Add("InitPostEntity", "InitializeQuestManager", function()
-        local questsFile = file.Read(questsDir, "DATA")
-        if questsFile then
-            QuestManager.availableQuests = util.JSONToTable(questsFile) or {}
-            for _, quest in ipairs(QuestManager.availableQuests) do
-                if type(quest.finishInOneRound) == "boolean" then
-                    quest.finishInOneRound = quest.finishInOneRound and "1" or "0"
-                end
-                if quest.rewards then
-                    for i, reward in ipairs(quest.rewards) do
-                        quest.rewards[i] = tostring(reward)
-                    end
-                end
-                if quest.weight then quest.weight = tonumber(quest.weight) end
-                if quest.requiredKills then quest.requiredKills = tonumber(quest.requiredKills) end
-                if quest.requiredSteps then quest.requiredSteps = tonumber(quest.requiredSteps) end
-                if quest.requiredRounds then quest.requiredRounds = tonumber(quest.requiredRounds) end
-                if quest.minKarma then quest.minKarma = tonumber(quest.minKarma) end
-            end
-        end
-        
-        if file.Exists(activeQuestsDir, "DATA") then
-            QuestManager.activeQuests = util.JSONToTable(file.Read(activeQuestsDir, "DATA")) or {}
-        end
-
-        timer.Simple(1, function()
-            net.Start("InitializeQuestManager")
-            net.WriteTable(QuestManager.availableQuests)
-            net.WriteTable(QuestManager.activeQuests)
-            net.Broadcast()
-        end)
-    end)
 
     local function RerollQuests(ply)
         local steamID = ply:SteamID64()
@@ -139,6 +105,26 @@ if SERVER then
 
         table.insert(QuestManager.availableQuests, quest)
         file.Write(questsDir, util.TableToJSON(QuestManager.availableQuests, true)) 
+        hook.Run("AvailableQuestsUpdated", QuestManager.availableQuests)
+
+        PrintPink("Quest added: " .. quest.type)
+    end
+
+    function QuestManager:AddQuestQuest(quest)
+        local quest
+        local questClass = QuestManager.questTypes[quest.args.type]
+        if questClass then
+            quest = questClass:newQuest(quest)
+        else
+            PrintPink("Unknown quest type: " .. questType)
+            return
+        end
+
+        if not quest or quest.DidntFinishInit and quest.DidntFinishInit == true then return end
+
+        table.insert(QuestManager.availableQuests, quest)
+        file.Write(questsDir, util.TableToJSON(QuestManager.availableQuests, true)) 
+        hook.Run("AvailableQuestsUpdated", QuestManager.availableQuests)
 
         PrintPink("Quest added: " .. quest.type)
     end
@@ -231,6 +217,16 @@ if SERVER then
     cvars.AddChangeCallback("daily_reroll_time", function(convar_name, old_value, new_value)
         ScheduleNextExecution()
     end)
+
+    hook.Add("AddAvailableQuest", function(quest)
+        local questType = quest.args.type
+
+        QuestManager:AddQuestQuest(quest)
+    end)
+
+    hook.Add("UpdateAvailableQuest", function(quest)
+        
+    end)
 end
 
 if CLIENT then
@@ -263,15 +259,6 @@ if CLIENT then
         local quests = net.ReadTable()
         hook.Run("UpdateFinishedQuests", QuestManager.finishedQuests)
         hook.Run("QuestsUpdated", quests)
-    end)
-
-    net.Receive("InitializeQuestManager", function()
-        QuestManager.availableQuests = net.ReadTable() or {}
-        QuestManager.activeQuests = net.ReadTable() or {}
-        
-        if IsValid(baseHUD) and baseHUD.adminBaseHUD then
-            baseHUD.adminBaseHUD:UpdateQuestLists()
-        end
     end)
 
     hook.Add("InitPostEntity", "NotifyServerOfClientReady", function()

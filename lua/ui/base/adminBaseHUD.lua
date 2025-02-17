@@ -189,6 +189,7 @@ function PANEL:ConfirmDeleteAll()
         function()
             QuestManager.availableQuests = {}
             file.Write(questsDir, util.TableToJSON(QuestManager.availableQuests, true))
+            hook.Run("AvailableQuestsUpdated", QuestManager.availableQuests)
             self:UpdateQuestLists()
         end,
         "No",
@@ -233,6 +234,7 @@ function PANEL:ConfirmDeleteQuest(quest)
         function()
             table.RemoveByValue(QuestManager.availableQuests, quest)
             file.Write(questsDir, util.TableToJSON(QuestManager.availableQuests, true))
+            hook.Run("AvailableQuestsUpdated", QuestManager.availableQuests)
             self:UpdateQuestLists()
         end,
         "No",

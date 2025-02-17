@@ -351,16 +351,16 @@ hook.Add("UpdateFinishedQuests", "UpdateFinishedQuestHUD", function(questsTable)
 end)
 
 function CreateBaseHUD()
-    -- if LocalPlayer():IsAdmin() then
-    --     if CreateAdminBaseHUD then
-    --         local adminHUD = CreateAdminBaseHUD()
-    --         if IsValid(adminHUD) then
-    --             adminHUD:InvalidateLayout(true)
-    --         end
-    --     else
-    --         ErrorNoHalt("[Quests] Failed to find CreateAdminBaseHUD function\n")
-    --     end
-    -- end
+    if LocalPlayer():IsAdmin() then
+        if CreateAdminBaseHUD then
+            local adminHUD = CreateAdminBaseHUD()
+            if IsValid(adminHUD) then
+                adminHUD:InvalidateLayout(true)
+            end
+        else
+            ErrorNoHalt("[Quests] Failed to find CreateAdminBaseHUD function\n")
+        end
+    end
 
     baseHUD = vgui.Create("BaseHUD")
     return baseHUD

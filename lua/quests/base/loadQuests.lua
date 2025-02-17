@@ -28,6 +28,7 @@ if file.Exists(questsDir, "DATA") then
 else
     QuestManager.availableQuests = {}
 end
+hook.Run("AvailableQuestsUpdated", QuestManager.availableQuests)
 
 if file.Exists(activeQuestsDir, "DATA") then
     QuestManager.activeQuests = util.JSONToTable(file.Read(activeQuestsDir, "DATA"), true, true)

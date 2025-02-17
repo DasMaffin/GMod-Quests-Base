@@ -30,6 +30,21 @@ function KarmaQuest:new(args)
     return obj
 end
 
+function KarmaQuest:newQuest(quest)
+    if not quest.args or not quest.args.requiredRounds or not quest.args.minKarma then
+        hook.Run("QuestNotEnoughArgs", "Please Provide the quests rounds and minimum Karma!")
+        self.DidntFinishInit = true
+        return
+    end
+
+    local obj = QuestBase:newQuest(quest)
+    setmetatable(obj, self)
+
+    obj.minKarma = quest.args.minKarma
+    obj.requiredRounds = quest.args.requiredRounds
+    obj.currentRounds = 0
+end
+
 function KarmaQuest:Update(quest)
     quest.currentRounds = quest.currentRounds + 1    
     PrintPink("KarmaQuest progress: " .. quest.currentRounds .. "/" .. quest.requiredRounds)

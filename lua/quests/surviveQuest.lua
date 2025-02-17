@@ -31,6 +31,20 @@ function SurviveQuest:new(args)
     return obj
 end
 
+function SurviveQuest:newQuest(quest)
+    if not quest.args or not quest.args.requiredRounds then
+        hook.Run("QuestNotEnoughArgs", "Please Provide the quests required rounds!")
+        self.DidntFinishInit = true
+        return
+    end
+
+    local obj = QuestBase:newQuest(quest)
+    setmetatable(obj, self)
+
+    obj.requiredRounds = quest.args.requiredRounds
+    obj.currentRounds = 0
+end
+
 function SurviveQuest:Update(quest)
     quest.currentRounds = quest.currentRounds + 1    
     PrintPink("SurviveQuest progress: " .. quest.currentRounds .. "/" .. quest.requiredRounds)
