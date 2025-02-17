@@ -218,14 +218,15 @@ if SERVER then
         ScheduleNextExecution()
     end)
 
-    hook.Add("AddAvailableQuest", function(quest)
-        local questType = quest.args.type
-
+    net.Receive("AddAvailableQuest", function(len, ply)
+        quest = net.ReadTable()
         QuestManager:AddQuestQuest(quest)
     end)
 
-    hook.Add("UpdateAvailableQuest", function(quest)
-        
+    hook.Add("UpdateAvailableQuest", function(len, ply)
+        if quest.args.uniqueId then
+            -- TODO find the entry with the unique ID and set the values.
+        end
     end)
 end
 
@@ -245,6 +246,12 @@ if CLIENT then
         net.Start("AddQuest")
         net.WriteString(questType)
         net.WriteTable(args)
+        net.SendToServer()
+    end)
+
+    hook.Add("AddAvailableQuest", "AddNewQuest", function(quest)
+        net.Start("AddAvailableQuest")
+        net.WriteTable(quest)
         net.SendToServer()
     end)
 

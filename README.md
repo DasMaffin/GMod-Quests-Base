@@ -63,10 +63,81 @@ A quests UI must be registered with `vgui.Register(quest.type .. "HUD", PANEL, "
 They are not automatically loaded (unlike quests which are), so make sure you include them in the autorun of your extension.
 
 ### Hooks
-#### QuestsUpdated
-Gets called on the client after it got a new update for the local player's active quests. This sends a table of Quests as argument.
-
-
+#### Server
+#### Client
+##### QuestsUpdated
+Gets called after the client got a new update for the local player's active quests. This sends a table of Quests as argument.
+```lua
+hook.Add("QuestsUpdated", "UpdateQuestHUD", function(questsTable)
+    -- Update your quests HUD
+end)
+```
+##### QuestNotEnoughArgs
+Gets called when the user tries to input a new quest but doesnt deliver all necessary args
+```lua
+hook.Add("QuestNotEnoughArgs", "uniqueName", function(err)
+  -- Display the error here
+end)
+```
+##### AvailableQuestsUpdated
+Gets called on the client after the server registered a new quest. Server registers quests on startup as well.
+```lua
+hook.Add("AvailableQuestsUpdated", "uniqueName", function(quests)
+  -- loop over quests and display them
+end)
+```
+##### AddAvailableQuest
+The backend listens to this when you want to add a new quest.
+```lua
+hook.Run("AddAvailableQuest", questBase)
+```
+##### UpdateAvailableQuest
+The backend listens to this when you want to change an existing quests value. Quests are found via their uniqueId, so thats a mandatory field here.
+```lua
+hook.Run("UpdatAvailableQuest", questBase)`
+```
+#### questBase
+Above when changing data I used questBase as a placeholder for a specific object that needs to be passed. That object looks as follows:
+##### base
+```lua
+questBase = {
+    args = {
+        type = "questType (e.g. KillQuest)",
+        weight = 10,
+        finishInOneRound = "0 (Yes this bool is a string dont @ me xd)",
+        pointRewards = 10000,
+        premPointRewards = 100,
+        xpRewards = 1000
+    }
+}
+```
+##### killQuest
+```lua
+killQuest.args = {
+    requiredKills = 10,
+    roleToBeKilled = "0",
+    roleForKiller = "0",
+}
+```
+##### karmaQuest
+```lua
+karmaQuest.args = {
+    minKarma = 10,
+    rounds = 10
+}
+```
+##### surviveQuest
+```lua
+surviveQuest.args = {
+    rounds = 10
+}
+```
+##### walkerQuest
+```lua
+walkerQuest.args = {
+    requiredSteps = 10,
+}
+```
 #### UpdateFinishedQuests
 #### sendClaimedRewards
 ### Fields
