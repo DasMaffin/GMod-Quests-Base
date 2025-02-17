@@ -170,22 +170,4 @@ function AddQuest()
 end
 ```
 ### Fields
-The fields a quest type has accessible (e.g. for displaying in a UI)
-#### Base
-- type - the type of a quest as string value (e.g. "KillQuest").
-- completed - wether or not the quest has been completed.
-- rewardsClaimed - wether or not the rewards have been claimed.
-- uniqueId - the (hopefully) unique Id for each quest. 
-- weight - the weighted chance of the quest to be selected.
-- player - the player this quest is assigned to.
-- rewards - A table with the rewards for completing the quest.
-    - A new reward has to be manually added to the GiveRewards method.
-    - An example could be adding Points for Pointshop 2 by adding the line `ply:PS2_AddStandardPoints(500)`
-#### KillQuest
-- requiredKills - The kills that are required to complete the quest.
-- killedRole -  The role the victim needs to have to advance the quest.
-- killerRole - The role you (the killer) needs to have to advance the quest.
-- currentKills - The current amount of kills (progress) you have for this specific quest.
-#### WalkerQuest
-- requiredSteps - The steps required to finish the quest.
-- currentSteps - The already walked steps.
+The fields named above are named the same way in the raw quest object.
