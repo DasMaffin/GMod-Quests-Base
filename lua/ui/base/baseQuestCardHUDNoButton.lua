@@ -23,7 +23,7 @@ function BaseQuestCardNoButton:Init()
     -- Handle content resizing
     function self.content:OnSizeChanged(w, h)
         if IsValid(self:GetParent().claimButton) then
-            self:GetParent().claimButton:SetPos(w - 150, h - 24)
+            self:GetParent().claimButton:SetPos(w - 140, h - 20)
         end
     end
 

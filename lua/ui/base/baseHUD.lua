@@ -14,8 +14,8 @@ soundState = true
 vgui.Register("BaseHUD", PANEL, "EditablePanel")
 
 function PANEL:Init()
-    self:SetSize(ScrW() * 0.8, ScrH() * 0.8)
-    self:SetPos(ScrW() * 0.1, ScrH() * 0.1)
+    self:SetSize(ScrW() * 0.6, ScrH() * 0.6)
+    self:SetPos(ScrW() * 0.2, ScrH() * 0.2)
     self:SetVisible(false)
     
     self.Paint = function(s, w, h)
@@ -119,8 +119,7 @@ Quest Basics:
     -- Quest container layout
     self.questLayout = vgui.Create("DIconLayout", self.scrollPanel)
     self.questLayout:SetSpaceY(5)
-    self.questLayout:Dock(FILL)
-    self.questLayout:DockMargin(5, 5, 5, 5)
+    self.questLayout:SetSize(self.scrollPanel:GetWide(), 1000)
 
     -- Make admin panel if user has permissions
     if ULib.ucl.query(LocalPlayer(), "quests.manage") then
@@ -145,12 +144,9 @@ Quest Basics:
         end)
     end
 
-    vgui.Create("AdminBaseHUD", self.adminPanel)
-
     self.finishedQuestLayout = vgui.Create("DIconLayout", self.scrollPanel)
     self.finishedQuestLayout:SetSpaceY(5)
-    self.finishedQuestLayout:Dock(FILL)
-    self.finishedQuestLayout:DockMargin(5, 5, 5, 5)
+    self.finishedQuestLayout:SetSize(self.scrollPanel:GetWide() - self.scrollPanel:GetVBar():GetWide() - 5, 1000)
     self.finishedQuestLayout:SetVisible(false)
 end
 
@@ -218,12 +214,10 @@ function PANEL:ShowAdmin()
     self.adminContainer:Dock(FILL)
     self.adminContainer:DockMargin(0, 0, 0, 0)
     
-    if IsValid(self.adminBaseHUD) then
-        self.adminBaseHUD:SetSize(self.adminContainer:GetWide(), self.adminContainer:GetTall())
-        self.adminBaseHUD:Dock(FILL)
-        self.adminBaseHUD:DockMargin(0, 0, 0, 0)
-        self.adminBaseHUD:InvalidateLayout(true)
-    end
+    self.adminBaseHUD:SetSize(self.adminContainer:GetWide(), self.adminContainer:GetTall())
+    self.adminBaseHUD:Dock(FILL)
+    self.adminBaseHUD:DockMargin(0, 0, 0, 0)
+    self.adminBaseHUD:InvalidateLayout(true)
     
     self.scrollPanel:InvalidateLayout(true)
     
@@ -245,7 +239,7 @@ function PANEL:UpdateQuests(quests, panel, hasButton)
 
         if IsValid(questPanel) then
             questPanel:SetQuest(questData)
-            questPanel:SetSize(self:GetWide() - 20, 125)
+            questPanel:SetSize(self:GetWide(), 125)
             questPanel.targetHeight = 125
             questPanel.animationSpeed = 10
             questPanel.isAnimating = false
@@ -357,6 +351,17 @@ hook.Add("UpdateFinishedQuests", "UpdateFinishedQuestHUD", function(questsTable)
 end)
 
 function CreateBaseHUD()
+    -- if LocalPlayer():IsAdmin() then
+    --     if CreateAdminBaseHUD then
+    --         local adminHUD = CreateAdminBaseHUD()
+    --         if IsValid(adminHUD) then
+    --             adminHUD:InvalidateLayout(true)
+    --         end
+    --     else
+    --         ErrorNoHalt("[Quests] Failed to find CreateAdminBaseHUD function\n")
+    --     end
+    -- end
+
     baseHUD = vgui.Create("BaseHUD")
     return baseHUD
 end
@@ -376,17 +381,4 @@ end
 
 concommand.Add("ttt_quest_menu", function(ply, cmd, args)
     OpenQuestMenu()
-end)
-
-hook.Add("InitPostEntity", "OnQuestsGamemodeLoaded", function()
-    if LocalPlayer():IsAdmin() then
-        if CreateAdminBaseHUD then
-            local adminHUD = CreateAdminBaseHUD()
-            if IsValid(adminHUD) then
-                adminHUD:InvalidateLayout(true)
-            end
-        else
-            ErrorNoHalt("[Quests] Failed to find CreateAdminBaseHUD function\n")
-        end
-    end
 end)
