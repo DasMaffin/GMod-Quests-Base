@@ -153,6 +153,22 @@ walkerQuest.args = {
     requiredSteps = 10,
 }
 ```
+Example how to add a new Quest with code:
+```lua
+function AddQuest()
+    local questBase.args = {} -- questBase can be named whatever, args is a sensitive key.
+    questBase.args.type = "KillQuest"
+    questBase.args.weight = 10
+    questBase.args.finishInOneRound = "0"
+    questBase.args.pointRewards = 10000
+    questBase.args.premPointRewards = 100
+    questBase.args.xpRewards = 1000
+    questBase.args.requiredKills = 10
+    questBase.args.roleToBeKilled = "0"
+    questBase.args.roleForKiller = "0"
+    hook.Run("AddAvailableQuest", questBase)
+end
+```
 ### Fields
 The fields a quest type has accessible (e.g. for displaying in a UI)
 #### Base
