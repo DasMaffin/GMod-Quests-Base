@@ -120,6 +120,7 @@ questBase = {
         type = "questType (e.g. KillQuest)",
         weight = 10,
         finishInOneRound = "0 (Yes this bool is a string dont @ me xd)",
+        difficulty = 0 -- numeric value 0, 1, 2 - 0 = easy, 1 = medium, 2 = hard
         pointRewards = 10000,
         premPointRewards = 100,
         xpRewards = 1000
